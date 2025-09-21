@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopTodo - E2Eテスト練習用アプリ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">ShopTodo</h1>
+            <nav class="nav">
+                <div id="user-info" class="user-info" style="display: none;">
+                    <span id="username"></span>
+                    <button id="logout-btn" class="btn btn-secondary">ログアウト</button>
+                </div>
+                <button id="login-btn" class="btn btn-primary">ログイン</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- ログインモーダル -->
+            <div id="login-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>ログイン</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username-input">ユーザー名:</label>
+                            <input type="text" id="username-input" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password-input">パスワード:</label>
+                            <input type="password" id="password-input" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">ログイン</button>
+                    </form>
+                    <p class="demo-info">デモ用: ユーザー名「demo」、パスワード「password」でログインできます</p>
+                </div>
+            </div>
+
+            <!-- 商品検索・フィルタ -->
+            <section class="search-section">
+                <h2>商品カタログ</h2>
+                <div class="search-controls">
+                    <input type="text" id="search-input" placeholder="商品を検索..." class="search-input">
+                    <select id="category-filter" class="filter-select">
+                        <option value="">すべてのカテゴリ</option>
+                        <option value="electronics">電子機器</option>
+                        <option value="clothing">衣類</option>
+                        <option value="books">書籍</option>
+                        <option value="home">ホーム</option>
+                    </select>
+                    <select id="sort-select" class="filter-select">
+                        <option value="name">名前順</option>
+                        <option value="price-low">価格（安い順）</option>
+                        <option value="price-high">価格（高い順）</option>
+                    </select>
+                </div>
+            </section>
+
+            <div class="content-grid">
+                <!-- 商品一覧 -->
+                <section class="products-section">
+                    <div id="products-grid" class="products-grid">
+                        <!-- 商品が動的に表示される -->
+                    </div>
+                </section>
+
+                <!-- サイドバー -->
+                <aside class="sidebar">
+                    <!-- ショッピングカート -->
+                    <section class="cart-section">
+                        <h3>ショッピングカート</h3>
+                        <div id="cart-items" class="cart-items">
+                            <p class="empty-cart">カートは空です</p>
+                        </div>
+                        <div id="cart-total" class="cart-total">
+                            合計: ¥0
+                        </div>
+                        <button id="checkout-btn" class="btn btn-primary" disabled>チェックアウト</button>
+                    </section>
+
+                    <!-- ToDoリスト -->
+                    <section class="todo-section">
+                        <h3>お気に入り商品メモ</h3>
+                        <div class="todo-input-group">
+                            <input type="text" id="todo-input" placeholder="メモを追加..." class="todo-input">
+                            <button id="add-todo-btn" class="btn btn-primary">追加</button>
+                        </div>
+                        <ul id="todo-list" class="todo-list">
+                            <!-- ToDoアイテムが動的に表示される -->
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 ShopTodo - E2Eテスト練習用アプリケーション</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
