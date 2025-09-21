@@ -1,151 +1,170 @@
-# ShopTodo - E2Eテスト練習用Webアプリケーション
+# ShopTodo - E2E Test Practice Web Application
 
-E2E（End-to-End）テストの練習に最適なシンプルなWebアプリケーションです。
+A simple web application designed for End-to-End (E2E) testing practice.
 
-## 機能概要
+**[日本語版はこちら (Japanese Version)](README_jp.md)**
 
-### 1. ユーザー認証
-- **ログイン**: デモユーザーでログイン可能
-- **ログアウト**: セッション管理
-- **デモ認証情報**:
-  - ユーザー名: `demo`
-  - パスワード: `password`
+## Features Overview
 
-### 2. 商品カタログ
-- **商品一覧表示**: 12種類のサンプル商品
-- **検索機能**: 商品名での部分一致検索
-- **カテゴリフィルタ**: 電子機器、衣類、書籍、ホーム
-- **ソート機能**: 名前順、価格（安い順・高い順）
+### 1. User Authentication
+- **Login**: Demo user login functionality
+- **Logout**: Session management
+- **Demo Credentials**:
+  - Username: `demo`
+  - Password: `password`
 
-### 3. ショッピングカート
-- **商品追加**: カートへの商品追加（ログイン必須）
-- **数量変更**: +/- ボタンで数量調整
-- **商品削除**: カートから商品を削除
-- **合計表示**: 総額の自動計算
-- **チェックアウト**: 購入処理のシミュレーション
+### 2. Product Catalog
+- **Product Display**: 12 sample products
+- **Search Function**: Partial match search by product name
+- **Category Filter**: Electronics, Clothing, Books, Home
+- **Sort Function**: By name, price (low to high, high to low)
 
-### 4. ToDoリスト（お気に入り商品メモ）
-- **メモ追加**: お気に入り商品のメモを追加（ログイン必須）
-- **完了切り替え**: チェックボックスで完了状態を管理
-- **メモ削除**: 不要なメモの削除
+### 3. Shopping Cart
+- **Add Products**: Add products to cart (login required)
+- **Quantity Control**: Adjust quantity with +/- buttons
+- **Remove Products**: Remove products from cart
+- **Total Display**: Automatic total calculation
+- **Checkout**: Purchase process simulation
 
-## ファイル構成
+### 4. Todo List (Favorite Product Memo)
+- **Add Memo**: Add favorite product memos (login required)
+- **Toggle Completion**: Manage completion status with checkboxes
+- **Delete Memo**: Remove unwanted memos
+
+### 5. Language Switching Feature
+- **Multi-language Support**: Switch between Japanese (JP) and English (EN)
+- **Persistent Settings**: Selected language saved to localStorage
+- **Full UI Support**: All text, messages, and product names are translated
+- **Dynamic Content**: Product lists, cart, and todo lists support language switching
+
+## File Structure
 
 ```
 shoptodo-app/
-├── index.html      # メインHTML（アプリの構造）
-├── styles.css      # スタイルシート（レスポンシブ対応）
-├── app.js          # JavaScript（全機能の実装）
-└── README.md       # このファイル
+├── index.html      # Main HTML (App structure)
+├── styles.css      # Stylesheet (Responsive design)
+├── app.js          # JavaScript (All functionality)
+├── README.md       # This file (English)
+└── README_jp.md    # Japanese documentation
 ```
 
-## 使用方法
+## Usage
 
-### 1. アプリケーションの起動
+### 1. Starting the Application
 
-ローカルサーバーで実行することをおすすめします：
+We recommend running with a local server:
 
 ```bash
-# Python 3の場合
-python -m http.server 8000
+# Python 3
+python3 -m http.server 8000
 
-# Python 2の場合
+# Python 2
 python -m SimpleHTTPServer 8000
 
-# Node.jsのhttp-serverを使用する場合
+# Node.js http-server
 npx http-server
 ```
 
-ブラウザで `http://localhost:8000` にアクセスしてください。
+Access `http://localhost:8000` in your browser.
 
-### 2. 基本的な操作フロー
+### 2. Basic Operation Flow
 
-1. **ログイン**
-   - 「ログイン」ボタンをクリック
-   - ユーザー名: `demo`、パスワード: `password` を入力
-   - 「ログイン」ボタンでログイン
+1. **Login**
+   - Click the "Login" button
+   - Enter username: `demo`, password: `password`
+   - Click "Login" to authenticate
 
-2. **商品閲覧・検索**
-   - 商品一覧から気になる商品を探す
-   - 検索ボックスで商品名を検索
-   - カテゴリやソートでフィルタリング
+2. **Browse & Search Products**
+   - Browse products from the product list
+   - Search for products by name in the search box
+   - Filter by category or sort options
 
-3. **ショッピング**
-   - 商品の「カートに追加」ボタンをクリック
-   - サイドバーのカートで数量調整
-   - 「チェックアウト」で購入手続き
+3. **Shopping**
+   - Click "Add to Cart" button on products
+   - Adjust quantities in the sidebar cart
+   - Click "Checkout" to complete purchase
 
-4. **メモ管理**
-   - ToDoリストにお気に入り商品のメモを追加
-   - 完了チェックや削除も可能
+4. **Memo Management**
+   - Add favorite product memos to the todo list
+   - Mark as complete or delete memos
 
-## E2Eテストのポイント
+5. **Language Switching**
+   - Use "EN"/"JP" buttons in the header to switch languages
+   - Settings are auto-saved and applied on next visit
 
-このアプリケーションは以下のテストシナリオに適しています：
+## E2E Testing Points
 
-### 認証フロー
-- ログイン成功・失敗のテスト
-- ログイン状態でのUI変化
-- ログアウト機能
+This application is suitable for the following test scenarios:
 
-### 商品検索・フィルタ
-- 検索機能の動作確認
-- カテゴリフィルタの適用
-- ソート機能の検証
+### Authentication Flow
+- Login success/failure testing
+- UI changes based on login state
+- Logout functionality
 
-### ショッピングカート
-- 商品追加の動作
-- 数量変更の確認
-- カート内容の永続化
-- チェックアウトプロセス
+### Product Search & Filter
+- Search functionality verification
+- Category filter application
+- Sort function validation
 
-### ToDoリスト
-- アイテム追加・削除
-- 完了状態の切り替え
-- データの永続化
+### Shopping Cart
+- Product addition behavior
+- Quantity change confirmation
+- Cart content persistence
+- Checkout process
 
-### レスポンシブデザイン
-- 異なる画面サイズでの表示確認
-- モバイル表示での操作性
+### Todo List
+- Item addition/deletion
+- Completion status toggle
+- Data persistence
 
-## データ管理
+### Responsive Design
+- Display confirmation on different screen sizes
+- Mobile display usability
 
-- **localStorage**を使用してデータを永続化
-- セッション情報、カート内容、ToDoリストを保存
-- ページリロード後もデータが保持される
+### Language Switching
+- Japanese and English language switching functionality
+- Verification of translated UI elements
+- Language setting persistence testing
 
-## 技術仕様
+## Data Management
 
-- **フロントエンド**: HTML5, CSS3, Vanilla JavaScript
-- **データストレージ**: localStorage
-- **レスポンシブ**: CSS Grid, Flexbox
-- **モダンブラウザ対応**: ES6+
+- **localStorage** for data persistence
+- Stores session information, cart contents, todo lists, and language settings
+- Data is retained after page reload
 
-## ブラウザサポート
+## Technical Specifications
+
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Data Storage**: localStorage
+- **Responsive**: CSS Grid, Flexbox
+- **Multi-language**: Translation management with i18n objects
+- **Modern Browser Support**: ES6+
+
+## Browser Support
 
 - Chrome 60+
 - Firefox 55+
 - Safari 12+
 - Edge 79+
 
-## カスタマイズ
+## Customization
 
-### 商品データの変更
-`app.js`の`initializeData()`メソッド内で商品データを編集できます。
+### Changing Product Data
+You can edit product data in the `initializeData()` method in `app.js`.
 
-### スタイルの調整
-`styles.css`でデザインをカスタマイズできます。
+### Style Adjustments
+Customize the design in `styles.css`.
 
-### 新機能の追加
-`app.js`の`AppState`と`UIManager`クラスを拡張して新機能を追加できます。
+### Adding New Features
+Extend the `AppState` and `UIManager` classes in `app.js` to add new functionality.
 
-## 注意事項
+## Notes
 
-- このアプリケーションは**教育・テスト目的**のみです
-- 実際の決済機能は含まれていません
-- データはブラウザのlocalStorageに保存されます
-- セキュリティ機能は最小限です
+- This application is for **educational and testing purposes only**
+- No actual payment functionality is included
+- Data is stored in browser localStorage
+- Security features are minimal
 
-## ライセンス
+## License
 
-このプロジェクトはMITライセンスの下で公開されています。学習・テスト目的での自由な使用が可能です。
+This project is released under the MIT License. Free use for learning and testing purposes is permitted.
