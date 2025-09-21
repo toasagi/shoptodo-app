@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopTodo - E2Eテスト練習用アプリ</title>
+    <title data-i18n="title">ShopTodo - E2Eテスト練習用アプリ</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,11 +11,15 @@
         <div class="container">
             <h1 class="logo">ShopTodo</h1>
             <nav class="nav">
+                <div class="language-switcher">
+                    <button id="lang-en" class="lang-btn" data-lang="en">EN</button>
+                    <button id="lang-ja" class="lang-btn active" data-lang="ja">JP</button>
+                </div>
                 <div id="user-info" class="user-info" style="display: none;">
                     <span id="username"></span>
-                    <button id="logout-btn" class="btn btn-secondary">ログアウト</button>
+                    <button id="logout-btn" class="btn btn-secondary" data-i18n="logout">ログアウト</button>
                 </div>
-                <button id="login-btn" class="btn btn-primary">ログイン</button>
+                <button id="login-btn" class="btn btn-primary" data-i18n="login">ログイン</button>
             </nav>
         </div>
     </header>
@@ -26,38 +30,38 @@
             <div id="login-modal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>ログイン</h2>
+                    <h2 data-i18n="login">ログイン</h2>
                     <form id="login-form">
                         <div class="form-group">
-                            <label for="username-input">ユーザー名:</label>
+                            <label for="username-input" data-i18n="username">ユーザー名:</label>
                             <input type="text" id="username-input" name="username" required>
                         </div>
                         <div class="form-group">
-                            <label for="password-input">パスワード:</label>
+                            <label for="password-input" data-i18n="password">パスワード:</label>
                             <input type="password" id="password-input" name="password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">ログイン</button>
+                        <button type="submit" class="btn btn-primary" data-i18n="login">ログイン</button>
                     </form>
-                    <p class="demo-info">デモ用: ユーザー名「demo」、パスワード「password」でログインできます</p>
+                    <p class="demo-info" data-i18n="demo_info">デモ用: ユーザー名「demo」、パスワード「password」でログインできます</p>
                 </div>
             </div>
 
             <!-- 商品検索・フィルタ -->
             <section class="search-section">
-                <h2>商品カタログ</h2>
+                <h2 data-i18n="product_catalog">商品カタログ</h2>
                 <div class="search-controls">
-                    <input type="text" id="search-input" placeholder="商品を検索..." class="search-input">
+                    <input type="text" id="search-input" placeholder="商品を検索..." class="search-input" data-i18n-placeholder="search_placeholder">
                     <select id="category-filter" class="filter-select">
-                        <option value="">すべてのカテゴリ</option>
-                        <option value="electronics">電子機器</option>
-                        <option value="clothing">衣類</option>
-                        <option value="books">書籍</option>
-                        <option value="home">ホーム</option>
+                        <option value="" data-i18n="all_categories">すべてのカテゴリ</option>
+                        <option value="electronics" data-i18n="electronics">電子機器</option>
+                        <option value="clothing" data-i18n="clothing">衣類</option>
+                        <option value="books" data-i18n="books">書籍</option>
+                        <option value="home" data-i18n="home">ホーム</option>
                     </select>
                     <select id="sort-select" class="filter-select">
-                        <option value="name">名前順</option>
-                        <option value="price-low">価格（安い順）</option>
-                        <option value="price-high">価格（高い順）</option>
+                        <option value="name" data-i18n="sort_name">名前順</option>
+                        <option value="price-low" data-i18n="sort_price_low">価格（安い順）</option>
+                        <option value="price-high" data-i18n="sort_price_high">価格（高い順）</option>
                     </select>
                 </div>
             </section>
@@ -74,22 +78,22 @@
                 <aside class="sidebar">
                     <!-- ショッピングカート -->
                     <section class="cart-section">
-                        <h3>ショッピングカート</h3>
+                        <h3 data-i18n="shopping_cart">ショッピングカート</h3>
                         <div id="cart-items" class="cart-items">
-                            <p class="empty-cart">カートは空です</p>
+                            <p class="empty-cart" data-i18n="cart_empty">カートは空です</p>
                         </div>
                         <div id="cart-total" class="cart-total">
                             合計: ¥0
                         </div>
-                        <button id="checkout-btn" class="btn btn-primary" disabled>チェックアウト</button>
+                        <button id="checkout-btn" class="btn btn-primary" disabled data-i18n="checkout">チェックアウト</button>
                     </section>
 
                     <!-- ToDoリスト -->
                     <section class="todo-section">
-                        <h3>お気に入り商品メモ</h3>
+                        <h3 data-i18n="favorite_memo">お気に入り商品メモ</h3>
                         <div class="todo-input-group">
-                            <input type="text" id="todo-input" placeholder="メモを追加..." class="todo-input">
-                            <button id="add-todo-btn" class="btn btn-primary">追加</button>
+                            <input type="text" id="todo-input" placeholder="メモを追加..." class="todo-input" data-i18n-placeholder="memo_placeholder">
+                            <button id="add-todo-btn" class="btn btn-primary" data-i18n="add">追加</button>
                         </div>
                         <ul id="todo-list" class="todo-list">
                             <!-- ToDoアイテムが動的に表示される -->
@@ -102,7 +106,7 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 ShopTodo - E2Eテスト練習用アプリケーション</p>
+            <p data-i18n="footer_text">&copy; 2025 ShopTodo - E2Eテスト練習用アプリケーション</p>
         </div>
     </footer>
 

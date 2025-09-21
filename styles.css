@@ -49,6 +49,34 @@ body {
     gap: 1rem;
 }
 
+/* 言語切り替え */
+.language-switcher {
+    display: flex;
+    gap: 0.25rem;
+    margin-right: 1rem;
+}
+
+.lang-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+}
+
+.lang-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.lang-btn.active {
+    background: white;
+    color: #007bff;
+    border-color: white;
+}
+
 /* ボタン */
 .btn {
     padding: 0.5rem 1rem;

@@ -1,3 +1,119 @@
+// 多言語対応
+const i18n = {
+    ja: {
+        title: 'ShopTodo - E2Eテスト練習用アプリ',
+        login: 'ログイン',
+        logout: 'ログアウト',
+        username: 'ユーザー名:',
+        password: 'パスワード:',
+        demo_info: 'デモ用: ユーザー名「demo」、パスワード「password」でログインできます',
+        product_catalog: '商品カタログ',
+        search_placeholder: '商品を検索...',
+        all_categories: 'すべてのカテゴリ',
+        electronics: '電子機器',
+        clothing: '衣類',
+        books: '書籍',
+        home: 'ホーム',
+        sort_name: '名前順',
+        sort_price_low: '価格（安い順）',
+        sort_price_high: '価格（高い順）',
+        shopping_cart: 'ショッピングカート',
+        cart_empty: 'カートは空です',
+        checkout: 'チェックアウト',
+        favorite_memo: 'お気に入り商品メモ',
+        memo_placeholder: 'メモを追加...',
+        add: '追加',
+        footer_text: '© 2025 ShopTodo - E2Eテスト練習用アプリケーション',
+        add_to_cart: 'カートに追加',
+        product_image: '商品画像',
+        total: '合計',
+        memo_empty: 'メモはありません',
+        login_required: 'ログインしてください',
+        product_added: '商品をカートに追加しました',
+        product_removed: '商品をカートから削除しました',
+        memo_added: 'メモを追加しました',
+        memo_deleted: 'メモを削除しました',
+        login_success: 'ログインしました',
+        logout_success: 'ログアウトしました',
+        login_error: 'ユーザー名またはパスワードが正しくありません',
+        checkout_confirm: 'でチェックアウトしますか？',
+        checkout_success: 'チェックアウトが完了しました',
+        complete: '完了にする',
+        incomplete: '未完了にする',
+        delete: '削除',
+        product_names: {
+            'スマートフォン': 'Smartphone',
+            'ノートパソコン': 'Laptop',
+            'Tシャツ': 'T-shirt',
+            'ジーンズ': 'Jeans',
+            'プログラミング入門書': 'Programming Basics',
+            'JavaScript完全ガイド': 'JavaScript Complete Guide',
+            'コーヒーメーカー': 'Coffee Maker',
+            '掃除機': 'Vacuum Cleaner',
+            'ワイヤレスイヤホン': 'Wireless Earphones',
+            'スニーカー': 'Sneakers',
+            'Web開発の教科書': 'Web Development Textbook',
+            'キッチン用品セット': 'Kitchen Set'
+        }
+    },
+    en: {
+        title: 'ShopTodo - E2E Test Practice App',
+        login: 'Login',
+        logout: 'Logout',
+        username: 'Username:',
+        password: 'Password:',
+        demo_info: 'Demo: Use username "demo" and password "password" to login',
+        product_catalog: 'Product Catalog',
+        search_placeholder: 'Search products...',
+        all_categories: 'All Categories',
+        electronics: 'Electronics',
+        clothing: 'Clothing',
+        books: 'Books',
+        home: 'Home',
+        sort_name: 'Name',
+        sort_price_low: 'Price (Low to High)',
+        sort_price_high: 'Price (High to Low)',
+        shopping_cart: 'Shopping Cart',
+        cart_empty: 'Cart is empty',
+        checkout: 'Checkout',
+        favorite_memo: 'Favorite Product Memo',
+        memo_placeholder: 'Add memo...',
+        add: 'Add',
+        footer_text: '© 2025 ShopTodo - E2E Test Practice Application',
+        add_to_cart: 'Add to Cart',
+        product_image: 'Product Image',
+        total: 'Total',
+        memo_empty: 'No memos',
+        login_required: 'Please login',
+        product_added: 'Product added to cart',
+        product_removed: 'Product removed from cart',
+        memo_added: 'Memo added',
+        memo_deleted: 'Memo deleted',
+        login_success: 'Logged in successfully',
+        logout_success: 'Logged out successfully',
+        login_error: 'Invalid username or password',
+        checkout_confirm: 'Proceed with checkout for',
+        checkout_success: 'Checkout completed successfully',
+        complete: 'Mark as complete',
+        incomplete: 'Mark as incomplete',
+        delete: 'Delete',
+        product_names: {
+            'スマートフォン': 'Smartphone',
+            'ノートパソコン': 'Laptop',
+            'Tシャツ': 'T-shirt',
+            'ジーンズ': 'Jeans',
+            'プログラミング入門書': 'Programming Basics',
+            'JavaScript完全ガイド': 'JavaScript Complete Guide',
+            'コーヒーメーカー': 'Coffee Maker',
+            '掃除機': 'Vacuum Cleaner',
+            'ワイヤレスイヤホン': 'Wireless Earphones',
+            'スニーカー': 'Sneakers',
+            'Web開発の教科書': 'Web Development Textbook',
+            'キッチン用品セット': 'Kitchen Set'
+        }
+    }
+};
+
 // アプリケーションの状態管理
 class AppState {
     constructor() {
@@ -6,6 +122,7 @@ class AppState {
         this.cart = [];
         this.todos = [];
         this.filteredProducts = [];
+        this.currentLanguage = 'ja';
 
         this.initializeData();
         this.loadFromStorage();
@@ -46,12 +163,23 @@ class AppState {
         if (savedTodos) {
             this.todos = JSON.parse(savedTodos);
         }
+
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            this.currentLanguage = savedLanguage;
+        }
     }
 
     saveToStorage() {
         localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
         localStorage.setItem('cart', JSON.stringify(this.cart));
         localStorage.setItem('todos', JSON.stringify(this.todos));
+        localStorage.setItem('language', this.currentLanguage);
+    }
+
+    setLanguage(language) {
+        this.currentLanguage = language;
+        this.saveToStorage();
     }
 
     login(username, password) {
@@ -175,6 +303,15 @@ class UIManager {
     }
 
     initializeEventListeners() {
+        // 言語切り替え
+        document.getElementById('lang-en').addEventListener('click', () => {
+            this.switchLanguage('en');
+        });
+
+        document.getElementById('lang-ja').addEventListener('click', () => {
+            this.switchLanguage('ja');
+        });
+
         // ログイン関連
         document.getElementById('login-btn').addEventListener('click', () => {
             this.showLoginModal();
@@ -230,10 +367,55 @@ class UIManager {
     }
 
     updateUI() {
+        this.updateLanguageUI();
         this.updateAuthUI();
         this.renderProducts();
         this.renderCart();
         this.renderTodos();
+    }
+
+    switchLanguage(language) {
+        this.appState.setLanguage(language);
+        this.updateLanguageUI();
+        this.updateUI();
+    }
+
+    updateLanguageUI() {
+        const currentLang = this.appState.currentLanguage;
+
+        // 言語ボタンのアクティブ状態を更新
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById(`lang-${currentLang}`).classList.add('active');
+
+        // data-i18n属性を持つ要素のテキストを更新
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            if (i18n[currentLang] && i18n[currentLang][key]) {
+                element.textContent = i18n[currentLang][key];
+            }
+        });
+
+        // placeholder属性の更新
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-i18n-placeholder');
+            if (i18n[currentLang] && i18n[currentLang][key]) {
+                element.setAttribute('placeholder', i18n[currentLang][key]);
+            }
+        });
+
+        // HTMLのlang属性を更新
+        document.documentElement.lang = currentLang;
+
+        // 動的に生成されるコンテンツも更新
+        this.renderProducts();
+        this.renderCart();
+        this.renderTodos();
+    }
+
+    t(key) {
+        return i18n[this.appState.currentLanguage][key] || key;
     }
 
     updateAuthUI() {
@@ -268,16 +450,16 @@ class UIManager {
         if (this.appState.login(username, password)) {
             this.hideLoginModal();
             this.updateUI();
-            this.showMessage('ログインしました', 'success');
+            this.showMessage(this.t('login_success'), 'success');
         } else {
-            this.showMessage('ユーザー名またはパスワードが正しくありません', 'error');
+            this.showMessage(this.t('login_error'), 'error');
         }
     }
 
     logout() {
         this.appState.logout();
         this.updateUI();
-        this.showMessage('ログアウトしました', 'success');
+        this.showMessage(this.t('logout_success'), 'success');
     }
 
     updateProductFilters() {
@@ -296,39 +478,46 @@ class UIManager {
         this.appState.filteredProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
+
+            const productName = this.getProductName(product.name);
+            const categoryName = this.getCategoryName(product.category);
+            const loginRequiredTitle = this.t('login_required');
+
             productCard.innerHTML = `
-                <div class="product-image">商品画像</div>
-                <div class="product-name">${product.name}</div>
+                <div class="product-image">${this.t('product_image')}</div>
+                <div class="product-name">${productName}</div>
                 <div class="product-price">¥${product.price.toLocaleString()}</div>
-                <div class="product-category">${this.getCategoryName(product.category)}</div>
+                <div class="product-category">${categoryName}</div>
                 <button class="btn btn-primary" onclick="ui.addToCart(${product.id})"
-                        ${!this.appState.currentUser ? 'disabled title="ログインが必要です"' : ''}>
-                    カートに追加
+                        ${!this.appState.currentUser ? `disabled title="${loginRequiredTitle}"` : ''}>
+                    ${this.t('add_to_cart')}
                 </button>
             `;
             grid.appendChild(productCard);
         });
     }
 
+    getProductName(japaneseName) {
+        const currentLang = this.appState.currentLanguage;
+        if (currentLang === 'en' && i18n.ja.product_names[japaneseName]) {
+            return i18n.ja.product_names[japaneseName];
+        }
+        return japaneseName;
+    }
+
     getCategoryName(category) {
-        const categories = {
-            electronics: '電子機器',
-            clothing: '衣類',
-            books: '書籍',
-            home: 'ホーム'
-        };
-        return categories[category] || category;
+        return this.t(category);
     }
 
     addToCart(productId) {
         if (!this.appState.currentUser) {
-            this.showMessage('ログインしてください', 'error');
+            this.showMessage(this.t('login_required'), 'error');
             return;
         }
 
         this.appState.addToCart(productId);
         this.renderCart();
-        this.showMessage('商品をカートに追加しました', 'success');
+        this.showMessage(this.t('product_added'), 'success');
     }
 
     renderCart() {
@@ -337,30 +526,31 @@ class UIManager {
         const checkoutBtn = document.getElementById('checkout-btn');
 
         if (this.appState.cart.length === 0) {
-            cartItems.innerHTML = '<p class="empty-cart">カートは空です</p>';
-            cartTotal.textContent = '合計: ¥0';
+            cartItems.innerHTML = `<p class="empty-cart">${this.t('cart_empty')}</p>`;
+            cartTotal.textContent = `${this.t('total')}: ¥0`;
             checkoutBtn.disabled = true;
         } else {
             cartItems.innerHTML = '';
             this.appState.cart.forEach(item => {
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item';
+                const itemName = this.getProductName(item.name);
                 cartItem.innerHTML = `
                     <div class="cart-item-info">
-                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-name">${itemName}</div>
                         <div class="cart-item-price">¥${item.price.toLocaleString()} × ${item.quantity}</div>
                     </div>
                     <div class="cart-item-controls">
                         <button class="quantity-btn" onclick="ui.updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
                         <span>${item.quantity}</span>
                         <button class="quantity-btn" onclick="ui.updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                        <button class="todo-btn" onclick="ui.removeFromCart(${item.id})" title="削除">🗑️</button>
+                        <button class="todo-btn" onclick="ui.removeFromCart(${item.id})" title="${this.t('delete')}">🗑️</button>
                     </div>
                 `;
                 cartItems.appendChild(cartItem);
             });
 
-            cartTotal.textContent = `合計: ¥${this.appState.getCartTotal().toLocaleString()}`;
+            cartTotal.textContent = `${this.t('total')}: ¥${this.appState.getCartTotal().toLocaleString()}`;
             checkoutBtn.disabled = false;
         }
     }
@@ -373,18 +563,18 @@ class UIManager {
     removeFromCart(productId) {
         this.appState.removeFromCart(productId);
         this.renderCart();
-        this.showMessage('商品をカートから削除しました', 'success');
+        this.showMessage(this.t('product_removed'), 'success');
     }
 
     handleCheckout() {
         if (this.appState.cart.length === 0) return;
 
         const total = this.appState.getCartTotal();
-        if (confirm(`合計 ¥${total.toLocaleString()} でチェックアウトしますか？`)) {
+        if (confirm(`${this.t('checkout_confirm')} ¥${total.toLocaleString()}?`)) {
             this.appState.cart = [];
             this.appState.saveToStorage();
             this.renderCart();
-            this.showMessage('チェックアウトが完了しました', 'success');
+            this.showMessage(this.t('checkout_success'), 'success');
         }
     }
 
@@ -393,7 +583,7 @@ class UIManager {
         const text = input.value.trim();
 
         if (!this.appState.currentUser) {
-            this.showMessage('ログインしてください', 'error');
+            this.showMessage(this.t('login_required'), 'error');
             return;
         }
 
@@ -401,7 +591,7 @@ class UIManager {
             this.appState.addTodo(text);
             input.value = '';
             this.renderTodos();
-            this.showMessage('メモを追加しました', 'success');
+            this.showMessage(this.t('memo_added'), 'success');
         }
     }
 
@@ -410,20 +600,21 @@ class UIManager {
         todoList.innerHTML = '';
 
         if (this.appState.todos.length === 0) {
-            todoList.innerHTML = '<li class="todo-item"><span class="todo-text">メモはありません</span></li>';
+            todoList.innerHTML = `<li class="todo-item"><span class="todo-text">${this.t('memo_empty')}</span></li>`;
             return;
         }
 
         this.appState.todos.forEach(todo => {
             const todoItem = document.createElement('li');
             todoItem.className = 'todo-item';
+            const toggleTitle = todo.completed ? this.t('incomplete') : this.t('complete');
             todoItem.innerHTML = `
                 <span class="todo-text ${todo.completed ? 'completed' : ''}">${todo.text}</span>
                 <div class="todo-controls">
-                    <button class="todo-btn" onclick="ui.toggleTodo(${todo.id})" title="${todo.completed ? '未完了にする' : '完了にする'}">
+                    <button class="todo-btn" onclick="ui.toggleTodo(${todo.id})" title="${toggleTitle}">
                         ${todo.completed ? '↩️' : '✅'}
                     </button>
-                    <button class="todo-btn" onclick="ui.deleteTodo(${todo.id})" title="削除">🗑️</button>
+                    <button class="todo-btn" onclick="ui.deleteTodo(${todo.id})" title="${this.t('delete')}">🗑️</button>
                 </div>
             `;
             todoList.appendChild(todoItem);
@@ -438,7 +629,7 @@ class UIManager {
     deleteTodo(todoId) {
         this.appState.deleteTodo(todoId);
         this.renderTodos();
-        this.showMessage('メモを削除しました', 'success');
+        this.showMessage(this.t('memo_deleted'), 'success');
     }
 
     showMessage(message, type = 'info') {
