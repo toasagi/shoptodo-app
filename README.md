@@ -158,6 +158,61 @@ Customize the design in `styles.css`.
 ### Adding New Features
 Extend the `AppState` and `UIManager` classes in `app.js` to add new functionality.
 
+## Testing
+
+This project includes comprehensive unit tests using Jest.
+
+### Running Tests
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Run all tests:
+
+```bash
+npm test
+```
+
+Run tests in watch mode (for development):
+
+```bash
+npm run test:watch
+```
+
+Generate test coverage report:
+
+```bash
+npm run test:coverage
+```
+
+### Test Structure
+
+```
+tests/
+├── setup.js              # Jest configuration and mocks
+├── testUtils.js          # Testing utilities and helpers
+├── AppState.test.js      # AppState class unit tests
+├── UIManager.test.js     # UIManager class unit tests
+└── i18n.test.js          # Translation data validation tests
+```
+
+### Test Coverage
+
+The test suite covers:
+
+- **Authentication**: Login/logout functionality
+- **Cart Management**: Add, remove, update quantities, calculate totals
+- **Todo Management**: Add, toggle, delete todo items
+- **Product Filtering**: Search, category filters, sorting
+- **Language Switching**: UI translation and persistence
+- **Data Persistence**: localStorage operations
+- **Translation Data**: i18n key consistency and completeness
+
+Target coverage: 80%+ for branches, functions, lines, and statements.
+
 ## Notes
 
 - This application is for **educational and testing purposes only**

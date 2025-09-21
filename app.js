@@ -669,7 +669,17 @@ class UIManager {
 let appState;
 let ui;
 
-document.addEventListener('DOMContentLoaded', () => {
-    appState = new AppState();
-    ui = new UIManager(appState);
-});
+// Export for testing (Node.js environment)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        i18n,
+        AppState,
+        UIManager
+    };
+} else {
+    // Browser environment
+    document.addEventListener('DOMContentLoaded', () => {
+        appState = new AppState();
+        ui = new UIManager(appState);
+    });
+}
