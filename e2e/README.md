@@ -55,12 +55,6 @@ In a separate terminal, start the ShopTodo application:
 python3 -m http.server 8000
 ```
 
-Or if port 8000 is busy:
-
-```bash
-python3 -m http.server 8002
-```
-
 ### 4. Run Tests
 
 ```bash
@@ -93,9 +87,6 @@ BROWSER=webkit npm test
 ### Example Usage
 
 ```bash
-# Test on different port
-APP_URL=http://localhost:8002 npm test
-
 # Run with visible Firefox browser
 BROWSER=firefox HEADLESS=false npm test
 
@@ -120,8 +111,8 @@ After running tests, reports are generated in:
    # Check if the application is running
    curl http://localhost:8000
 
-   # If using different port
-   APP_URL=http://localhost:8002 npm test
+   # Start the application if not running
+   python3 -m http.server 8000
    ```
 
 2. **Browser installation issues**
