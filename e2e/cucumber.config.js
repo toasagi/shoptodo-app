@@ -1,8 +1,8 @@
 const config = {
   require: [
     'ts-node/register',
-    './step-definitions/**/*.ts',
-    './support/**/*.ts'
+    'step-definitions/**/*.ts',
+    'support/**/*.ts'
   ],
   requireModule: ['ts-node/register'],
   format: [

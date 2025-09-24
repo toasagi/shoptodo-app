@@ -9,38 +9,42 @@ Feature: User Login
 
   @smoke
   Scenario: Successful login with valid credentials
-    Given the login modal is displayed
+    When the user clicks the login button to open modal
+    Then the login modal is displayed
     When the user enters username "demo"
     And the user enters password "password"
-    And the user clicks the login button
+    And the user submits the login form
     Then the user should be logged in successfully
     And the dashboard should be displayed
     And the username "demo" should be displayed in the header
 
   @negative
   Scenario: Login failure with invalid username
-    Given the login modal is displayed
+    When the user clicks the login button to open modal
+    Then the login modal is displayed
     When the user enters username "invalid"
     And the user enters password "password"
-    And the user clicks the login button
+    And the user submits the login form
     Then an error message should be displayed
     And the user should remain on the login page
 
   @negative
   Scenario: Login failure with invalid password
-    Given the login modal is displayed
+    When the user clicks the login button to open modal
+    Then the login modal is displayed
     When the user enters username "demo"
     And the user enters password "wrongpassword"
-    And the user clicks the login button
+    And the user submits the login form
     Then an error message should be displayed
     And the user should remain on the login page
 
   @negative
   Scenario: Login failure with empty credentials
-    Given the login modal is displayed
+    When the user clicks the login button to open modal
+    Then the login modal is displayed
     When the user enters username ""
     And the user enters password ""
-    And the user clicks the login button
+    And the user submits the login form
     Then a validation error should be displayed
     And the user should remain on the login page
 

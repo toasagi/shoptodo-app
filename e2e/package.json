@@ -4,10 +4,10 @@
   "description": "Simple E2E login tests using Cucumber BDD and Playwright",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js --config cucumber.config.js",
-    "test:smoke": "cucumber-js --config cucumber.config.js --tags '@smoke'",
-    "test:negative": "cucumber-js --config cucumber.config.js --tags '@negative'",
-    "test:debug": "cucumber-js --config cucumber.config.js --tags '@debug'",
+    "test": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts'",
+    "test:smoke": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@smoke'",
+    "test:negative": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@negative'",
+    "test:debug": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@debug'",
     "install:browsers": "npx playwright install"
   },
   "keywords": [

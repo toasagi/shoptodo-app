@@ -16,11 +16,11 @@ export class DashboardPage {
     this.appUrl = appUrl;
 
     // Initialize locators based on actual application selectors
-    this.userDisplay = this.page.locator('#userDisplay');
+    this.userDisplay = this.page.locator('#username');
     this.logoutButton = this.page.locator('#logout-btn');
-    this.productSection = this.page.locator('#productSection');
-    this.todoSection = this.page.locator('#todoSection');
-    this.cartSection = this.page.locator('#cartSection');
+    this.productSection = this.page.locator('.product-grid');
+    this.todoSection = this.page.locator('.todo-section');
+    this.cartSection = this.page.locator('.cart-section');
   }
 
   /**
@@ -39,7 +39,7 @@ export class DashboardPage {
 
     // Wait for key dashboard elements to be visible
     try {
-      await this.page.waitForSelector('#userDisplay, #productSection', {
+      await this.page.waitForSelector('#username, .product-grid', {
         state: 'visible',
         timeout: 10000
       });

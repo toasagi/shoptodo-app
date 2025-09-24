@@ -16,10 +16,10 @@ export class LoginPage {
     this.appUrl = appUrl;
 
     // Initialize locators based on actual application selectors
-    this.loginModal = this.page.locator('#loginModal');
-    this.usernameInput = this.page.locator('#username');
-    this.passwordInput = this.page.locator('#password');
-    this.loginButton = this.page.locator('#login-btn');
+    this.loginModal = this.page.locator('#login-modal');
+    this.usernameInput = this.page.locator('#username-input');
+    this.passwordInput = this.page.locator('#password-input');
+    this.loginButton = this.page.locator('#login-form button[type="submit"]');
     this.errorMessage = this.page.locator('#error-message, .error-message');
   }
 
