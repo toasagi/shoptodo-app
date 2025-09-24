@@ -1,35 +1,30 @@
 {
-  "name": "shoptodo-e2e-tests",
+  "name": "shoptodo-login-e2e-tests",
   "version": "1.0.0",
-  "description": "E2E test automation for ShopTodo application using Playwright and Cucumber",
+  "description": "Simple E2E login tests using Cucumber BDD and Playwright",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --format @cucumber/pretty-formatter",
-    "test:e2e:parallel": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --parallel 4",
-    "test:e2e:smoke": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --tags '@smoke'",
-    "test:e2e:regression": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --tags '@regression'",
-    "test:e2e:report": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --format json:reports/cucumber-report.json",
-    "test:install": "npx playwright install",
-    "test:debug": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --tags '@debug'"
+    "test": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts'",
+    "test:smoke": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@smoke'",
+    "test:negative": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@negative'",
+    "test:debug": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@debug'",
+    "install:browsers": "npx playwright install"
   },
   "keywords": [
     "e2e-testing",
-    "playwright",
     "cucumber",
+    "playwright",
     "bdd",
-    "gherkin",
-    "page-object-model"
+    "login-tests"
   ],
   "author": "Claude Code",
   "license": "MIT",
   "devDependencies": {
     "@cucumber/cucumber": "^10.0.1",
-    "@cucumber/pretty-formatter": "^1.0.1",
     "@playwright/test": "^1.40.0",
     "@types/node": "^20.8.0",
     "ts-node": "^10.9.0",
-    "typescript": "^5.2.0",
-    "cucumber-html-reporter": "^7.1.1"
+    "typescript": "^5.2.0"
   },
   "dependencies": {
     "playwright": "^1.40.0"

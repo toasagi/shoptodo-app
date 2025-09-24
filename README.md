@@ -213,6 +213,164 @@ The test suite covers:
 
 Target coverage: 80%+ for branches, functions, lines, and statements.
 
+## E2E Automation Testing
+
+This project includes E2E automation testing for login functionality using Cucumber BDD + Playwright.
+
+### E2E Test Structure
+
+```
+e2e/
+├── features/                    # Gherkin feature files
+│   ├── login.feature           # Login test scenarios
+│   └── simple.feature          # Basic connection test
+├── page-objects/               # Page Object Model
+│   ├── LoginPage.ts           # Login page methods
+│   └── DashboardPage.ts       # Dashboard page methods
+├── step-definitions/          # Cucumber step definitions
+│   ├── login.steps.ts         # Login step definitions
+│   └── simple.steps.ts        # Simple test steps
+├── support/                   # Test support
+│   ├── world.ts              # Test execution environment
+│   └── hooks.ts              # Before/After hooks
+├── screenshots/              # Test failure screenshots (gitignored)
+├── reports/                  # Test reports
+├── package.json             # Dependencies and scripts
+├── cucumber.config.js       # Cucumber configuration
+├── tsconfig.json           # TypeScript configuration
+└── README.md               # E2E test documentation
+```
+
+### Running E2E Tests
+
+#### 1. Install E2E Dependencies
+
+```bash
+cd e2e
+npm install
+npx playwright install
+```
+
+#### 2. Start Application Server
+
+In a separate terminal, start the application:
+
+```bash
+# From project root directory
+python3 -m http.server 8000
+```
+
+#### 3. Execute E2E Tests
+
+```bash
+cd e2e
+
+# Run all login tests
+npm test
+
+# Smoke tests (core login functionality)
+npm run test:smoke
+
+# Negative tests (error scenarios)
+npm run test:negative
+
+# Debug tests (basic connection test)
+npm run test:debug
+```
+
+#### 4. Cross-browser Testing
+
+```bash
+# Run with specific browser
+BROWSER=firefox npm test
+BROWSER=webkit npm test
+
+# Disable headless mode (show browser)
+HEADLESS=false npm test
+```
+
+### E2E Test Features
+
+#### Current Test Coverage
+- **Login Functionality**: Complete login flow testing
+  - Successful login with valid credentials
+  - Login failure with invalid credentials
+  - Empty field validation
+  - Logout functionality
+- **Basic Connection**: Application availability verification
+
+#### Technologies Used
+- **Cucumber BDD**: Natural language test scenarios in Gherkin format
+- **Playwright**: Cross-browser automation (Chromium, Firefox, WebKit)
+- **TypeScript**: Type-safe test code
+- **Page Object Model**: Maintainable test structure
+
+#### Test Configuration
+- **Environment Variables**:
+  - `APP_URL`: Application URL (default: http://localhost:8000)
+  - `BROWSER`: Browser selection (chromium/firefox/webkit)
+  - `HEADLESS`: Headless mode control
+  - `TIMEOUT`: Test timeout configuration
+
+For detailed E2E test documentation, see [e2e/README.md](e2e/README.md)
+
+### CI/CD Integration
+
+Automated test execution with GitHub Actions:
+
+```yaml
+# Automatic execution triggers
+- Push/Pull Request
+- Daily at 2 AM UTC (scheduled)
+- Manual execution
+
+# Supported browsers
+- Chromium
+- Firefox
+- WebKit (Safari)
+
+# Test types
+- Smoke tests
+- Regression tests
+- Performance tests (Lighthouse)
+```
+
+### Test Reports
+
+After test execution, the following reports are generated:
+
+- **Cucumber HTML Report**: `e2e/reports/cucumber-report.html`
+- **Playwright Report**: `e2e/playwright-report/`
+- **Screenshots**: `e2e/screenshots/` (on failure)
+- **GitHub Actions**: CI execution results and artifacts
+
+### ISTQB Compliant Test Documentation
+
+Professional test process documentation is also included:
+
+```
+docs/
+├── test-planning/
+│   ├── test-strategy.md        # Test strategy document
+│   ├── test-plan.md           # Test plan document
+│   └── risk-analysis.md       # Risk analysis document
+├── test-analysis/
+│   ├── requirements-analysis.md # Requirements analysis document
+│   └── test-observation-matrix.md # Test observation matrix
+└── test-design/
+    ├── user-stories.md        # User stories
+    ├── test-scenarios.md      # Test scenarios
+    ├── test-cases.md          # Test cases
+    └── traceability-matrix.md # Traceability matrix
+```
+
+### Error Handling and Debugging
+
+- **Automatic Screenshots**: Captured automatically on test failure
+- **Detailed Logging**: Step-by-step execution logs
+- **Retry Functionality**: Automatic retry for unstable tests
+- **Timeout Settings**: Proper element waiting configuration
+
 ## Notes
 
 - This application is for **educational and testing purposes only**

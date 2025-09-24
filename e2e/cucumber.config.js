@@ -1,12 +1,12 @@
 const config = {
   require: [
     'ts-node/register',
-    './step-definitions/**/*.ts',
-    './support/**/*.ts'
+    'step-definitions/**/*.ts',
+    'support/**/*.ts'
   ],
   requireModule: ['ts-node/register'],
   format: [
-    '@cucumber/pretty-formatter',
+    'progress',
     'json:reports/cucumber-report.json',
     'html:reports/cucumber-report.html'
   ],
@@ -16,15 +16,11 @@ const config = {
   publishQuiet: true,
   dryRun: false,
   failFast: false,
-  parallel: 1,
-  retry: 1,
-  retryTagFilter: '@flaky',
-  strict: false,
+  strict: true,
   worldParameters: {
     appUrl: process.env.APP_URL || 'http://localhost:8000',
     browser: process.env.BROWSER || 'chromium',
     headless: process.env.HEADLESS !== 'false',
-    slowMo: parseInt(process.env.SLOW_MO || '0'),
     timeout: parseInt(process.env.TIMEOUT || '30000')
   }
 };

@@ -211,6 +211,164 @@ tests/
 
 目標カバレッジ: 分岐、関数、行、文について80%以上
 
+## E2E自動化テスト
+
+このプロジェクトには、Cucumber BDD + Playwrightを使用したログイン機能のE2E自動化テストが含まれています。
+
+### E2Eテストの構成
+
+```
+e2e/
+├── features/                    # Gherkinフィーチャーファイル
+│   ├── login.feature           # ログインテストシナリオ
+│   └── simple.feature          # 基本接続テスト
+├── page-objects/               # Page Object Model
+│   ├── LoginPage.ts           # ログインページメソッド
+│   └── DashboardPage.ts       # ダッシュボードページメソッド
+├── step-definitions/          # Cucumberステップ定義
+│   ├── login.steps.ts         # ログインステップ定義
+│   └── simple.steps.ts        # シンプルテストステップ
+├── support/                   # テスト支援
+│   ├── world.ts              # テスト実行環境
+│   └── hooks.ts              # Before/Afterフック
+├── screenshots/              # テスト失敗時のスクリーンショット（gitignored）
+├── reports/                  # テストレポート
+├── package.json             # 依存関係とスクリプト
+├── cucumber.config.js       # Cucumber設定
+├── tsconfig.json           # TypeScript設定
+└── README.md               # E2Eテストドキュメント
+```
+
+### E2Eテストの実行方法
+
+#### 1. E2E依存関係のインストール
+
+```bash
+cd e2e
+npm install
+npx playwright install
+```
+
+#### 2. アプリケーションサーバーの起動
+
+別のターミナルでアプリケーションを起動：
+
+```bash
+# プロジェクトルートディレクトリで
+python3 -m http.server 8000
+```
+
+#### 3. E2Eテストの実行
+
+```bash
+cd e2e
+
+# 全ログインテスト実行
+npm test
+
+# スモークテスト（主要なログイン機能）
+npm run test:smoke
+
+# ネガティブテスト（エラーシナリオ）
+npm run test:negative
+
+# デバッグテスト（基本接続テスト）
+npm run test:debug
+```
+
+#### 4. クロスブラウザテスト
+
+```bash
+# 特定のブラウザで実行
+BROWSER=firefox npm test
+BROWSER=webkit npm test
+
+# ヘッドレスモード無効（ブラウザが表示される）
+HEADLESS=false npm test
+```
+
+### E2Eテストの特徴
+
+#### 現在のテストカバレッジ
+- **ログイン機能**: 完全なログインフローのテスト
+  - 有効な資格情報でのログイン成功
+  - 無効な資格情報でのログイン失敗
+  - 空フィールドバリデーション
+  - ログアウト機能
+- **基本接続**: アプリケーション可用性の確認
+
+#### 使用技術
+- **Cucumber BDD**: Gherkin形式での自然言語テストシナリオ
+- **Playwright**: クロスブラウザ自動化（Chromium、Firefox、WebKit）
+- **TypeScript**: 型安全なテストコード
+- **Page Object Model**: メンテナンス可能なテスト構造
+
+#### テスト設定
+- **環境変数**:
+  - `APP_URL`: アプリケーションURL（デフォルト: http://localhost:8000）
+  - `BROWSER`: ブラウザ選択（chromium/firefox/webkit）
+  - `HEADLESS`: ヘッドレスモード制御
+  - `TIMEOUT`: テストタイムアウト設定
+
+詳細なE2Eテストドキュメントは [e2e/README.md](e2e/README.md) を参照してください。
+
+### CI/CD統合
+
+GitHub Actionsによる自動テスト実行：
+
+```yaml
+# 自動実行タイミング
+- Push/Pull Request時
+- 毎日午前2時（スケジュール実行）
+- 手動実行
+
+# サポートブラウザ
+- Chromium
+- Firefox
+- WebKit (Safari)
+
+# テストタイプ
+- スモークテスト
+- 回帰テスト
+- パフォーマンステスト（Lighthouse）
+```
+
+### テストレポート
+
+テスト実行後、以下のレポートが生成されます：
+
+- **Cucumber HTML Report**: `e2e/reports/cucumber-report.html`
+- **Playwright Report**: `e2e/playwright-report/`
+- **Screenshots**: `e2e/screenshots/`（失敗時）
+- **GitHub Actions**: CI実行結果とアーティファクト
+
+### ISTQB準拠テスト文書
+
+プロフェッショナルなテストプロセス文書も含まれています：
+
+```
+docs/
+├── test-planning/
+│   ├── test-strategy.md        # テスト戦略書
+│   ├── test-plan.md           # テスト計画書
+│   └── risk-analysis.md       # リスク分析書
+├── test-analysis/
+│   ├── requirements-analysis.md # 要件分析書
+│   └── test-observation-matrix.md # テスト観点表
+└── test-design/
+    ├── user-stories.md        # ユーザーストーリー
+    ├── test-scenarios.md      # テストシナリオ
+    ├── test-cases.md          # テストケース
+    └── traceability-matrix.md # トレーサビリティマトリックス
+```
+
+### エラー処理とデバッグ
+
+- **自動スクリーンショット**: テスト失敗時に自動撮影
+- **詳細ログ**: ステップごとの実行ログ
+- **リトライ機能**: 不安定なテストの自動再実行
+- **タイムアウト設定**: 要素待機の適切な設定
+
 ## 注意事項
 
 - このアプリケーションは**教育・テスト目的**のみです
