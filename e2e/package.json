@@ -1,36 +1,30 @@
 {
-  "name": "shoptodo-e2e-tests",
+  "name": "shoptodo-login-e2e-tests",
   "version": "1.0.0",
-  "description": "E2E test automation for ShopTodo application using Playwright and Cucumber",
+  "description": "Simple E2E login tests using Cucumber BDD and Playwright",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "cucumber-js --config cucumber.js",
-    "test:e2e:parallel": "cucumber-js --config cucumber.js --parallel 4",
-    "test:e2e:smoke": "cucumber-js --config cucumber.js --tags '@smoke'",
-    "test:e2e:demo": "cucumber-js --config cucumber.js --tags '@demo'",
-    "test:e2e:regression": "cucumber-js --config cucumber.js --tags '@regression'",
-    "test:e2e:report": "cucumber-js --config cucumber.js --format json:reports/cucumber-report.json",
-    "test:install": "npx playwright install",
-    "test:debug": "cucumber-js --config cucumber.js --tags '@debug'"
+    "test": "cucumber-js --config cucumber.config.js",
+    "test:smoke": "cucumber-js --config cucumber.config.js --tags '@smoke'",
+    "test:negative": "cucumber-js --config cucumber.config.js --tags '@negative'",
+    "test:debug": "cucumber-js --config cucumber.config.js --tags '@debug'",
+    "install:browsers": "npx playwright install"
   },
   "keywords": [
     "e2e-testing",
-    "playwright",
     "cucumber",
+    "playwright",
     "bdd",
-    "gherkin",
-    "page-object-model"
+    "login-tests"
   ],
   "author": "Claude Code",
   "license": "MIT",
   "devDependencies": {
     "@cucumber/cucumber": "^10.0.1",
-    "@cucumber/pretty-formatter": "^1.0.1",
     "@playwright/test": "^1.40.0",
     "@types/node": "^20.8.0",
     "ts-node": "^10.9.0",
-    "typescript": "^5.2.0",
-    "cucumber-html-reporter": "^7.1.1"
+    "typescript": "^5.2.0"
   },
   "dependencies": {
     "playwright": "^1.40.0"
