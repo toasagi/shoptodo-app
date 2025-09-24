@@ -45,6 +45,12 @@ Before(async function(this: CustomWorld, scenario) {
 Before({ tags: '@authentication' }, async function(this: CustomWorld) {
   console.log('🔐 Setting up authentication test environment');
 
+  // Initialize if not already done
+  if (!this.pageObjects) {
+    await this.init();
+    await this.navigateToApp();
+  }
+
   // Ensure clean login state
   await this.clearApplicationState();
 
@@ -58,6 +64,12 @@ Before({ tags: '@authentication' }, async function(this: CustomWorld) {
 // Special setup for scenarios requiring login
 Before({ tags: '@requires-login' }, async function(this: CustomWorld) {
   console.log('👤 Pre-logging in user for test scenario');
+
+  // Initialize if not already done
+  if (!this.pageObjects) {
+    await this.init();
+    await this.navigateToApp();
+  }
 
   // Login with demo credentials
   await this.pageObjects.loginPage.loginWithDemoCredentials();

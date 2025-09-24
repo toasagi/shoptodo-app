@@ -211,6 +211,179 @@ tests/
 
 目標カバレッジ: 分岐、関数、行、文について80%以上
 
+## E2E自動化テスト
+
+このプロジェクトには、Page Object Model + Cucumber BDDを使用した包括的なE2E自動化テストが含まれています。
+
+### E2E自動化の構成
+
+```
+e2e/
+├── features/                    # Gherkinフィーチャーファイル
+│   ├── authentication.feature  # 認証テストシナリオ
+│   ├── product-catalog.feature # 商品カタログテスト
+│   ├── shopping-cart.feature   # ショッピングカート機能
+│   ├── todo-list.feature       # ToDoリスト機能
+│   ├── language-switching.feature # 言語切り替え
+│   ├── data-persistence.feature # データ永続化
+│   └── end-to-end-scenarios.feature # エンドツーエンドシナリオ
+├── page-objects/               # Page Object Model
+│   ├── BasePage.ts            # 共通ページオブジェクト
+│   ├── LoginPage.ts           # ログインページ
+│   ├── DashboardPage.ts       # メインダッシュボード
+│   └── CartPage.ts            # カートページ
+├── step-definitions/          # Cucumberステップ定義
+│   ├── authentication.steps.ts # 認証ステップ
+│   ├── product-catalog.steps.ts # 商品カタログステップ
+│   ├── shopping-cart.steps.ts # カートステップ
+│   └── common.steps.ts        # 共通ステップ
+├── support/                   # テスト支援
+│   ├── world.ts              # テスト実行環境
+│   └── hooks.ts              # Before/Afterフック
+├── data/                     # テストデータ
+│   └── test-data.json        # テスト用データセット
+└── utils/                    # ユーティリティ
+    └── TestDataManager.ts    # テストデータ管理
+```
+
+### E2Eテストの実行方法
+
+#### 1. E2E依存関係のインストール
+
+```bash
+cd e2e
+npm install
+npx playwright install
+```
+
+#### 2. アプリケーションサーバーの起動
+
+別のターミナルでアプリケーションを起動：
+
+```bash
+# プロジェクトルートディレクトリで
+npm run serve
+```
+
+#### 3. E2Eテストの実行
+
+```bash
+cd e2e
+
+# スモークテスト（主要な機能のみ）
+npm run test:e2e:smoke
+
+# 回帰テスト（全機能）
+npm run test:e2e:regression
+
+# 並列実行（高速化）
+npm run test:e2e:parallel
+
+# デバッグ用テスト
+npm run test:e2e:debug
+
+# 全テスト実行
+npm run test:e2e
+```
+
+#### 4. クロスブラウザテスト
+
+```bash
+# 特定のブラウザで実行
+BROWSER=firefox npm run test:e2e
+BROWSER=webkit npm run test:e2e
+
+# ヘッドレスモード無効（ブラウザが表示される）
+HEADLESS=false npm run test:e2e
+```
+
+### E2E自動化の特徴
+
+#### Page Object Model (POM)
+- **BasePage**: 共通機能（ナビゲーション、要素操作、スクリーンショット）
+- **LoginPage**: ログイン機能の専用メソッド
+- **DashboardPage**: メイン画面の全機能（商品、カート、ToDo、言語）
+- **CartPage**: ショッピングカート専用機能
+
+#### BDD（振る舞い駆動開発）
+- **Gherkin形式**: Given-When-Thenで書かれた読みやすいテストシナリオ
+- **ビジネス価値**: ステークホルダーも理解できる自然言語でのテスト記述
+- **トレーサビリティ**: 要件からテストケースまでの完全な追跡可能性
+
+#### テストデータ管理
+- **TestDataManager**: 集約されたテストデータ管理
+- **多言語対応**: 日本語・英語両方のテストデータ
+- **型安全性**: TypeScriptによる型チェック
+
+### 自動化カバレッジ
+
+| 機能カテゴリ | テストケース数 | 自動化率 |
+|-------------|---------------|----------|
+| 認証機能 | 9 | 100% |
+| 商品カタログ | 19 | 100% |
+| ショッピングカート | 13 | 100% |
+| ToDoリスト | 8 | 100% |
+| 言語切り替え | 5 | 100% |
+| データ永続化 | 4 | 100% |
+| **合計** | **58** | **100%** |
+
+### CI/CD統合
+
+GitHub Actionsによる自動テスト実行：
+
+```yaml
+# 自動実行タイミング
+- Push/Pull Request時
+- 毎日午前2時（スケジュール実行）
+- 手動実行
+
+# サポートブラウザ
+- Chromium
+- Firefox
+- WebKit (Safari)
+
+# テストタイプ
+- スモークテスト
+- 回帰テスト
+- パフォーマンステスト（Lighthouse）
+```
+
+### テストレポート
+
+テスト実行後、以下のレポートが生成されます：
+
+- **Cucumber HTML Report**: `e2e/reports/cucumber-report.html`
+- **Playwright Report**: `e2e/playwright-report/`
+- **Screenshots**: `e2e/screenshots/`（失敗時）
+- **GitHub Actions**: CI実行結果とアーティファクト
+
+### ISTQB準拠テスト文書
+
+プロフェッショナルなテストプロセス文書も含まれています：
+
+```
+docs/
+├── test-planning/
+│   ├── test-strategy.md        # テスト戦略書
+│   ├── test-plan.md           # テスト計画書
+│   └── risk-analysis.md       # リスク分析書
+├── test-analysis/
+│   ├── requirements-analysis.md # 要件分析書
+│   └── test-observation-matrix.md # テスト観点表
+└── test-design/
+    ├── user-stories.md        # ユーザーストーリー
+    ├── test-scenarios.md      # テストシナリオ
+    ├── test-cases.md          # テストケース
+    └── traceability-matrix.md # トレーサビリティマトリックス
+```
+
+### エラー処理とデバッグ
+
+- **自動スクリーンショット**: テスト失敗時に自動撮影
+- **詳細ログ**: ステップごとの実行ログ
+- **リトライ機能**: 不安定なテストの自動再実行
+- **タイムアウト設定**: 要素待機の適切な設定
+
 ## 注意事項
 
 - このアプリケーションは**教育・テスト目的**のみです

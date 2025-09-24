@@ -11,6 +11,12 @@ import { CustomWorld } from '../support/world';
 
 // Given Steps
 Given('the user is on the login page', async function(this: CustomWorld) {
+  // Initialize if not already done
+  if (!this.pageObjects) {
+    await this.init();
+    await this.navigateToApp();
+  }
+
   await this.pageObjects.loginPage.goto();
   await this.pageObjects.loginPage.waitForPageLoad();
 });

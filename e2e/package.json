@@ -4,13 +4,14 @@
   "description": "E2E test automation for ShopTodo application using Playwright and Cucumber",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --format @cucumber/pretty-formatter",
-    "test:e2e:parallel": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --parallel 4",
-    "test:e2e:smoke": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --tags '@smoke'",
-    "test:e2e:regression": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --tags '@regression'",
-    "test:e2e:report": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --format json:reports/cucumber-report.json",
+    "test:e2e": "cucumber-js --config cucumber.js",
+    "test:e2e:parallel": "cucumber-js --config cucumber.js --parallel 4",
+    "test:e2e:smoke": "cucumber-js --config cucumber.js --tags '@smoke'",
+    "test:e2e:demo": "cucumber-js --config cucumber.js --tags '@demo'",
+    "test:e2e:regression": "cucumber-js --config cucumber.js --tags '@regression'",
+    "test:e2e:report": "cucumber-js --config cucumber.js --format json:reports/cucumber-report.json",
     "test:install": "npx playwright install",
-    "test:debug": "cucumber-js --require-module ts-node/register --require './step-definitions/**/*.ts' --tags '@debug'"
+    "test:debug": "cucumber-js --config cucumber.js --tags '@debug'"
   },
   "keywords": [
     "e2e-testing",

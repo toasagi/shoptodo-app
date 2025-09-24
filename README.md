@@ -213,6 +213,179 @@ The test suite covers:
 
 Target coverage: 80%+ for branches, functions, lines, and statements.
 
+## E2E Automation Testing
+
+This project includes comprehensive E2E automation testing using Page Object Model + Cucumber BDD.
+
+### E2E Automation Structure
+
+```
+e2e/
+├── features/                    # Gherkin feature files
+│   ├── authentication.feature  # Authentication test scenarios
+│   ├── product-catalog.feature # Product catalog tests
+│   ├── shopping-cart.feature   # Shopping cart functionality
+│   ├── todo-list.feature       # Todo list functionality
+│   ├── language-switching.feature # Language switching
+│   ├── data-persistence.feature # Data persistence
+│   └── end-to-end-scenarios.feature # End-to-end scenarios
+├── page-objects/               # Page Object Model
+│   ├── BasePage.ts            # Common page object
+│   ├── LoginPage.ts           # Login page
+│   ├── DashboardPage.ts       # Main dashboard
+│   └── CartPage.ts            # Cart page
+├── step-definitions/          # Cucumber step definitions
+│   ├── authentication.steps.ts # Authentication steps
+│   ├── product-catalog.steps.ts # Product catalog steps
+│   ├── shopping-cart.steps.ts # Cart steps
+│   └── common.steps.ts        # Common steps
+├── support/                   # Test support
+│   ├── world.ts              # Test execution environment
+│   └── hooks.ts              # Before/After hooks
+├── data/                     # Test data
+│   └── test-data.json        # Test data sets
+└── utils/                    # Utilities
+    └── TestDataManager.ts    # Test data management
+```
+
+### Running E2E Tests
+
+#### 1. Install E2E Dependencies
+
+```bash
+cd e2e
+npm install
+npx playwright install
+```
+
+#### 2. Start Application Server
+
+In a separate terminal, start the application:
+
+```bash
+# From project root directory
+npm run serve
+```
+
+#### 3. Execute E2E Tests
+
+```bash
+cd e2e
+
+# Smoke tests (core functionality only)
+npm run test:e2e:smoke
+
+# Regression tests (all functionality)
+npm run test:e2e:regression
+
+# Parallel execution (faster)
+npm run test:e2e:parallel
+
+# Debug tests
+npm run test:e2e:debug
+
+# Run all tests
+npm run test:e2e
+```
+
+#### 4. Cross-browser Testing
+
+```bash
+# Run with specific browser
+BROWSER=firefox npm run test:e2e
+BROWSER=webkit npm run test:e2e
+
+# Disable headless mode (show browser)
+HEADLESS=false npm run test:e2e
+```
+
+### E2E Automation Features
+
+#### Page Object Model (POM)
+- **BasePage**: Common functionality (navigation, element operations, screenshots)
+- **LoginPage**: Login functionality methods
+- **DashboardPage**: Main screen functionality (products, cart, todo, language)
+- **CartPage**: Shopping cart specific functionality
+
+#### BDD (Behavior Driven Development)
+- **Gherkin Format**: Readable test scenarios written in Given-When-Then format
+- **Business Value**: Natural language test descriptions stakeholders can understand
+- **Traceability**: Complete traceability from requirements to test cases
+
+#### Test Data Management
+- **TestDataManager**: Centralized test data management
+- **Multi-language Support**: Test data for both Japanese and English
+- **Type Safety**: TypeScript type checking
+
+### Automation Coverage
+
+| Functionality | Test Cases | Automation Rate |
+|--------------|------------|-----------------|
+| Authentication | 9 | 100% |
+| Product Catalog | 19 | 100% |
+| Shopping Cart | 13 | 100% |
+| Todo List | 8 | 100% |
+| Language Switching | 5 | 100% |
+| Data Persistence | 4 | 100% |
+| **Total** | **58** | **100%** |
+
+### CI/CD Integration
+
+Automated test execution with GitHub Actions:
+
+```yaml
+# Automatic execution triggers
+- Push/Pull Request
+- Daily at 2 AM UTC (scheduled)
+- Manual execution
+
+# Supported browsers
+- Chromium
+- Firefox
+- WebKit (Safari)
+
+# Test types
+- Smoke tests
+- Regression tests
+- Performance tests (Lighthouse)
+```
+
+### Test Reports
+
+After test execution, the following reports are generated:
+
+- **Cucumber HTML Report**: `e2e/reports/cucumber-report.html`
+- **Playwright Report**: `e2e/playwright-report/`
+- **Screenshots**: `e2e/screenshots/` (on failure)
+- **GitHub Actions**: CI execution results and artifacts
+
+### ISTQB Compliant Test Documentation
+
+Professional test process documentation is also included:
+
+```
+docs/
+├── test-planning/
+│   ├── test-strategy.md        # Test strategy document
+│   ├── test-plan.md           # Test plan document
+│   └── risk-analysis.md       # Risk analysis document
+├── test-analysis/
+│   ├── requirements-analysis.md # Requirements analysis document
+│   └── test-observation-matrix.md # Test observation matrix
+└── test-design/
+    ├── user-stories.md        # User stories
+    ├── test-scenarios.md      # Test scenarios
+    ├── test-cases.md          # Test cases
+    └── traceability-matrix.md # Traceability matrix
+```
+
+### Error Handling and Debugging
+
+- **Automatic Screenshots**: Captured automatically on test failure
+- **Detailed Logging**: Step-by-step execution logs
+- **Retry Functionality**: Automatic retry for unstable tests
+- **Timeout Settings**: Proper element waiting configuration
+
 ## Notes
 
 - This application is for **educational and testing purposes only**

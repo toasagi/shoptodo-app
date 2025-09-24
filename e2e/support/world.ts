@@ -28,13 +28,13 @@ export class CustomWorld extends World {
   constructor(options: IWorldOptions) {
     super(options);
 
-    // Initialize configuration from world parameters
+    // Initialize configuration from world parameters and environment variables
     this.config = {
-      appUrl: options.parameters?.appUrl || 'http://localhost:8000',
-      browserType: options.parameters?.browser || 'chromium',
-      headless: options.parameters?.headless !== false,
-      slowMo: parseInt(options.parameters?.slowMo || '0'),
-      timeout: parseInt(options.parameters?.timeout || '30000')
+      appUrl: process.env.APP_URL || options.parameters?.appUrl || 'http://localhost:8000',
+      browserType: process.env.BROWSER || options.parameters?.browser || 'chromium',
+      headless: process.env.HEADLESS !== 'false' && options.parameters?.headless !== false,
+      slowMo: parseInt(process.env.SLOW_MO || options.parameters?.slowMo || '0'),
+      timeout: parseInt(process.env.TIMEOUT || options.parameters?.timeout || '30000')
     };
   }
 
@@ -183,6 +183,13 @@ export class CustomWorld extends World {
     await this.browser.close();
     await this.init();
     await this.navigateToApp();
+  }
+
+  /**
+   * Restart browser context (alias for simulateBrowserRestart)
+   */
+  async restartBrowserContext(): Promise<void> {
+    await this.simulateBrowserRestart();
   }
 
   /**

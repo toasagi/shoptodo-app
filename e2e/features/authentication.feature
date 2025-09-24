@@ -14,7 +14,7 @@ Feature: User Authentication
     Given the user is on the login page
     And the application is in initial state
 
-  @smoke @priority-high
+  @smoke @priority-high @demo
   Scenario: TC-AUTH-001 - Successful login with valid credentials
     Given the login modal is displayed
     When the user enters username "demo"
