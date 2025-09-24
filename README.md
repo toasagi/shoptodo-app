@@ -215,37 +215,30 @@ Target coverage: 80%+ for branches, functions, lines, and statements.
 
 ## E2E Automation Testing
 
-This project includes comprehensive E2E automation testing using Page Object Model + Cucumber BDD.
+This project includes E2E automation testing for login functionality using Cucumber BDD + Playwright.
 
-### E2E Automation Structure
+### E2E Test Structure
 
 ```
 e2e/
 ├── features/                    # Gherkin feature files
-│   ├── authentication.feature  # Authentication test scenarios
-│   ├── product-catalog.feature # Product catalog tests
-│   ├── shopping-cart.feature   # Shopping cart functionality
-│   ├── todo-list.feature       # Todo list functionality
-│   ├── language-switching.feature # Language switching
-│   ├── data-persistence.feature # Data persistence
-│   └── end-to-end-scenarios.feature # End-to-end scenarios
+│   ├── login.feature           # Login test scenarios
+│   └── simple.feature          # Basic connection test
 ├── page-objects/               # Page Object Model
-│   ├── BasePage.ts            # Common page object
-│   ├── LoginPage.ts           # Login page
-│   ├── DashboardPage.ts       # Main dashboard
-│   └── CartPage.ts            # Cart page
+│   ├── LoginPage.ts           # Login page methods
+│   └── DashboardPage.ts       # Dashboard page methods
 ├── step-definitions/          # Cucumber step definitions
-│   ├── authentication.steps.ts # Authentication steps
-│   ├── product-catalog.steps.ts # Product catalog steps
-│   ├── shopping-cart.steps.ts # Cart steps
-│   └── common.steps.ts        # Common steps
+│   ├── login.steps.ts         # Login step definitions
+│   └── simple.steps.ts        # Simple test steps
 ├── support/                   # Test support
 │   ├── world.ts              # Test execution environment
 │   └── hooks.ts              # Before/After hooks
-├── data/                     # Test data
-│   └── test-data.json        # Test data sets
-└── utils/                    # Utilities
-    └── TestDataManager.ts    # Test data management
+├── screenshots/              # Test failure screenshots (gitignored)
+├── reports/                  # Test reports
+├── package.json             # Dependencies and scripts
+├── cucumber.config.js       # Cucumber configuration
+├── tsconfig.json           # TypeScript configuration
+└── README.md               # E2E test documentation
 ```
 
 ### Running E2E Tests
@@ -264,7 +257,7 @@ In a separate terminal, start the application:
 
 ```bash
 # From project root directory
-npm run serve
+python3 -m http.server 8000
 ```
 
 #### 3. Execute E2E Tests
@@ -272,62 +265,54 @@ npm run serve
 ```bash
 cd e2e
 
-# Smoke tests (core functionality only)
-npm run test:e2e:smoke
+# Run all login tests
+npm test
 
-# Regression tests (all functionality)
-npm run test:e2e:regression
+# Smoke tests (core login functionality)
+npm run test:smoke
 
-# Parallel execution (faster)
-npm run test:e2e:parallel
+# Negative tests (error scenarios)
+npm run test:negative
 
-# Debug tests
-npm run test:e2e:debug
-
-# Run all tests
-npm run test:e2e
+# Debug tests (basic connection test)
+npm run test:debug
 ```
 
 #### 4. Cross-browser Testing
 
 ```bash
 # Run with specific browser
-BROWSER=firefox npm run test:e2e
-BROWSER=webkit npm run test:e2e
+BROWSER=firefox npm test
+BROWSER=webkit npm test
 
 # Disable headless mode (show browser)
-HEADLESS=false npm run test:e2e
+HEADLESS=false npm test
 ```
 
-### E2E Automation Features
+### E2E Test Features
 
-#### Page Object Model (POM)
-- **BasePage**: Common functionality (navigation, element operations, screenshots)
-- **LoginPage**: Login functionality methods
-- **DashboardPage**: Main screen functionality (products, cart, todo, language)
-- **CartPage**: Shopping cart specific functionality
+#### Current Test Coverage
+- **Login Functionality**: Complete login flow testing
+  - Successful login with valid credentials
+  - Login failure with invalid credentials
+  - Empty field validation
+  - Logout functionality
+- **Basic Connection**: Application availability verification
 
-#### BDD (Behavior Driven Development)
-- **Gherkin Format**: Readable test scenarios written in Given-When-Then format
-- **Business Value**: Natural language test descriptions stakeholders can understand
-- **Traceability**: Complete traceability from requirements to test cases
+#### Technologies Used
+- **Cucumber BDD**: Natural language test scenarios in Gherkin format
+- **Playwright**: Cross-browser automation (Chromium, Firefox, WebKit)
+- **TypeScript**: Type-safe test code
+- **Page Object Model**: Maintainable test structure
 
-#### Test Data Management
-- **TestDataManager**: Centralized test data management
-- **Multi-language Support**: Test data for both Japanese and English
-- **Type Safety**: TypeScript type checking
+#### Test Configuration
+- **Environment Variables**:
+  - `APP_URL`: Application URL (default: http://localhost:8000)
+  - `BROWSER`: Browser selection (chromium/firefox/webkit)
+  - `HEADLESS`: Headless mode control
+  - `TIMEOUT`: Test timeout configuration
 
-### Automation Coverage
-
-| Functionality | Test Cases | Automation Rate |
-|--------------|------------|-----------------|
-| Authentication | 9 | 100% |
-| Product Catalog | 19 | 100% |
-| Shopping Cart | 13 | 100% |
-| Todo List | 8 | 100% |
-| Language Switching | 5 | 100% |
-| Data Persistence | 4 | 100% |
-| **Total** | **58** | **100%** |
+For detailed E2E test documentation, see [e2e/README.md](e2e/README.md)
 
 ### CI/CD Integration
 
