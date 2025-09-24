@@ -12,6 +12,17 @@ Given('the user is on the login page', async function(this: CustomWorld) {
   await this.loginPage.waitForPageLoad();
 });
 
+Given('the language is set to English', async function(this: CustomWorld) {
+  // Click the English language button if not already active
+  const enButton = this.page.locator('#lang-en');
+  const isActive = await enButton.evaluate(el => el.classList.contains('active'));
+
+  if (!isActive) {
+    await enButton.click();
+    await this.page.waitForTimeout(500); // Wait for language change
+  }
+});
+
 Given('the login modal is displayed', async function(this: CustomWorld) {
   const isDisplayed = await this.loginPage.isLoginModalDisplayed();
   expect(isDisplayed, 'Login modal should be displayed').toBe(true);

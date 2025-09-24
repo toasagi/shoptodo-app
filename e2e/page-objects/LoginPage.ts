@@ -20,7 +20,8 @@ export class LoginPage {
     this.usernameInput = this.page.locator('#username-input');
     this.passwordInput = this.page.locator('#password-input');
     this.loginButton = this.page.locator('#login-form button[type="submit"]');
-    this.errorMessage = this.page.locator('#error-message, .error-message');
+    // Error messages are displayed as floating messages with class .message.message-error
+    this.errorMessage = this.page.locator('.message.message-error');
   }
 
   /**
@@ -96,8 +97,15 @@ export class LoginPage {
    */
   async isErrorMessageDisplayed(): Promise<boolean> {
     try {
-      await this.errorMessage.waitFor({ state: 'visible', timeout: 5000 });
-      return await this.errorMessage.isVisible();
+      // Wait a bit for the error message to appear after form submission
+      await this.page.waitForTimeout(500);
+
+      // Check if error message element exists and is visible
+      const errorCount = await this.errorMessage.count();
+      if (errorCount > 0) {
+        return await this.errorMessage.first().isVisible();
+      }
+      return false;
     } catch {
       return false;
     }
@@ -107,8 +115,14 @@ export class LoginPage {
    * Get error message text
    */
   async getErrorMessage(): Promise<string> {
-    if (await this.isErrorMessageDisplayed()) {
-      return await this.errorMessage.textContent() || '';
+    try {
+      const errorCount = await this.errorMessage.count();
+      if (errorCount > 0) {
+        const text = await this.errorMessage.first().textContent();
+        return text || '';
+      }
+    } catch (error) {
+      console.warn('Could not get error message:', error);
     }
     return '';
   }

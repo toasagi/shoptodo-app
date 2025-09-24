@@ -6,6 +6,7 @@ Feature: User Login
   Background:
     Given the application is available
     And the user is on the login page
+    And the language is set to English
 
   @smoke
   Scenario: Successful login with valid credentials
