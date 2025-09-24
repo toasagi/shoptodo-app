@@ -51,3 +51,7 @@ pids
 # Temporary folders
 tmp/
 temp/
+
+# E2E test screenshots
+screenshots/
+e2e/screenshots/
