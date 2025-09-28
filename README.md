@@ -393,12 +393,11 @@ This application is automatically deployed to GitHub Pages using GitHub Actions.
 
 ### Deployment Configuration
 
-The deployment is triggered when a Pull Request is merged into the `main` branch:
+The deployment is triggered automatically when changes are pushed to the `main` branch:
 
 ```yaml
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches: [main]
 ```
 

@@ -391,12 +391,11 @@ docs/
 
 ### デプロイ設定
 
-Pull Requestが`main`ブランチにマージされたときにデプロイがトリガーされます：
+`main`ブランチに変更がプッシュされたときに自動的にデプロイがトリガーされます：
 
 ```yaml
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches: [main]
 ```
 
