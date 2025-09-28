@@ -4,6 +4,12 @@ A simple web application designed for End-to-End (E2E) testing practice.
 
 **[日本語版はこちら (Japanese Version)](README_jp.md)**
 
+## 🌐 Live Demo
+
+**Try it now: [https://toasagi.github.io/shoptodo-app/](https://toasagi.github.io/shoptodo-app/)**
+
+The application is automatically deployed to GitHub Pages and available for anyone to practice E2E testing!
+
 ## Features Overview
 
 ### 1. User Authentication
@@ -370,6 +376,43 @@ docs/
 - **Detailed Logging**: Step-by-step execution logs
 - **Retry Functionality**: Automatic retry for unstable tests
 - **Timeout Settings**: Proper element waiting configuration
+
+## Deployment
+
+This application is automatically deployed to GitHub Pages using GitHub Actions.
+
+### Deployment Workflow
+
+1. **Development**: Create a feature branch and make changes
+2. **Pull Request**: Open a PR to merge into the `main` branch
+3. **Review**: Code review and approval (if branch protection is enabled)
+4. **Merge**: Merge the PR into `main`
+5. **Auto-Deploy**: GitHub Actions automatically deploys to GitHub Pages
+
+### Deployment Configuration
+
+The deployment is triggered when a Pull Request is merged into the `main` branch:
+
+```yaml
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+```
+
+**Live URL**: [https://toasagi.github.io/shoptodo-app/](https://toasagi.github.io/shoptodo-app/)
+
+### Branch Protection (Recommended)
+
+To prevent direct pushes to `main` and ensure all changes go through PRs:
+
+1. Go to **Settings** > **Branches**
+2. Click **Add rule** for branch name pattern: `main`
+3. Enable:
+   - ☑ Require pull request before merging
+   - ☑ Require approvals (optional)
+
+This ensures quality control and automatic deployment only after code review.
 
 ## Notes
 

@@ -2,6 +2,12 @@
 
 E2E（End-to-End）テストの練習に最適なシンプルなWebアプリケーションです。
 
+## 🌐 デモサイト
+
+**今すぐ試す: [https://toasagi.github.io/shoptodo-app/](https://toasagi.github.io/shoptodo-app/)**
+
+GitHub Pagesに自動デプロイされており、誰でもE2Eテストの練習に利用できます！
+
 ## 機能概要
 
 ### 1. ユーザー認証
@@ -368,6 +374,43 @@ docs/
 - **詳細ログ**: ステップごとの実行ログ
 - **リトライ機能**: 不安定なテストの自動再実行
 - **タイムアウト設定**: 要素待機の適切な設定
+
+## デプロイ
+
+このアプリケーションはGitHub Actionsを使用してGitHub Pagesに自動デプロイされています。
+
+### デプロイワークフロー
+
+1. **開発**: フィーチャーブランチを作成して変更を加える
+2. **Pull Request**: `main`ブランチへのPRを作成
+3. **レビュー**: コードレビューと承認（ブランチ保護が有効な場合）
+4. **マージ**: PRを`main`にマージ
+5. **自動デプロイ**: GitHub Actionsが自動的にGitHub Pagesにデプロイ
+
+### デプロイ設定
+
+Pull Requestが`main`ブランチにマージされたときにデプロイがトリガーされます：
+
+```yaml
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+```
+
+**公開URL**: [https://toasagi.github.io/shoptodo-app/](https://toasagi.github.io/shoptodo-app/)
+
+### ブランチ保護設定（推奨）
+
+`main`への直接プッシュを防止し、すべての変更をPR経由にするため：
+
+1. **Settings** > **Branches** を開く
+2. ブランチ名パターン `main` のルールを**追加**
+3. 以下を有効化：
+   - ☑ Require pull request before merging
+   - ☑ Require approvals（任意）
+
+これにより、品質管理とコードレビュー後の自動デプロイが保証されます。
 
 ## 注意事項
 
