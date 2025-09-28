@@ -131,18 +131,18 @@ class AppState {
     initializeData() {
         // サンプル商品データ
         this.products = [
-            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: 'phone.jpg' },
-            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: 'laptop.jpg' },
-            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: 'tshirt.jpg' },
-            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: 'jeans.jpg' },
-            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: 'book.jpg' },
-            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: 'jsbook.jpg' },
-            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: 'coffee.jpg' },
-            { id: 8, name: '掃除機', price: 25800, category: 'home', image: 'vacuum.jpg' },
-            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: 'earphones.jpg' },
-            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: 'sneakers.jpg' },
-            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: 'webbook.jpg' },
-            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: 'kitchen.jpg' }
+            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: 'https://source.unsplash.com/400x300/?smartphone' },
+            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: 'https://source.unsplash.com/400x300/?laptop,computer' },
+            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: 'https://source.unsplash.com/400x300/?tshirt,clothing' },
+            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: 'https://source.unsplash.com/400x300/?jeans,denim' },
+            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: 'https://source.unsplash.com/400x300/?programming,book' },
+            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: 'https://source.unsplash.com/400x300/?javascript,coding' },
+            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: 'https://source.unsplash.com/400x300/?coffee,maker' },
+            { id: 8, name: '掃除機', price: 25800, category: 'home', image: 'https://source.unsplash.com/400x300/?vacuum,cleaner' },
+            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: 'https://source.unsplash.com/400x300/?earphones,wireless' },
+            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: 'https://source.unsplash.com/400x300/?sneakers,shoes' },
+            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: 'https://source.unsplash.com/400x300/?webdev,programming' },
+            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: 'https://source.unsplash.com/400x300/?kitchen,utensils' }
         ];
 
         this.filteredProducts = [...this.products];
@@ -484,7 +484,7 @@ class UIManager {
             const loginRequiredTitle = this.t('login_required');
 
             productCard.innerHTML = `
-                <div class="product-image">${this.t('product_image')}</div>
+                <img src="${product.image}" alt="${productName}" class="product-image" loading="lazy">
                 <div class="product-name">${productName}</div>
                 <div class="product-price">¥${product.price.toLocaleString()}</div>
                 <div class="product-category">${categoryName}</div>
