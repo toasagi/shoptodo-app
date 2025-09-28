@@ -114,6 +114,33 @@ const i18n = {
     }
 };
 
+// SVGプレースホルダー画像生成関数
+function generatePlaceholderImage(productName, category) {
+    // カテゴリーごとの色定義
+    const categoryColors = {
+        electronics: '#007bff',
+        clothing: '#28a745',
+        books: '#fd7e14',
+        home: '#6f42c1'
+    };
+
+    const color = categoryColors[category] || '#6c757d';
+    const textColor = '#ffffff';
+
+    // SVG画像を生成
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+            <rect width="400" height="300" fill="${color}"/>
+            <text x="200" y="150" font-family="Arial, sans-serif" font-size="24" fill="${textColor}" text-anchor="middle" dominant-baseline="middle">
+                ${productName}
+            </text>
+        </svg>
+    `;
+
+    // Data URL形式に変換
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.trim());
+}
+
 // アプリケーションの状態管理
 class AppState {
     constructor() {
@@ -131,18 +158,18 @@ class AppState {
     initializeData() {
         // サンプル商品データ
         this.products = [
-            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: 'https://source.unsplash.com/400x300/?smartphone' },
-            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: 'https://source.unsplash.com/400x300/?laptop,computer' },
-            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: 'https://source.unsplash.com/400x300/?tshirt,clothing' },
-            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: 'https://source.unsplash.com/400x300/?jeans,denim' },
-            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: 'https://source.unsplash.com/400x300/?programming,book' },
-            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: 'https://source.unsplash.com/400x300/?javascript,coding' },
-            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: 'https://source.unsplash.com/400x300/?coffee,maker' },
-            { id: 8, name: '掃除機', price: 25800, category: 'home', image: 'https://source.unsplash.com/400x300/?vacuum,cleaner' },
-            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: 'https://source.unsplash.com/400x300/?earphones,wireless' },
-            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: 'https://source.unsplash.com/400x300/?sneakers,shoes' },
-            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: 'https://source.unsplash.com/400x300/?webdev,programming' },
-            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: 'https://source.unsplash.com/400x300/?kitchen,utensils' }
+            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: generatePlaceholderImage('スマートフォン', 'electronics') },
+            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: generatePlaceholderImage('ノートパソコン', 'electronics') },
+            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: generatePlaceholderImage('Tシャツ', 'clothing') },
+            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: generatePlaceholderImage('ジーンズ', 'clothing') },
+            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: generatePlaceholderImage('プログラミング入門書', 'books') },
+            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: generatePlaceholderImage('JavaScript完全ガイド', 'books') },
+            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: generatePlaceholderImage('コーヒーメーカー', 'home') },
+            { id: 8, name: '掃除機', price: 25800, category: 'home', image: generatePlaceholderImage('掃除機', 'home') },
+            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: generatePlaceholderImage('ワイヤレスイヤホン', 'electronics') },
+            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: generatePlaceholderImage('スニーカー', 'clothing') },
+            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: generatePlaceholderImage('Web開発の教科書', 'books') },
+            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: generatePlaceholderImage('キッチン用品セット', 'home') }
         ];
 
         this.filteredProducts = [...this.products];
