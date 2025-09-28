@@ -111,16 +111,16 @@ jobs:
         TEST_TYPE="${{ github.event.inputs.test_type || 'smoke' }}"
         case "$TEST_TYPE" in
           "smoke")
-            npm run test:e2e:smoke
+            npm run test:smoke
             ;;
           "regression")
-            npm run test:e2e:regression
+            npm run test
             ;;
           "all")
-            npm run test:e2e
+            npm run test
             ;;
           *)
-            npm run test:e2e:smoke
+            npm run test:smoke
             ;;
         esac
       env:
@@ -132,8 +132,7 @@ jobs:
     - name: Generate test report
       if: always()
       run: |
-        cd e2e
-        npm run test:e2e:report || true
+        echo "Test report generation skipped (no report script configured)"
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -191,7 +190,7 @@ jobs:
     - name: Run parallel E2E tests
       run: |
         cd e2e
-        npm run test:e2e:parallel
+        npm run test
       env:
         HEADLESS: 'true'
         APP_URL: 'http://localhost:8000'
