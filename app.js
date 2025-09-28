@@ -41,6 +41,37 @@ const i18n = {
         complete: '完了にする',
         incomplete: '未完了にする',
         delete: '削除',
+        // Checkout
+        checkout_title: 'チェックアウト',
+        shipping_info: '配送先情報',
+        payment_method: '支払い方法',
+        order_confirm: '注文確認',
+        full_name: 'お名前',
+        email: 'メールアドレス',
+        phone: '電話番号',
+        postal_code: '郵便番号',
+        address: '住所',
+        credit_card: 'クレジットカード',
+        bank_transfer: '銀行振込',
+        cash_on_delivery: '代金引換',
+        next: '次へ',
+        back: '戻る',
+        place_order: '注文を確定',
+        order_complete: '注文が完了しました！',
+        order_number: '注文番号',
+        order_history: '注文履歴',
+        view_order_history: '注文履歴を見る',
+        no_orders: '注文履歴はありません',
+        order_date: '注文日',
+        order_items: '注文商品',
+        order_total: '合計金額',
+        order_details: '注文詳細',
+        shipping_to: '配送先',
+        payment: '支払い',
+        item_count: '点',
+        required_field: 'この項目は必須です',
+        invalid_email: '有効なメールアドレスを入力してください',
+        invalid_phone: '有効な電話番号を入力してください',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -97,6 +128,37 @@ const i18n = {
         complete: 'Mark as complete',
         incomplete: 'Mark as incomplete',
         delete: 'Delete',
+        // Checkout
+        checkout_title: 'Checkout',
+        shipping_info: 'Shipping Information',
+        payment_method: 'Payment Method',
+        order_confirm: 'Order Confirmation',
+        full_name: 'Full Name',
+        email: 'Email Address',
+        phone: 'Phone Number',
+        postal_code: 'Postal Code',
+        address: 'Address',
+        credit_card: 'Credit Card',
+        bank_transfer: 'Bank Transfer',
+        cash_on_delivery: 'Cash on Delivery',
+        next: 'Next',
+        back: 'Back',
+        place_order: 'Place Order',
+        order_complete: 'Order Completed Successfully!',
+        order_number: 'Order Number',
+        order_history: 'Order History',
+        view_order_history: 'View Order History',
+        no_orders: 'No orders yet',
+        order_date: 'Order Date',
+        order_items: 'Items',
+        order_total: 'Total',
+        order_details: 'Order Details',
+        shipping_to: 'Shipping to',
+        payment: 'Payment',
+        item_count: 'items',
+        required_field: 'This field is required',
+        invalid_email: 'Please enter a valid email address',
+        invalid_phone: 'Please enter a valid phone number',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -156,6 +218,7 @@ class AppState {
         this.products = [];
         this.cart = [];
         this.todos = [];
+        this.orders = [];
         this.filteredProducts = [];
         this.currentLanguage = 'ja';
 
@@ -199,6 +262,11 @@ class AppState {
             this.todos = JSON.parse(savedTodos);
         }
 
+        const savedOrders = localStorage.getItem('orders');
+        if (savedOrders) {
+            this.orders = JSON.parse(savedOrders);
+        }
+
         const savedLanguage = localStorage.getItem('language');
         if (savedLanguage) {
             this.currentLanguage = savedLanguage;
@@ -209,6 +277,7 @@ class AppState {
         localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
         localStorage.setItem('cart', JSON.stringify(this.cart));
         localStorage.setItem('todos', JSON.stringify(this.todos));
+        localStorage.setItem('orders', JSON.stringify(this.orders));
         localStorage.setItem('language', this.currentLanguage);
     }
 
@@ -233,6 +302,23 @@ class AppState {
         localStorage.removeItem('currentUser');
         localStorage.removeItem('cart');
         localStorage.removeItem('todos');
+    }
+
+    createOrder(shippingInfo, paymentMethod) {
+        const order = {
+            id: Date.now(),
+            date: new Date().toISOString(),
+            items: [...this.cart],
+            total: this.getCartTotal(),
+            shippingInfo: {...shippingInfo},
+            paymentMethod: paymentMethod,
+            status: 'completed'
+        };
+
+        this.orders.push(order);
+        this.cart = [];
+        this.saveToStorage();
+        return order;
     }
 
     addToCart(productId) {
@@ -333,7 +419,11 @@ class AppState {
 class UIManager {
     constructor(appState) {
         this.appState = appState;
+        this.currentCheckoutStep = 1;
+        this.shippingFormData = {};
+        this.paymentMethodData = null;
         this.initializeEventListeners();
+        this.initializeCheckoutModal();
         this.updateUI();
     }
 
@@ -386,7 +476,12 @@ class UIManager {
 
         // チェックアウト
         document.getElementById('checkout-btn').addEventListener('click', () => {
-            this.handleCheckout();
+            this.showCheckoutModal();
+        });
+
+        // 注文履歴
+        document.getElementById('view-history-btn').addEventListener('click', () => {
+            this.showOrderHistoryModal();
         });
 
         // Todo関連
@@ -610,16 +705,232 @@ class UIManager {
         this.showMessage(this.t('product_removed'), 'success');
     }
 
-    handleCheckout() {
+    initializeCheckoutModal() {
+        const modal = document.getElementById('checkout-modal');
+        const closeBtn = document.getElementById('checkout-close');
+
+        closeBtn.addEventListener('click', () => {
+            this.hideCheckoutModal();
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target.id === 'checkout-modal') {
+                this.hideCheckoutModal();
+            }
+        });
+
+        document.getElementById('shipping-next').addEventListener('click', () => {
+            this.handleShippingNext();
+        });
+
+        document.getElementById('payment-back').addEventListener('click', () => {
+            this.goToCheckoutStep(1);
+        });
+
+        document.getElementById('payment-next').addEventListener('click', () => {
+            this.handlePaymentNext();
+        });
+
+        document.getElementById('confirm-back').addEventListener('click', () => {
+            this.goToCheckoutStep(2);
+        });
+
+        document.getElementById('confirm-order').addEventListener('click', () => {
+            this.handleConfirmOrder();
+        });
+
+        document.getElementById('close-checkout').addEventListener('click', () => {
+            this.hideCheckoutModal();
+        });
+    }
+
+    showCheckoutModal() {
         if (this.appState.cart.length === 0) return;
 
-        const total = this.appState.getCartTotal();
-        if (confirm(`${this.t('checkout_confirm')} ¥${total.toLocaleString()}?`)) {
-            this.appState.cart = [];
-            this.appState.saveToStorage();
-            this.renderCart();
-            this.showMessage(this.t('checkout_success'), 'success');
+        this.currentCheckoutStep = 1;
+        this.shippingFormData = {};
+        this.paymentMethodData = null;
+
+        document.getElementById('shipping-form').reset();
+        document.getElementById('payment-form').reset();
+
+        this.goToCheckoutStep(1);
+        document.getElementById('checkout-modal').style.display = 'block';
+    }
+
+    hideCheckoutModal() {
+        document.getElementById('checkout-modal').style.display = 'none';
+        this.goToCheckoutStep(1);
+    }
+
+    goToCheckoutStep(step) {
+        this.currentCheckoutStep = step;
+
+        document.querySelectorAll('.checkout-step-content').forEach(content => {
+            content.style.display = 'none';
+        });
+
+        document.querySelectorAll('.step').forEach(stepEl => {
+            stepEl.classList.remove('active');
+        });
+
+        const targetContent = document.querySelector(`.checkout-step-content[data-step="${step}"]`);
+        if (targetContent) {
+            targetContent.style.display = 'block';
         }
+
+        const targetStep = document.querySelector(`.step[data-step="${step}"]`);
+        if (targetStep) {
+            targetStep.classList.add('active');
+        }
+    }
+
+    handleShippingNext() {
+        const form = document.getElementById('shipping-form');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        this.shippingFormData = {
+            name: document.getElementById('shipping-name').value,
+            email: document.getElementById('shipping-email').value,
+            phone: document.getElementById('shipping-phone').value,
+            postalCode: document.getElementById('shipping-postal').value,
+            address: document.getElementById('shipping-address').value
+        };
+
+        this.goToCheckoutStep(2);
+    }
+
+    handlePaymentNext() {
+        const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+        if (!selectedPayment) return;
+
+        this.paymentMethodData = selectedPayment.value;
+        this.renderOrderConfirmation();
+        this.goToCheckoutStep(3);
+    }
+
+    renderOrderConfirmation() {
+        const itemsList = document.getElementById('order-items-list');
+        itemsList.innerHTML = '';
+
+        this.appState.cart.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'order-item';
+            const itemName = this.getProductName(item.name);
+            itemDiv.innerHTML = `
+                <span>${itemName} × ${item.quantity}</span>
+                <span>¥${(item.price * item.quantity).toLocaleString()}</span>
+            `;
+            itemsList.appendChild(itemDiv);
+        });
+
+        document.getElementById('order-total-amount').textContent =
+            `¥${this.appState.getCartTotal().toLocaleString()}`;
+
+        const shippingInfo = document.getElementById('order-shipping-info');
+        shippingInfo.innerHTML = `
+            <p><strong>${this.t('full_name')}:</strong> ${this.shippingFormData.name}</p>
+            <p><strong>${this.t('email')}:</strong> ${this.shippingFormData.email}</p>
+            <p><strong>${this.t('phone')}:</strong> ${this.shippingFormData.phone}</p>
+            <p><strong>${this.t('postal_code')}:</strong> ${this.shippingFormData.postalCode}</p>
+            <p><strong>${this.t('address')}:</strong> ${this.shippingFormData.address}</p>
+        `;
+
+        const paymentInfo = document.getElementById('order-payment-info');
+        paymentInfo.innerHTML = `
+            <p>${this.t(this.paymentMethodData)}</p>
+        `;
+    }
+
+    handleConfirmOrder() {
+        const order = this.appState.createOrder(this.shippingFormData, this.paymentMethodData);
+
+        document.getElementById('order-number-display').textContent = order.id;
+
+        this.renderCart();
+        this.goToCheckoutStep(4);
+    }
+
+    showOrderHistoryModal() {
+        const modal = document.getElementById('order-history-modal');
+        const closeBtn = document.getElementById('history-close');
+
+        if (!closeBtn.hasAttribute('data-initialized')) {
+            closeBtn.addEventListener('click', () => {
+                this.hideOrderHistoryModal();
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'order-history-modal') {
+                    this.hideOrderHistoryModal();
+                }
+            });
+
+            closeBtn.setAttribute('data-initialized', 'true');
+        }
+
+        this.renderOrderHistory();
+        modal.style.display = 'block';
+    }
+
+    hideOrderHistoryModal() {
+        document.getElementById('order-history-modal').style.display = 'none';
+    }
+
+    renderOrderHistory() {
+        const historyList = document.getElementById('order-history-list');
+        historyList.innerHTML = '';
+
+        if (this.appState.orders.length === 0) {
+            historyList.innerHTML = `<div class="empty-history">${this.t('no_orders')}</div>`;
+            return;
+        }
+
+        const sortedOrders = [...this.appState.orders].sort((a, b) => b.id - a.id);
+
+        sortedOrders.forEach(order => {
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'order-history-item';
+
+            const orderDate = new Date(order.date).toLocaleDateString(
+                this.appState.currentLanguage === 'ja' ? 'ja-JP' : 'en-US'
+            );
+
+            let itemsHTML = '';
+            order.items.forEach(item => {
+                const itemName = this.getProductName(item.name);
+                itemsHTML += `
+                    <div class="order-item-line">
+                        <span>${itemName} × ${item.quantity}</span>
+                        <span>¥${(item.price * item.quantity).toLocaleString()}</span>
+                    </div>
+                `;
+            });
+
+            orderDiv.innerHTML = `
+                <div class="order-header">
+                    <div class="order-id">${this.t('order_number')}: ${order.id}</div>
+                    <div class="order-date-text">${this.t('order_date')}: ${orderDate}</div>
+                </div>
+                <div class="order-items-summary">
+                    ${itemsHTML}
+                </div>
+                <div class="order-total-line">
+                    <span>${this.t('total')}:</span>
+                    <span>¥${order.total.toLocaleString()}</span>
+                </div>
+                <div class="order-shipping-summary">
+                    <div><strong>${this.t('shipping_to')}:</strong> ${order.shippingInfo.name}</div>
+                    <div>${order.shippingInfo.address}</div>
+                    <div><strong>${this.t('payment')}:</strong> ${this.t(order.paymentMethod)}</div>
+                </div>
+            `;
+
+            historyList.appendChild(orderDiv);
+        });
     }
 
     addTodo() {
