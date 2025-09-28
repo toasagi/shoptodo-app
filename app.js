@@ -510,14 +510,23 @@ class UIManager {
             const categoryName = this.getCategoryName(product.category);
             const loginRequiredTitle = this.t('login_required');
 
+            // カテゴリー別アイコン
+            const categoryIcons = {
+                electronics: '<i class="fas fa-mobile-alt"></i>',
+                clothing: '<i class="fas fa-tshirt"></i>',
+                books: '<i class="fas fa-book"></i>',
+                home: '<i class="fas fa-home"></i>'
+            };
+            const categoryIcon = categoryIcons[product.category] || '<i class="fas fa-tag"></i>';
+
             productCard.innerHTML = `
                 <img src="${product.image}" alt="${productName}" class="product-image" loading="lazy">
                 <div class="product-name">${productName}</div>
                 <div class="product-price">¥${product.price.toLocaleString()}</div>
-                <div class="product-category">${categoryName}</div>
+                <div class="product-category">${categoryIcon} ${categoryName}</div>
                 <button class="btn btn-primary" onclick="ui.addToCart(${product.id})"
                         ${!this.appState.currentUser ? `disabled title="${loginRequiredTitle}"` : ''}>
-                    ${this.t('add_to_cart')}
+                    <i class="fas fa-shopping-cart"></i> ${this.t('add_to_cart')}
                 </button>
             `;
             grid.appendChild(productCard);
