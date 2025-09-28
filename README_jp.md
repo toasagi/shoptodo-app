@@ -2,6 +2,8 @@
 
 E2E（End-to-End）テストの練習に最適なシンプルなWebアプリケーションです。
 
+**作成日: 2025年9月28日**
+
 ## 🌐 デモサイト
 
 **今すぐ試す: [https://toasagi.github.io/shoptodo-app/](https://toasagi.github.io/shoptodo-app/)**

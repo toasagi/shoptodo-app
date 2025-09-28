@@ -2,6 +2,8 @@
 
 A simple web application designed for End-to-End (E2E) testing practice.
 
+**Created: September 28, 2025**
+
 **[日本語版はこちら (Japanese Version)](README_jp.md)**
 
 ## 🌐 Live Demo
