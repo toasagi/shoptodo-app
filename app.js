@@ -114,6 +114,41 @@ const i18n = {
     }
 };
 
+// SVGプレースホルダー画像生成関数
+function generatePlaceholderImage(category) {
+    // カテゴリーごとの色定義
+    const categoryColors = {
+        electronics: '#007bff',
+        clothing: '#28a745',
+        books: '#fd7e14',
+        home: '#6f42c1'
+    };
+
+    // カテゴリーごとのアイコン（Unicode）
+    const categoryIcons = {
+        electronics: '📱',
+        clothing: '👕',
+        books: '📚',
+        home: '🏠'
+    };
+
+    const color = categoryColors[category] || '#6c757d';
+    const icon = categoryIcons[category] || '🏷️';
+
+    // SVG画像を生成（カテゴリーアイコンのみ表示）
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+            <rect width="400" height="300" fill="${color}"/>
+            <text x="200" y="150" font-size="80" text-anchor="middle" dominant-baseline="middle">
+                ${icon}
+            </text>
+        </svg>
+    `;
+
+    // Data URL形式に変換
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.trim());
+}
+
 // アプリケーションの状態管理
 class AppState {
     constructor() {
@@ -131,18 +166,18 @@ class AppState {
     initializeData() {
         // サンプル商品データ
         this.products = [
-            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: 'phone.jpg' },
-            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: 'laptop.jpg' },
-            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: 'tshirt.jpg' },
-            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: 'jeans.jpg' },
-            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: 'book.jpg' },
-            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: 'jsbook.jpg' },
-            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: 'coffee.jpg' },
-            { id: 8, name: '掃除機', price: 25800, category: 'home', image: 'vacuum.jpg' },
-            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: 'earphones.jpg' },
-            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: 'sneakers.jpg' },
-            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: 'webbook.jpg' },
-            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: 'kitchen.jpg' }
+            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: generatePlaceholderImage('electronics') },
+            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: generatePlaceholderImage('electronics') },
+            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: generatePlaceholderImage('clothing') },
+            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: generatePlaceholderImage('clothing') },
+            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: generatePlaceholderImage('books') },
+            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: generatePlaceholderImage('books') },
+            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: generatePlaceholderImage('home') },
+            { id: 8, name: '掃除機', price: 25800, category: 'home', image: generatePlaceholderImage('home') },
+            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: generatePlaceholderImage('electronics') },
+            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: generatePlaceholderImage('clothing') },
+            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: generatePlaceholderImage('books') },
+            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: generatePlaceholderImage('home') }
         ];
 
         this.filteredProducts = [...this.products];
@@ -483,14 +518,23 @@ class UIManager {
             const categoryName = this.getCategoryName(product.category);
             const loginRequiredTitle = this.t('login_required');
 
+            // カテゴリー別アイコン
+            const categoryIcons = {
+                electronics: '<i class="fas fa-mobile-alt"></i>',
+                clothing: '<i class="fas fa-tshirt"></i>',
+                books: '<i class="fas fa-book"></i>',
+                home: '<i class="fas fa-home"></i>'
+            };
+            const categoryIcon = categoryIcons[product.category] || '<i class="fas fa-tag"></i>';
+
             productCard.innerHTML = `
-                <div class="product-image">${this.t('product_image')}</div>
+                <img src="${product.image}" alt="${productName}" class="product-image" loading="lazy">
                 <div class="product-name">${productName}</div>
                 <div class="product-price">¥${product.price.toLocaleString()}</div>
-                <div class="product-category">${categoryName}</div>
+                <div class="product-category">${categoryIcon} ${categoryName}</div>
                 <button class="btn btn-primary" onclick="ui.addToCart(${product.id})"
                         ${!this.appState.currentUser ? `disabled title="${loginRequiredTitle}"` : ''}>
-                    ${this.t('add_to_cart')}
+                    <i class="fas fa-shopping-cart"></i> ${this.t('add_to_cart')}
                 </button>
             `;
             grid.appendChild(productCard);
