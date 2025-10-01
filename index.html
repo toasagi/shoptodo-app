@@ -52,6 +52,135 @@
                 </div>
             </div>
 
+            <!-- チェックアウトモーダル -->
+            <div id="checkout-modal" class="modal">
+                <div class="modal-content checkout-modal-content">
+                    <span class="close" id="checkout-close">&times;</span>
+                    <h2 data-i18n="checkout_title">チェックアウト</h2>
+
+                    <!-- ステップインジケーター -->
+                    <div class="checkout-steps">
+                        <div class="step active" data-step="1">
+                            <span class="step-number">1</span>
+                            <span class="step-label" data-i18n="shipping_info">配送先情報</span>
+                        </div>
+                        <div class="step" data-step="2">
+                            <span class="step-number">2</span>
+                            <span class="step-label" data-i18n="payment_method">支払い方法</span>
+                        </div>
+                        <div class="step" data-step="3">
+                            <span class="step-number">3</span>
+                            <span class="step-label" data-i18n="order_confirm">注文確認</span>
+                        </div>
+                    </div>
+
+                    <!-- ステップ1: 配送先情報 -->
+                    <div class="checkout-step-content" data-step="1">
+                        <form id="shipping-form">
+                            <div class="form-group">
+                                <label for="shipping-name" data-i18n="full_name">お名前</label>
+                                <input type="text" id="shipping-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipping-email" data-i18n="email">メールアドレス</label>
+                                <input type="email" id="shipping-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipping-phone" data-i18n="phone">電話番号</label>
+                                <input type="tel" id="shipping-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipping-postal" data-i18n="postal_code">郵便番号</label>
+                                <input type="text" id="shipping-postal" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipping-address" data-i18n="address">住所</label>
+                                <textarea id="shipping-address" rows="3" required></textarea>
+                            </div>
+                            <div class="checkout-actions">
+                                <button type="button" class="btn btn-primary" id="shipping-next" data-i18n="next">次へ</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ステップ2: 支払い方法 -->
+                    <div class="checkout-step-content" data-step="2" style="display: none;">
+                        <form id="payment-form">
+                            <div class="payment-methods">
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="credit_card" checked>
+                                    <span class="payment-label">
+                                        <i class="fas fa-credit-card"></i>
+                                        <span data-i18n="credit_card">クレジットカード</span>
+                                    </span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="bank_transfer">
+                                    <span class="payment-label">
+                                        <i class="fas fa-university"></i>
+                                        <span data-i18n="bank_transfer">銀行振込</span>
+                                    </span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="cash_on_delivery">
+                                    <span class="payment-label">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span data-i18n="cash_on_delivery">代金引換</span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="checkout-actions">
+                                <button type="button" class="btn btn-secondary" id="payment-back" data-i18n="back">戻る</button>
+                                <button type="button" class="btn btn-primary" id="payment-next" data-i18n="next">次へ</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ステップ3: 注文確認 -->
+                    <div class="checkout-step-content" data-step="3" style="display: none;">
+                        <div class="order-summary">
+                            <h3 data-i18n="order_items">注文商品</h3>
+                            <div id="order-items-list"></div>
+                            <div class="order-total-section">
+                                <strong data-i18n="total">合計:</strong>
+                                <span id="order-total-amount"></span>
+                            </div>
+
+                            <h3 data-i18n="shipping_to">配送先</h3>
+                            <div id="order-shipping-info" class="info-box"></div>
+
+                            <h3 data-i18n="payment">支払い</h3>
+                            <div id="order-payment-info" class="info-box"></div>
+                        </div>
+                        <div class="checkout-actions">
+                            <button type="button" class="btn btn-secondary" id="confirm-back" data-i18n="back">戻る</button>
+                            <button type="button" class="btn btn-primary" id="confirm-order" data-i18n="place_order">注文を確定</button>
+                        </div>
+                    </div>
+
+                    <!-- 注文完了画面 -->
+                    <div class="checkout-step-content" data-step="4" style="display: none;">
+                        <div class="order-complete">
+                            <i class="fas fa-check-circle"></i>
+                            <h3 data-i18n="order_complete">注文が完了しました！</h3>
+                            <p><span data-i18n="order_number">注文番号:</span> <strong id="order-number-display"></strong></p>
+                            <button type="button" class="btn btn-primary" id="close-checkout">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 注文履歴モーダル -->
+            <div id="order-history-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="history-close">&times;</span>
+                    <h2 data-i18n="order_history">注文履歴</h2>
+                    <div id="order-history-list" class="order-history-list">
+                        <!-- 注文履歴が動的に表示される -->
+                    </div>
+                </div>
+            </div>
+
             <!-- 商品検索・フィルタ -->
             <section class="search-section">
                 <h2 data-i18n="product_catalog">商品カタログ</h2>
@@ -92,6 +221,7 @@
                             合計: ¥0
                         </div>
                         <button id="checkout-btn" class="btn btn-primary" disabled data-i18n="checkout">チェックアウト</button>
+                        <button id="view-history-btn" class="btn btn-secondary" data-i18n="view_order_history">注文履歴を見る</button>
                     </section>
 
                     <!-- ToDoリスト -->

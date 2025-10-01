@@ -2,6 +2,7 @@ import { Browser, BrowserContext, Page, chromium, firefox, webkit } from '@playw
 import { World, IWorldOptions, setWorldConstructor } from '@cucumber/cucumber';
 import { LoginPage } from '../page-objects/LoginPage';
 import { DashboardPage } from '../page-objects/DashboardPage';
+import { CheckoutPage } from '../page-objects/CheckoutPage';
 
 export class CustomWorld extends World {
   public browser!: Browser;
@@ -9,6 +10,7 @@ export class CustomWorld extends World {
   public page!: Page;
   public loginPage!: LoginPage;
   public dashboardPage!: DashboardPage;
+  public checkoutPage!: CheckoutPage;
 
   // Configuration
   public config: {
@@ -64,6 +66,7 @@ export class CustomWorld extends World {
     // Initialize page objects
     this.loginPage = new LoginPage(this.page, this.config.appUrl);
     this.dashboardPage = new DashboardPage(this.page, this.config.appUrl);
+    this.checkoutPage = new CheckoutPage(this.page);
 
     // Setup error handling
     this.setupErrorHandling();

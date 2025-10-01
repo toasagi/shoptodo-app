@@ -1,10 +1,9 @@
 const config = {
+  requireModule: ['ts-node/register'],
   require: [
-    'ts-node/register',
     'step-definitions/**/*.ts',
     'support/**/*.ts'
   ],
-  requireModule: ['ts-node/register'],
   format: [
     'progress',
     'json:reports/cucumber-report.json',
@@ -17,6 +16,7 @@ const config = {
   dryRun: false,
   failFast: false,
   strict: true,
+  timeout: 30000, // 30 seconds timeout for each step
   worldParameters: {
     appUrl: process.env.APP_URL || 'http://localhost:8000',
     browser: process.env.BROWSER || 'chromium',

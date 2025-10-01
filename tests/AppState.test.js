@@ -15,6 +15,7 @@ describe('AppState', () => {
       expect(appState.currentUser).toBeNull();
       expect(appState.cart).toEqual([]);
       expect(appState.todos).toEqual([]);
+      expect(appState.orders).toEqual([]);
       expect(appState.currentLanguage).toBe('ja');
       expect(appState.products).toHaveLength(12);
       expect(appState.filteredProducts).toHaveLength(12);
@@ -295,7 +296,165 @@ describe('AppState', () => {
       expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(appState.currentUser));
       expect(localStorage.setItem).toHaveBeenCalledWith('cart', JSON.stringify(appState.cart));
       expect(localStorage.setItem).toHaveBeenCalledWith('todos', JSON.stringify(appState.todos));
+      expect(localStorage.setItem).toHaveBeenCalledWith('orders', JSON.stringify(appState.orders));
       expect(localStorage.setItem).toHaveBeenCalledWith('language', 'en');
+    });
+  });
+
+  describe('order management', () => {
+    let restoreDateNow;
+
+    beforeEach(() => {
+      restoreDateNow = mockDateNow(1640995200000);
+      global.Date = class extends Date {
+        constructor(...args) {
+          if (args.length === 0) {
+            super(1640995200000);
+          } else {
+            super(...args);
+          }
+        }
+
+        static now() {
+          return 1640995200000;
+        }
+
+        toISOString() {
+          if (this.getTime() === 1640995200000) {
+            return '2022-01-01T00:00:00.000Z';
+          }
+          return super.toISOString();
+        }
+      };
+    });
+
+    afterEach(() => {
+      restoreDateNow();
+      global.Date = Date;
+    });
+
+    test('should create order with cart items', () => {
+      appState.cart = createSampleCartItems();
+      const shippingInfo = {
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '090-1234-5678',
+        postalCode: '100-0001',
+        address: 'Tokyo, Japan'
+      };
+      const paymentMethod = 'credit_card';
+
+      const order = appState.createOrder(shippingInfo, paymentMethod);
+
+      expect(order).toBeDefined();
+      expect(order.id).toBe(1640995200000);
+      expect(order.date).toBe('2022-01-01T00:00:00.000Z');
+      expect(order.items).toHaveLength(2);
+      expect(order.total).toBe(4000);
+      expect(order.shippingInfo).toEqual(shippingInfo);
+      expect(order.paymentMethod).toBe('credit_card');
+      expect(order.status).toBe('completed');
+    });
+
+    test('should clear cart after creating order', () => {
+      appState.cart = createSampleCartItems();
+      const shippingInfo = {
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '090-1234-5678',
+        postalCode: '100-0001',
+        address: 'Tokyo, Japan'
+      };
+
+      appState.createOrder(shippingInfo, 'credit_card');
+
+      expect(appState.cart).toHaveLength(0);
+    });
+
+    test('should add order to orders array', () => {
+      appState.cart = createSampleCartItems();
+      const shippingInfo = {
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '090-1234-5678',
+        postalCode: '100-0001',
+        address: 'Tokyo, Japan'
+      };
+
+      appState.createOrder(shippingInfo, 'bank_transfer');
+
+      expect(appState.orders).toHaveLength(1);
+      expect(appState.orders[0].paymentMethod).toBe('bank_transfer');
+    });
+
+    test('should save order to localStorage', () => {
+      appState.cart = createSampleCartItems();
+      const shippingInfo = {
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '090-1234-5678',
+        postalCode: '100-0001',
+        address: 'Tokyo, Japan'
+      };
+
+      appState.createOrder(shippingInfo, 'cash_on_delivery');
+
+      expect(localStorage.setItem).toHaveBeenCalledWith('orders', expect.any(String));
+    });
+
+    test('should load orders from localStorage', () => {
+      const testOrders = [
+        {
+          id: 1640995200000,
+          date: '2022-01-01T00:00:00.000Z',
+          items: createSampleCartItems(),
+          total: 4000,
+          shippingInfo: {
+            name: 'Test User',
+            email: 'test@example.com',
+            phone: '090-1234-5678',
+            postalCode: '100-0001',
+            address: 'Tokyo, Japan'
+          },
+          paymentMethod: 'credit_card',
+          status: 'completed'
+        }
+      ];
+
+      localStorage.setItem('orders', JSON.stringify(testOrders));
+
+      const newAppState = new AppState();
+
+      expect(newAppState.orders).toHaveLength(1);
+      expect(newAppState.orders[0].id).toBe(1640995200000);
+      expect(newAppState.orders[0].total).toBe(4000);
+    });
+
+    test('should preserve existing orders when creating new order', () => {
+      appState.orders = [{
+        id: 1640995100000,
+        date: '2021-12-31T23:58:20.000Z',
+        items: [],
+        total: 1000,
+        shippingInfo: {},
+        paymentMethod: 'credit_card',
+        status: 'completed'
+      }];
+
+      appState.cart = createSampleCartItems();
+      const shippingInfo = {
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '090-1234-5678',
+        postalCode: '100-0001',
+        address: 'Tokyo, Japan'
+      };
+
+      appState.createOrder(shippingInfo, 'bank_transfer');
+
+      expect(appState.orders).toHaveLength(2);
+      expect(appState.orders[0].id).toBe(1640995100000);
+      expect(appState.orders[1].id).toBe(1640995200000);
     });
   });
 });

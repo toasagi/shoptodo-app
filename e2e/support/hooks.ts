@@ -1,5 +1,8 @@
-import { Before, After, BeforeAll, AfterAll, Status } from '@cucumber/cucumber';
+import { Before, After, BeforeAll, AfterAll, Status, setDefaultTimeout } from '@cucumber/cucumber';
 import { CustomWorld } from './world';
+
+// Set default timeout for all steps to 30 seconds
+setDefaultTimeout(30000);
 
 // Global setup
 BeforeAll(async function() {

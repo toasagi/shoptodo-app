@@ -7,6 +7,8 @@
     "test": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts'",
     "test:smoke": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@smoke'",
     "test:negative": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@negative'",
+    "test:checkout": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@checkout'",
+    "test:order-history": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@order-history'",
     "test:debug": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@debug'",
     "install:browsers": "npx playwright install"
   },
