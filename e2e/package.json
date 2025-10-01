@@ -8,6 +8,11 @@
     "test:smoke": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@smoke'",
     "test:negative": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@negative'",
     "test:debug": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@debug'",
+    "test:e2e": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts'",
+    "test:e2e:smoke": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@smoke'",
+    "test:e2e:regression": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@regression'",
+    "test:e2e:parallel": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --parallel 2",
+    "test:e2e:report": "echo 'Test report generation - implement if needed'",
     "install:browsers": "npx playwright install"
   },
   "keywords": [
