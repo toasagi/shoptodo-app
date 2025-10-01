@@ -10,6 +10,14 @@ export class CustomWorld extends World {
   public loginPage!: LoginPage;
   public dashboardPage!: DashboardPage;
 
+  // Page objects accessor for compatibility
+  public get pageObjects() {
+    return {
+      loginPage: this.loginPage,
+      dashboardPage: this.dashboardPage
+    };
+  }
+
   // Configuration
   public config: {
     appUrl: string;
@@ -155,6 +163,106 @@ export class CustomWorld extends World {
 
     // Clear test data
     this.testData.clear();
+  }
+
+  /**
+   * Get localStorage state
+   */
+  async getLocalStorageState(): Promise<any> {
+    try {
+      return await this.page.evaluate(() => {
+        const state: any = {};
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key) {
+            state[key] = localStorage.getItem(key);
+          }
+        }
+        return state;
+      });
+    } catch (error) {
+      console.warn('Could not get localStorage state:', error);
+      return {};
+    }
+  }
+
+  /**
+   * Simulate browser restart
+   */
+  async simulateBrowserRestart(): Promise<void> {
+    // Store localStorage state before restart
+    const localStorageState = await this.getLocalStorageState();
+
+    // Close and reopen browser
+    await this.page.close();
+    await this.context.close();
+
+    // Create new context (which will preserve localStorage due to storageState)
+    this.context = await this.browser.newContext({
+      viewport: { width: 1280, height: 720 }
+    });
+
+    this.page = await this.context.newPage();
+    this.page.setDefaultTimeout(this.config.timeout);
+
+    // Restore localStorage manually
+    await this.page.goto(this.config.appUrl);
+    await this.page.evaluate((state) => {
+      for (const [key, value] of Object.entries(state)) {
+        if (value) {
+          localStorage.setItem(key, value as string);
+        }
+      }
+    }, localStorageState);
+
+    // Reinitialize page objects
+    this.loginPage = new LoginPage(this.page, this.config.appUrl);
+    this.dashboardPage = new DashboardPage(this.page, this.config.appUrl);
+  }
+
+  /**
+   * Navigate to application
+   */
+  async navigateToApp(): Promise<void> {
+    await this.page.goto(this.config.appUrl);
+    await this.page.waitForLoadState('networkidle');
+  }
+
+  /**
+   * Simulate network error
+   */
+  async simulateNetworkError(): Promise<void> {
+    await this.context.route('**/*', route => route.abort());
+    await this.page.waitForTimeout(1000);
+    await this.context.unroute('**/*');
+  }
+
+  /**
+   * Simulate storage quota exceeded
+   */
+  async simulateStorageQuotaExceeded(): Promise<void> {
+    await this.page.evaluate(() => {
+      // Try to fill localStorage to capacity
+      try {
+        let i = 0;
+        while (true) {
+          localStorage.setItem(`test_${i}`, 'x'.repeat(1024 * 100)); // 100KB chunks
+          i++;
+        }
+      } catch (e) {
+        // Storage quota exceeded
+      }
+    });
+  }
+
+  /**
+   * Simulate browser compatibility issue
+   */
+  async simulateBrowserCompatibilityIssue(): Promise<void> {
+    // This is a placeholder - in real tests, you'd run different browser versions
+    await this.page.evaluate(() => {
+      (window as any).__browserCompatibilityTest = true;
+    });
   }
 }
 
