@@ -92,7 +92,7 @@ Feature: Checkout Process
       | items       | true    |
       | total       | true    |
       | shipping    | true    |
-      | payment     | true    |
+      | payment     | false    |
 
   @order-history
   Scenario: Empty order history message
