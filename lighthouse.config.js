@@ -3,7 +3,7 @@ module.exports = {
     collect: {
       url: ['http://localhost:8000'],
       startServerCommand: 'npm run serve',
-      startServerReadyPattern: 'serving at',
+      startServerReadyPattern: 'Serving HTTP',
       startServerReadyTimeout: 30000,
       numberOfRuns: 3,
       settings: {

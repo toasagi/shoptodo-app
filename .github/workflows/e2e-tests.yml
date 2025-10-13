@@ -94,6 +94,11 @@ jobs:
         cd e2e
         npx playwright install --with-deps ${{ matrix.browser }}
 
+    - name: Create E2E directories
+      run: |
+        cd e2e
+        mkdir -p screenshots reports
+
     - name: Start application server
       run: |
         npm run serve &
@@ -180,6 +185,11 @@ jobs:
       run: |
         cd e2e
         npx playwright install --with-deps
+
+    - name: Create E2E directories
+      run: |
+        cd e2e
+        mkdir -p screenshots reports
 
     - name: Start application server
       run: |
