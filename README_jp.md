@@ -58,13 +58,65 @@ GitHub Pagesに自動デプロイされており、誰でもE2Eテストの練�
 
 ## ファイル構成
 
+### コアアプリケーションファイル
 ```
 shoptodo-app/
-├── index.html      # メインHTML（アプリの構造）
-├── styles.css      # スタイルシート（レスポンシブ対応）
-├── app.js          # JavaScript（全機能の実装）
-├── README.md       # 英語版説明書
-└── README_jp.md    # 日本語版説明書（このファイル）
+├── index.html                    # メインHTML（アプリの構造）
+├── styles.css                    # スタイルシート（レスポンシブ対応）
+├── app.js                        # JavaScript（全機能の実装）
+├── README.md                     # 英語版説明書
+├── README_jp.md                  # 日本語版説明書（このファイル）
+├── package.json                  # 依存関係とスクリプト
+├── package-lock.json             # ロックされた依存関係バージョン
+└── .gitignore                    # Git除外設定
+```
+
+### テストインフラ
+```
+├── tests/                        # ユニットテスト（Jest）
+│   ├── setup.js                 # Jest設定
+│   ├── testUtils.js             # テストユーティリティ
+│   ├── AppState.test.js         # AppStateテスト
+│   ├── UIManager.test.js        # UIManagerテスト
+│   └── i18n.test.js             # 翻訳テスト
+│
+└── e2e/                          # E2Eテスト（Cucumber + Playwright）
+    ├── features/                # Gherkinシナリオ
+    ├── page-objects/            # ページオブジェクトモデル
+    ├── step-definitions/        # ステップ定義
+    ├── support/                 # テストサポートファイル
+    ├── package.json             # E2E依存関係
+    ├── cucumber.config.js       # Cucumber設定
+    └── README.md                # E2Eドキュメント
+```
+
+### ドキュメント
+```
+├── docs/                         # ISTQBテストドキュメント
+│   ├── test-planning/           # テスト戦略、計画、リスク分析
+│   ├── test-analysis/           # 要求分析、観察マトリクス
+│   └── test-design/             # ユーザーストーリー、シナリオ、ケース
+│
+├── docs2/                        # チェックアウト機能ドキュメント
+│   ├── checkout-test-plan.md
+│   ├── checkout-test-analysis.md
+│   ├── checkout-test-cases.md
+│   └── checkout-test-report.md
+│
+├── DEVELOPMENT_HISTORY.md        # 開発タイムライン
+├── PROJECT_SUMMARY.md            # プロジェクト概要
+└── QUICK_START_GUIDE.md          # クイックスタートガイド
+```
+
+### CI/CD & 設定
+```
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml           # GitHub Pagesデプロイ
+│       └── e2e-tests.yml        # E2Eテスト自動化
+│
+├── lighthouse.config.js          # パフォーマンステスト設定
+└── .nojekyll                     # GitHub Pages設定
 ```
 
 ## 使用方法
@@ -337,11 +389,22 @@ HEADLESS=false npm test
 
 GitHub Actionsによる自動テスト実行：
 
+#### ワークフローファイル
+- **`.github/workflows/e2e-tests.yml`** - E2Eテスト自動化ワークフロー
+  - トリガー: Push/Pull Request、毎日午前2時（UTC）、手動実行
+  - マルチブラウザテスト（Chromium, Firefox, WebKit）
+  - テストタイプ: スモーク、回帰、パフォーマンス（Lighthouse）
+
+- **`.github/workflows/deploy.yml`** - GitHub Pagesデプロイワークフロー
+  - トリガー: mainブランチへのプッシュ
+  - アプリケーションを自動的にGitHub Pagesにデプロイ
+
+#### ワークフローの機能
 ```yaml
 # 自動実行タイミング
-- Push/Pull Request時
-- 毎日午前2時（スケジュール実行）
-- 手動実行
+- mainブランチへのPush/Pull Request時
+- 毎日午前2時（UTC）スケジュール実行
+- 手動ワークフロー実行
 
 # サポートブラウザ
 - Chromium
@@ -349,9 +412,9 @@ GitHub Actionsによる自動テスト実行：
 - WebKit (Safari)
 
 # テストタイプ
-- スモークテスト
-- 回帰テスト
-- パフォーマンステスト（Lighthouse）
+- スモークテスト（主要機能）
+- 回帰テスト（完全なテストスイート）
+- パフォーマンステスト（Lighthouse CI）
 ```
 
 ### テストレポート

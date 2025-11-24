@@ -60,13 +60,65 @@ The application is automatically deployed to GitHub Pages and available for anyo
 
 ## File Structure
 
+### Core Application Files
 ```
 shoptodo-app/
-├── index.html      # Main HTML (App structure)
-├── styles.css      # Stylesheet (Responsive design)
-├── app.js          # JavaScript (All functionality)
-├── README.md       # This file (English)
-└── README_jp.md    # Japanese documentation
+├── index.html                    # Main HTML (App structure)
+├── styles.css                    # Stylesheet (Responsive design)
+├── app.js                        # JavaScript (All functionality)
+├── README.md                     # This file (English)
+├── README_jp.md                  # Japanese documentation
+├── package.json                  # Dependencies and scripts
+├── package-lock.json             # Locked dependency versions
+└── .gitignore                    # Git ignore configuration
+```
+
+### Test Infrastructure
+```
+├── tests/                        # Unit tests (Jest)
+│   ├── setup.js                 # Jest configuration
+│   ├── testUtils.js             # Test utilities
+│   ├── AppState.test.js         # AppState tests
+│   ├── UIManager.test.js        # UIManager tests
+│   └── i18n.test.js             # Translation tests
+│
+└── e2e/                          # E2E tests (Cucumber + Playwright)
+    ├── features/                # Gherkin scenarios
+    ├── page-objects/            # Page Object Model
+    ├── step-definitions/        # Step definitions
+    ├── support/                 # Test support files
+    ├── package.json             # E2E dependencies
+    ├── cucumber.config.js       # Cucumber config
+    └── README.md                # E2E documentation
+```
+
+### Documentation
+```
+├── docs/                         # ISTQB test documentation
+│   ├── test-planning/           # Test strategy, plan, risk analysis
+│   ├── test-analysis/           # Requirements, observation matrix
+│   └── test-design/             # User stories, scenarios, cases
+│
+├── docs2/                        # Checkout feature documentation
+│   ├── checkout-test-plan.md
+│   ├── checkout-test-analysis.md
+│   ├── checkout-test-cases.md
+│   └── checkout-test-report.md
+│
+├── DEVELOPMENT_HISTORY.md        # Development timeline
+├── PROJECT_SUMMARY.md            # Project overview
+└── QUICK_START_GUIDE.md          # Quick start instructions
+```
+
+### CI/CD & Configuration
+```
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml           # GitHub Pages deployment
+│       └── e2e-tests.yml        # E2E test automation
+│
+├── lighthouse.config.js          # Performance testing config
+└── .nojekyll                     # GitHub Pages configuration
 ```
 
 ## Usage
@@ -401,11 +453,22 @@ For detailed E2E test documentation, see [e2e/README.md](e2e/README.md)
 
 Automated test execution with GitHub Actions:
 
+#### Workflow Files
+- **`.github/workflows/e2e-tests.yml`** - E2E test automation workflow
+  - Triggers: Push/Pull Request, Daily at 2 AM UTC, Manual execution
+  - Multi-browser testing (Chromium, Firefox, WebKit)
+  - Test types: Smoke, Regression, Performance (Lighthouse)
+
+- **`.github/workflows/deploy.yml`** - GitHub Pages deployment workflow
+  - Triggers: Push to main branch
+  - Automatically deploys application to GitHub Pages
+
+#### Workflow Features
 ```yaml
 # Automatic execution triggers
-- Push/Pull Request
+- Push/Pull Request to main branch
 - Daily at 2 AM UTC (scheduled)
-- Manual execution
+- Manual workflow dispatch
 
 # Supported browsers
 - Chromium
@@ -413,9 +476,9 @@ Automated test execution with GitHub Actions:
 - WebKit (Safari)
 
 # Test types
-- Smoke tests
-- Regression tests
-- Performance tests (Lighthouse)
+- Smoke tests (core functionality)
+- Regression tests (full test suite)
+- Performance tests (Lighthouse CI)
 ```
 
 ### Test Reports
