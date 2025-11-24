@@ -2,9 +2,6 @@ module.exports = {
   ci: {
     collect: {
       url: ['http://localhost:8000'],
-      startServerCommand: 'npm run serve',
-      startServerReadyPattern: 'Serving HTTP',
-      startServerReadyTimeout: 30000,
       numberOfRuns: 3,
       settings: {
         chromeFlags: '--no-sandbox --disable-dev-shm-usage',
