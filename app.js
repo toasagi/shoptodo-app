@@ -176,39 +176,43 @@ const i18n = {
     }
 };
 
-// SVGプレースホルダー画像生成関数
-function generatePlaceholderImage(category) {
-    // カテゴリーごとの色定義
-    const categoryColors = {
-        electronics: '#007bff',
-        clothing: '#28a745',
-        books: '#fd7e14',
-        home: '#6f42c1'
-    };
-
-    // カテゴリーごとのアイコン（Unicode）
-    const categoryIcons = {
-        electronics: '📱',
-        clothing: '👕',
-        books: '📚',
-        home: '🏠'
-    };
-
-    const color = categoryColors[category] || '#6c757d';
-    const icon = categoryIcons[category] || '🏷️';
-
-    // SVG画像を生成（カテゴリーアイコンのみ表示）
+// SVGプレースホルダー画像生成関数（個別商品対応）
+function generateProductImage(emoji, primaryColor, secondaryColor) {
+    // グラデーション背景を持つSVG画像を生成
     const svg = `
         <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
-            <rect width="400" height="300" fill="${color}"/>
-            <text x="200" y="150" font-size="80" text-anchor="middle" dominant-baseline="middle">
-                ${icon}
+            <defs>
+                <linearGradient id="gradient-${emoji}" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:${primaryColor};stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:${secondaryColor};stop-opacity:1" />
+                </linearGradient>
+                <filter id="shadow">
+                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+                </filter>
+            </defs>
+            <rect width="400" height="300" fill="url(#gradient-${emoji})"/>
+            <circle cx="200" cy="150" r="70" fill="rgba(255,255,255,0.2)" filter="url(#shadow)"/>
+            <text x="200" y="150" font-size="90" text-anchor="middle" dominant-baseline="middle" filter="url(#shadow)">
+                ${emoji}
             </text>
         </svg>
     `;
 
     // Data URL形式に変換
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.trim());
+}
+
+// 後方互換性のため、カテゴリベースの画像生成も残す
+function generatePlaceholderImage(category) {
+    const categoryConfig = {
+        electronics: { emoji: '📱', primary: '#007bff', secondary: '#0056b3' },
+        clothing: { emoji: '👕', primary: '#28a745', secondary: '#1e7e34' },
+        books: { emoji: '📚', primary: '#fd7e14', secondary: '#dc6502' },
+        home: { emoji: '🏠', primary: '#6f42c1', secondary: '#5a32a3' }
+    };
+
+    const config = categoryConfig[category] || { emoji: '🏷️', primary: '#6c757d', secondary: '#5a6268' };
+    return generateProductImage(config.emoji, config.primary, config.secondary);
 }
 
 // アプリケーションの状態管理
@@ -227,20 +231,20 @@ class AppState {
     }
 
     initializeData() {
-        // サンプル商品データ
+        // サンプル商品データ（各商品に個別の絵文字と色を設定）
         this.products = [
-            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: generatePlaceholderImage('electronics') },
-            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: generatePlaceholderImage('electronics') },
-            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: generatePlaceholderImage('clothing') },
-            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: generatePlaceholderImage('clothing') },
-            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: generatePlaceholderImage('books') },
-            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: generatePlaceholderImage('books') },
-            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: generatePlaceholderImage('home') },
-            { id: 8, name: '掃除機', price: 25800, category: 'home', image: generatePlaceholderImage('home') },
-            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: generatePlaceholderImage('electronics') },
-            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: generatePlaceholderImage('clothing') },
-            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: generatePlaceholderImage('books') },
-            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: generatePlaceholderImage('home') }
+            { id: 1, name: 'スマートフォン', price: 89800, category: 'electronics', image: generateProductImage('📱', '#007bff', '#0056b3') },
+            { id: 2, name: 'ノートパソコン', price: 129800, category: 'electronics', image: generateProductImage('💻', '#17a2b8', '#117a8b') },
+            { id: 3, name: 'Tシャツ', price: 2980, category: 'clothing', image: generateProductImage('👕', '#28a745', '#1e7e34') },
+            { id: 4, name: 'ジーンズ', price: 7980, category: 'clothing', image: generateProductImage('👖', '#20c997', '#1aa179') },
+            { id: 5, name: 'プログラミング入門書', price: 3200, category: 'books', image: generateProductImage('📖', '#fd7e14', '#dc6502') },
+            { id: 6, name: 'JavaScript完全ガイド', price: 4800, category: 'books', image: generateProductImage('📘', '#f39c12', '#e67e22') },
+            { id: 7, name: 'コーヒーメーカー', price: 15800, category: 'home', image: generateProductImage('☕', '#6f42c1', '#5a32a3') },
+            { id: 8, name: '掃除機', price: 25800, category: 'home', image: generateProductImage('🧹', '#e83e8c', '#c72166') },
+            { id: 9, name: 'ワイヤレスイヤホン', price: 12800, category: 'electronics', image: generateProductImage('🎧', '#6610f2', '#520dc2') },
+            { id: 10, name: 'スニーカー', price: 8900, category: 'clothing', image: generateProductImage('👟', '#20c997', '#199d76') },
+            { id: 11, name: 'Web開発の教科書', price: 3800, category: 'books', image: generateProductImage('📚', '#e67e22', '#d35400') },
+            { id: 12, name: 'キッチン用品セット', price: 9800, category: 'home', image: generateProductImage('🍳', '#e74c3c', '#c0392b') }
         ];
 
         this.filteredProducts = [...this.products];
