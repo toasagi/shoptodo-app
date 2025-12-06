@@ -49,14 +49,14 @@ When('the user removes {string} from the cart', async function(this: CustomWorld
 });
 
 // Then Steps
-Then('the cart should contain {int} item(s)', async function(this: CustomWorld, count: number) {
-  const cartItems = await this.page.locator('.cart-item').count();
-  expect(cartItems, `Cart should contain ${count} item(s)`).toBe(count);
-});
-
 Then('the cart should contain {int} item', async function(this: CustomWorld, count: number) {
   const cartItems = await this.page.locator('.cart-item').count();
   expect(cartItems, `Cart should contain ${count} item`).toBe(count);
+});
+
+Then('the cart should be empty', async function(this: CustomWorld) {
+  const isEmpty = await this.checkoutPage.isCartEmpty();
+  expect(isEmpty, 'Cart should be empty').toBe(true);
 });
 
 Then('the cart total should be greater than {int}', async function(this: CustomWorld, amount: number) {
