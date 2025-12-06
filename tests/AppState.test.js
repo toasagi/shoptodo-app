@@ -17,8 +17,8 @@ describe('AppState', () => {
       expect(appState.todos).toEqual([]);
       expect(appState.orders).toEqual([]);
       expect(appState.currentLanguage).toBe('ja');
-      expect(appState.products).toHaveLength(12);
-      expect(appState.filteredProducts).toHaveLength(12);
+      expect(appState.products).toHaveLength(52);
+      expect(appState.filteredProducts).toHaveLength(52);
     });
 
     test('should load data from localStorage', () => {
@@ -44,8 +44,14 @@ describe('AppState', () => {
       const result = appState.login('demo', 'password');
 
       expect(result).toBe(true);
-      expect(appState.currentUser).toEqual({ username: 'demo' });
-      expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify({ username: 'demo' }));
+      expect(appState.currentUser).toEqual({
+        username: 'demo',
+        profile: { displayName: '', phone: '', paymentMethod: '' }
+      });
+      expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify({
+        username: 'demo',
+        profile: { displayName: '', phone: '', paymentMethod: '' }
+      }));
     });
 
     test('should reject login with incorrect username', () => {
@@ -226,8 +232,9 @@ describe('AppState', () => {
     test('should filter products by search term', () => {
       appState.filterProducts('スマート', '', 'name');
 
-      expect(appState.filteredProducts).toHaveLength(1);
-      expect(appState.filteredProducts[0].name).toBe('スマートフォン');
+      expect(appState.filteredProducts).toHaveLength(2);
+      expect(appState.filteredProducts.map(p => p.name)).toContain('スマートフォン');
+      expect(appState.filteredProducts.map(p => p.name)).toContain('スマートウォッチ');
     });
 
     test('should filter products by category', () => {
@@ -244,7 +251,7 @@ describe('AppState', () => {
       appState.filterProducts('', '', 'name');
 
       const productNames = appState.filteredProducts.map(p => p.name);
-      const sortedNames = [...productNames].sort();
+      const sortedNames = [...productNames].sort((a, b) => a.localeCompare(b));
       expect(productNames).toEqual(sortedNames);
     });
 
