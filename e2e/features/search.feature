@@ -10,7 +10,7 @@ Feature: Product Search, Filter, and Sort
 
   @smoke @search
   Scenario: Search for a product by name
-    When the user searches for "Smartphone"
+    When the user searches for "スマートフォン"
     Then the search results should contain "Smartphone"
 
   @smoke @search @filter

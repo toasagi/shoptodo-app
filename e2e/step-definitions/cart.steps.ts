@@ -39,9 +39,9 @@ When('the user removes {string} from the cart', async function(this: CustomWorld
   // Click the remove button for the specific cart item
   const cartItems = await this.page.locator('.cart-item').all();
   for (const item of cartItems) {
-    const name = await item.locator('.item-name').textContent();
+    const name = await item.locator('.cart-item-name').textContent();
     if (name?.includes(productName)) {
-      await item.locator('.remove-btn, .delete-btn').click();
+      await item.locator('.todo-btn').click();
       await this.page.waitForTimeout(300);
       break;
     }
@@ -70,9 +70,9 @@ Then('the cart total should be greater than {int}', async function(this: CustomW
 Then('the cart item {string} should have quantity {int}', async function(this: CustomWorld, productName: string, quantity: number) {
   const cartItems = await this.page.locator('.cart-item').all();
   for (const item of cartItems) {
-    const name = await item.locator('.item-name').textContent();
+    const name = await item.locator('.cart-item-name').textContent();
     if (name?.includes(productName)) {
-      const quantityText = await item.locator('.quantity-value, .item-quantity').textContent();
+      const quantityText = await item.locator('.cart-item-controls span').textContent();
       const actualQuantity = parseInt(quantityText || '0');
       expect(actualQuantity, `${productName} should have quantity ${quantity}`).toBe(quantity);
       return;
