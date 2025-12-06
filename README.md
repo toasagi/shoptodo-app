@@ -35,7 +35,7 @@ The application is automatically deployed to GitHub Pages and available for anyo
 - **Checkout**: Complete checkout process with order placement
 
 ### 4. Checkout Process (New!)
-- **Multi-step Wizard**: 3-step checkout flow (Shipping → Payment → Confirmation)
+- **Multi-step Wizard**: 4-step checkout flow (Shipping → Payment → Confirmation → Complete)
 - **Shipping Information**: Name, email, phone, postal code, and address input
 - **Payment Methods**: Credit card, bank transfer, or cash on delivery
 - **Order Confirmation**: Review order details before placement
