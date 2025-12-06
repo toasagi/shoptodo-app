@@ -7,6 +7,7 @@ Feature: Todo List Management
     Given the application is available
     And the user is logged in as "demo"
     And the language is set to English
+    And the user is on the profile page
     And the todo list is empty
 
   @smoke @todo

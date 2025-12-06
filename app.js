@@ -72,6 +72,17 @@ const i18n = {
         required_field: 'この項目は必須です',
         invalid_email: '有効なメールアドレスを入力してください',
         invalid_phone: '有効な電話番号を入力してください',
+        // User Profile
+        user_profile: 'ユーザー情報',
+        display_name: '名前',
+        phone_number: '電話番号',
+        preferred_payment: 'お支払い方法',
+        save: '保存',
+        saved: '保存しました',
+        back_to_shop: 'ショップに戻る',
+        purchase_history: '購入履歴',
+        no_profile: 'プロファイル情報がありません',
+        profile_saved: 'プロファイルを保存しました',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -159,6 +170,17 @@ const i18n = {
         required_field: 'This field is required',
         invalid_email: 'Please enter a valid email address',
         invalid_phone: 'Please enter a valid phone number',
+        // User Profile
+        user_profile: 'User Profile',
+        display_name: 'Name',
+        phone_number: 'Phone Number',
+        preferred_payment: 'Payment Method',
+        save: 'Save',
+        saved: 'Saved',
+        back_to_shop: 'Back to Shop',
+        purchase_history: 'Purchase History',
+        no_profile: 'No profile information',
+        profile_saved: 'Profile saved',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -292,7 +314,14 @@ class AppState {
 
     login(username, password) {
         if (username === 'demo' && password === 'password') {
-            this.currentUser = { username };
+            // Load existing profile if available
+            const savedProfile = localStorage.getItem('userProfile');
+            const profile = savedProfile ? JSON.parse(savedProfile) : {
+                displayName: '',
+                phone: '',
+                paymentMethod: ''
+            };
+            this.currentUser = { username, profile };
             this.saveToStorage();
             return true;
         }
@@ -306,6 +335,24 @@ class AppState {
         localStorage.removeItem('currentUser');
         localStorage.removeItem('cart');
         localStorage.removeItem('todos');
+        // Keep profile and orders for next login
+    }
+
+    saveProfile(profileData) {
+        if (!this.currentUser) return false;
+        this.currentUser.profile = { ...profileData };
+        localStorage.setItem('userProfile', JSON.stringify(this.currentUser.profile));
+        this.saveToStorage();
+        return true;
+    }
+
+    getProfile() {
+        if (!this.currentUser) return null;
+        return this.currentUser.profile || {
+            displayName: '',
+            phone: '',
+            paymentMethod: ''
+        };
     }
 
     createOrder(shippingInfo, paymentMethod) {
@@ -488,16 +535,23 @@ class UIManager {
             this.showOrderHistoryModal();
         });
 
-        // Todo関連
-        document.getElementById('add-todo-btn').addEventListener('click', () => {
-            this.addTodo();
-        });
+        // Todo関連 (only on pages with todo section)
+        const addTodoBtn = document.getElementById('add-todo-btn');
+        const todoInput = document.getElementById('todo-input');
 
-        document.getElementById('todo-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        if (addTodoBtn) {
+            addTodoBtn.addEventListener('click', () => {
                 this.addTodo();
-            }
-        });
+            });
+        }
+
+        if (todoInput) {
+            todoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.addTodo();
+                }
+            });
+        }
     }
 
     updateUI() {
@@ -956,6 +1010,9 @@ class UIManager {
 
     renderTodos() {
         const todoList = document.getElementById('todo-list');
+        // Skip if todo section doesn't exist on this page
+        if (!todoList) return;
+
         todoList.innerHTML = '';
 
         if (this.appState.todos.length === 0) {
