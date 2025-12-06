@@ -568,11 +568,14 @@ class AppState {
     filterProducts(searchTerm, category, sortBy) {
         let filtered = [...this.products];
 
-        // 検索フィルタ
+        // 検索フィルタ（日本語名と英語名の両方を検索）
         if (searchTerm) {
-            filtered = filtered.filter(product =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const searchLower = searchTerm.toLowerCase();
+            filtered = filtered.filter(product => {
+                const japaneseName = product.name.toLowerCase();
+                const englishName = (i18n.ja.product_names[product.name] || '').toLowerCase();
+                return japaneseName.includes(searchLower) || englishName.includes(searchLower);
+            });
         }
 
         // カテゴリフィルタ

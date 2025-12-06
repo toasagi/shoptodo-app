@@ -9,9 +9,14 @@ Feature: Product Search, Filter, and Sort
     And the language is set to English
 
   @smoke @search
-  Scenario: Search for a product by name
+  Scenario: Search for a product by Japanese name
     When the user searches for "スマートフォン"
     Then the search results should contain "Smartphone"
+
+  @smoke @search
+  Scenario: Search for a product by English name
+    When the user searches for "Jeans"
+    Then the search results should contain "Jeans"
 
   @smoke @search @filter
   Scenario: Filter products by category
