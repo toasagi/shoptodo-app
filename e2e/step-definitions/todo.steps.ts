@@ -3,6 +3,13 @@ import { expect } from '@playwright/test';
 import { CustomWorld } from '../support/world';
 
 // Given Steps
+Given('the user is on the profile page', async function(this: CustomWorld) {
+  // Navigate to user profile page
+  await this.page.goto(this.config.appUrl + '/user-profile.html');
+  await this.page.waitForLoadState('networkidle');
+  await this.page.waitForTimeout(500);
+});
+
 Given('the todo list is empty', async function(this: CustomWorld) {
   // Clear all todos by clicking the delete button (second .todo-btn in each item)
   // Skip items that are just "empty" placeholder

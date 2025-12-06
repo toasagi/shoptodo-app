@@ -22,7 +22,7 @@
                     <button id="lang-ja" class="lang-btn active" data-lang="ja">JP</button>
                 </div>
                 <div id="user-info" class="user-info" style="display: none;">
-                    <span id="username"></span>
+                    <a href="user-profile.html" id="username" class="user-link"></a>
                     <button id="logout-btn" class="btn btn-secondary" data-i18n="logout">ログアウト</button>
                 </div>
                 <button id="login-btn" class="btn btn-primary" data-i18n="login">ログイン</button>
@@ -224,17 +224,6 @@
                         <button id="view-history-btn" class="btn btn-secondary" data-i18n="view_order_history">注文履歴を見る</button>
                     </section>
 
-                    <!-- ToDoリスト -->
-                    <section class="todo-section">
-                        <h3 data-i18n="favorite_memo">お気に入り商品メモ</h3>
-                        <div class="todo-input-group">
-                            <input type="text" id="todo-input" placeholder="メモを追加..." class="todo-input" data-i18n-placeholder="memo_placeholder">
-                            <button id="add-todo-btn" class="btn btn-primary" data-i18n="add">追加</button>
-                        </div>
-                        <ul id="todo-list" class="todo-list">
-                            <!-- ToDoアイテムが動的に表示される -->
-                        </ul>
-                    </section>
                 </aside>
             </div>
         </div>
