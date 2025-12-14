@@ -368,6 +368,10 @@ jobs:
       run: |
         mkdir -p allure-report-clean
         rsync -av --exclude='.git' allure-history/ allure-report-clean/
+        # Fix redirect URL in index.html (add /allure/ subdirectory)
+        if [ -f "allure-report-clean/index.html" ]; then
+          sed -i 's|URL=https://toasagi.github.io/shoptodo-app/|URL=https://toasagi.github.io/shoptodo-app/allure/|g' allure-report-clean/index.html
+        fi
 
     - name: Publish Allure Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
