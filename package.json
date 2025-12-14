@@ -21,11 +21,13 @@
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.55.0",
+    "allure-commandline": "^2.36.0",
+    "allure-jest": "^3.4.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0"
   },
   "jest": {
-    "testEnvironment": "jsdom",
+    "testEnvironment": "allure-jest/jsdom",
     "setupFilesAfterEnv": [
       "<rootDir>/tests/setup.js"
     ],

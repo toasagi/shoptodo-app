@@ -7,10 +7,12 @@ const config = {
   format: [
     'progress',
     'json:reports/cucumber-report.json',
-    'html:reports/cucumber-report.html'
+    'html:reports/cucumber-report.html',
+    'allure-cucumberjs/reporter'
   ],
   formatOptions: {
-    snippetInterface: 'async-await'
+    snippetInterface: 'async-await',
+    resultsDir: './allure-results'
   },
   publishQuiet: true,
   dryRun: false,

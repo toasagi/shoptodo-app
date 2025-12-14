@@ -54,3 +54,8 @@ temp/
 # E2E test screenshots
 screenshots/
 e2e/screenshots/
+
+# Allure test results
+allure-results/
+e2e/allure-results/
+allure-report/
