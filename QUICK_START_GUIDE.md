@@ -98,6 +98,17 @@ HEADLESS=false npm run test:e2e:smoke
 npm run test:e2e:report
 ```
 
+### 📊 テストレポート確認
+```bash
+# Allure Report（GitHub Pages）
+# CI実行後に自動更新されます
+open https://toasagi.github.io/shoptodo-app/allure/
+
+# ローカルでAllure Reportを生成・表示
+npx allure generate allure-results -o allure-report --clean
+npx allure open allure-report
+```
+
 ### ブラウザ別実行
 ```bash
 # Chrome
@@ -254,8 +265,14 @@ shoptodo-app/
 ### 📚 学習リソース
 - **Playwright公式**: https://playwright.dev
 - **Cucumber公式**: https://cucumber.io
+- **Allure Report公式**: https://allurereport.org
 - **ISTQB**: International Software Testing Qualifications Board
 - **IEEE 829**: Test Documentation Standard
+
+### 📊 テストレポート
+- **Allure Report**: [https://toasagi.github.io/shoptodo-app/allure/](https://toasagi.github.io/shoptodo-app/allure/)
+  - CI実行後に自動更新
+  - テスト履歴・トレンド確認可能
 
 ### 🔗 関連技術
 - **Page Object Model**: E2E自動化のデザインパターン

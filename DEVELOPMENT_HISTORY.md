@@ -104,6 +104,39 @@ docs/
     └── traceability-matrix.md: 完全トレーサビリティ
 ```
 
+#### 📊 2025-01-XX: Allure Report 統合
+**ユーザー要求**: CI/CDテスト結果の可視化とレポート共有
+
+**実装決定**:
+- **レポートツール**: Allure Report（業界標準、履歴・トレンド機能）
+- **ホスティング**: GitHub Pages（追加インフラ不要）
+- **統合方法**: Jest + Cucumber の両方をサポート
+
+**技術的課題と解決**:
+- **課題**: `jest-allure` が Jest 29 と非互換（Jasmine依存）
+- **解決**: `allure-jest` パッケージに切り替え
+
+- **課題**: `allure-cucumberjs` の formatOptions が設定ファイルで動作しない
+- **解決**: CLI引数で明示的に `--format-options` を指定
+
+- **課題**: GitHub Actions の `simple-elf/allure-report-action@v1.9` が Docker ビルドエラー
+- **原因**: `openjdk:8-jre-alpine` イメージが Docker Hub から削除
+- **解決**: v1.13 にアップデート（Docker イメージ更新済み）
+
+**成果物**:
+```
+- allure-jest: ユニットテスト統合
+- allure-cucumberjs: E2Eテスト統合
+- GitHub Actions: 自動レポート生成・公開
+- Allure Report URL: https://toasagi.github.io/shoptodo-app/allure/
+```
+
+**レポート機能**:
+- テスト履歴・トレンドグラフ
+- カテゴリ別失敗分析
+- スイート・タイムライン表示
+- CI実行ごとの自動更新
+
 #### 🤖 2025-01-XX: E2E自動化実装
 **ユーザー要求**: POM + Cucumber による自動化実装
 
