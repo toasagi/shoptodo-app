@@ -363,13 +363,11 @@ jobs:
         allure_history: allure-history
         keep_reports: 20
 
-    - name: Remove .git from allure-history
+    - name: Prepare Allure Report for deployment
       if: always()
       run: |
-        if [ -d "allure-history/.git" ]; then
-          chmod -R 777 allure-history/.git || true
-          rm -rf allure-history/.git || true
-        fi
+        mkdir -p allure-report-clean
+        rsync -av --exclude='.git' allure-history/ allure-report-clean/
 
     - name: Publish Allure Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
@@ -377,7 +375,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
-        publish_dir: allure-history
+        publish_dir: allure-report-clean
         destination_dir: allure
         keep_files: true
 
