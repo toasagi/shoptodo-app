@@ -421,10 +421,28 @@ GitHub Actionsによる自動テスト実行：
 
 テスト実行後、以下のレポートが生成されます：
 
+- **Allure Report**: [https://toasagi.github.io/shoptodo-app/allure/](https://toasagi.github.io/shoptodo-app/allure/)（GitHub Pages）
 - **Cucumber HTML Report**: `e2e/reports/cucumber-report.html`
 - **Playwright Report**: `e2e/playwright-report/`
 - **Screenshots**: `e2e/screenshots/`（失敗時）
 - **GitHub Actions**: CI実行結果とアーティファクト
+
+#### Allure Report
+
+Allure Reportは包括的なテスト結果の可視化を提供します：
+
+- **テスト履歴**: トレンドグラフで時系列のテスト結果を追跡
+- **カテゴリ**: 失敗をタイプ別にグループ化（製品欠陥、テスト欠陥など）
+- **スイート**: 機能やコンポーネント別にテストを整理
+- **グラフ**: テスト実行統計のビジュアル表示
+- **タイムライン**: 並列テストの実行タイムラインを表示
+
+Allure ReportはCI実行後に自動生成され、GitHub Pagesに公開されます。
+
+**使用技術**:
+- `allure-jest`: ユニットテスト統合
+- `allure-cucumberjs`: E2Eテスト統合
+- `simple-elf/allure-report-action`: GitHub Actionsレポート生成
 
 ### ISTQB準拠テスト文書
 

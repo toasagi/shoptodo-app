@@ -485,10 +485,28 @@ Automated test execution with GitHub Actions:
 
 After test execution, the following reports are generated:
 
+- **Allure Report**: [https://toasagi.github.io/shoptodo-app/allure/](https://toasagi.github.io/shoptodo-app/allure/) (GitHub Pages)
 - **Cucumber HTML Report**: `e2e/reports/cucumber-report.html`
 - **Playwright Report**: `e2e/playwright-report/`
 - **Screenshots**: `e2e/screenshots/` (on failure)
 - **GitHub Actions**: CI execution results and artifacts
+
+#### Allure Report
+
+Allure Report provides comprehensive test result visualization with:
+
+- **Test History**: Track test results over time with trend graphs
+- **Categories**: Group test failures by type (product defects, test defects, etc.)
+- **Suites**: Organize tests by feature or component
+- **Graphs**: Visual representation of test execution statistics
+- **Timeline**: View test execution timeline for parallel tests
+
+The Allure Report is automatically generated and published to GitHub Pages after each CI run.
+
+**Technologies**:
+- `allure-jest`: Unit test integration
+- `allure-cucumberjs`: E2E test integration
+- `simple-elf/allure-report-action`: GitHub Actions report generation
 
 ### ISTQB Compliant Test Documentation
 
