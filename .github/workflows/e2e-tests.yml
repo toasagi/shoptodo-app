@@ -365,7 +365,11 @@ jobs:
 
     - name: Remove .git from allure-history
       if: always()
-      run: rm -rf allure-history/.git
+      run: |
+        if [ -d "allure-history/.git" ]; then
+          chmod -R 777 allure-history/.git || true
+          rm -rf allure-history/.git || true
+        fi
 
     - name: Publish Allure Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
