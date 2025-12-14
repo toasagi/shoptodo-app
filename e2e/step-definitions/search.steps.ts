@@ -35,15 +35,28 @@ Then('the search results should contain {string}', async function(this: CustomWo
 });
 
 Then('only products in {string} category should be displayed', async function(this: CustomWorld, category: string) {
+  // Category name mapping (English to Japanese)
+  const categoryMap: Record<string, string[]> = {
+    'electronics': ['electronics', '電子機器'],
+    'clothing': ['clothing', '衣類'],
+    'books': ['books', '書籍'],
+    'home': ['home', 'ホーム'],
+  };
+
+  const validNames = categoryMap[category.toLowerCase()] || [category];
+
   // Get all visible products
   const products = await this.page.locator('.product-card:visible').all();
 
   // Verify each product has the correct category
   for (const product of products) {
     const categoryText = await product.locator('.product-category').textContent();
+    const matches = validNames.some(name =>
+      categoryText?.toLowerCase().includes(name.toLowerCase())
+    );
     expect(
-      categoryText?.toLowerCase().includes(category.toLowerCase()),
-      `Product should be in ${category} category`
+      matches,
+      `Product should be in ${category} category, got "${categoryText}"`
     ).toBe(true);
   }
 });
