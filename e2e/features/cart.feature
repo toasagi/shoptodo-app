@@ -26,3 +26,30 @@ Feature: Shopping Cart Operations
     Given the user has "Smartphone" in the cart
     When the user adds "Smartphone" to the cart again
     Then the cart item "Smartphone" should have quantity 2
+
+  # ============================================
+  # Japanese UI Test Scenarios (Issue #27)
+  # ============================================
+
+  @i18n @cart @japanese-ui
+  Scenario: Add product to cart in Japanese UI
+    Given the language is set to Japanese
+    And the cart is empty
+    When the user adds "スマートフォン" to the cart
+    Then the cart should contain 1 item
+    And the cart item should display "スマートフォン"
+
+  @i18n @cart @language-switch
+  Scenario: Cart product names update after language switch
+    Given the language is set to English
+    And the user has "Smartphone" in the cart
+    When the user switches language to Japanese
+    Then the cart item should display "スマートフォン"
+
+  @i18n @cart @language-switch
+  Scenario: Cart persists items after language switch to English
+    Given the language is set to Japanese
+    And the user has "スマートフォン" in the cart
+    When the user switches language to English
+    Then the cart should contain 1 item
+    And the cart item should display "Smartphone"

@@ -55,3 +55,33 @@ Feature: User Login
     When the user clicks the logout button
     Then the user should be logged out successfully
     And the login modal should be displayed
+
+  # ============================================
+  # Japanese UI Test Scenarios (Issue #27)
+  # ============================================
+
+  @i18n @login @japanese-ui @negative
+  Scenario: Login error message in Japanese UI
+    Given the language is set to Japanese
+    When the user clicks the login button to open modal
+    And the user enters username "invalid"
+    And the user enters password "wrongpassword"
+    And the user submits the login form
+    Then the error message should be in Japanese
+
+  @i18n @login @japanese-ui
+  Scenario: Login form displays in Japanese UI
+    Given the language is set to Japanese
+    When the user clicks the login button to open modal
+    Then the login modal is displayed
+    And the login button text should be "ログイン"
+
+  @i18n @login @japanese-ui
+  Scenario: Successful login with Japanese UI
+    Given the language is set to Japanese
+    When the user clicks the login button to open modal
+    And the user enters username "demo"
+    And the user enters password "password"
+    And the user submits the login form
+    Then the user should be logged in successfully
+    And the UI should display in Japanese

@@ -138,3 +138,28 @@ Then('the login modal should be displayed', async function(this: CustomWorld) {
   const isLoginButtonVisible = await this.page.locator('#login-btn').isVisible();
   expect(isLoginButtonVisible, 'Login button should be visible').toBe(true);
 });
+
+// ============================================
+// Japanese UI Steps (Issue #27)
+// ============================================
+
+Then('the error message should be in Japanese', async function(this: CustomWorld) {
+  // Wait for error message to appear
+  await this.page.waitForTimeout(500);
+
+  // Check for Japanese error message
+  const japanesePattern = /[\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]/;
+
+  const errorMessage = await this.loginPage.getErrorMessage();
+  expect(
+    japanesePattern.test(errorMessage || ''),
+    `Error message should be in Japanese, got: "${errorMessage}"`
+  ).toBe(true);
+});
+
+Then('the login button text should be {string}', async function(this: CustomWorld, expectedText: string) {
+  // Check login button text in the login form specifically
+  const loginButtonInModal = this.page.locator('#login-form button[type="submit"]');
+  const buttonText = await loginButtonInModal.textContent();
+  expect(buttonText?.trim(), `Login button text should be "${expectedText}"`).toContain(expectedText);
+});

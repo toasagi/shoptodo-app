@@ -130,3 +130,43 @@ Feature: Checkout Process
     When the user clicks the checkout button
     Then the checkout modal is scrollable
     And all buttons are accessible
+
+  # ============================================
+  # Japanese UI Test Scenarios (Issue #27)
+  # ============================================
+
+  @i18n @checkout @japanese-ui
+  Scenario: Checkout form displays in Japanese
+    Given the language is set to Japanese
+    And the user has products in the cart
+    When the user clicks the checkout button
+    Then the checkout modal is displayed
+    And form labels should be in Japanese
+    And the checkout title should be "チェックアウト"
+
+  @i18n @checkout @japanese-ui @validation
+  Scenario: Validation error messages in Japanese
+    Given the language is set to Japanese
+    And the user has products in the cart
+    When the user clicks the checkout button
+    And the user clicks next on shipping step without filling fields
+    Then validation errors are displayed in Japanese
+
+  @i18n @checkout @japanese-ui
+  Scenario: Complete checkout in Japanese UI
+    Given the language is set to Japanese
+    And the user has products in the cart
+    When the user clicks the checkout button
+    And the user fills in the shipping information:
+      | field       | value                    |
+      | name        | 山田太郎                 |
+      | email       | yamada@example.com       |
+      | phone       | 090-1234-5678           |
+      | postalCode  | 100-0001                |
+      | address     | 東京都千代田区1-1       |
+    And the user clicks next on shipping step
+    And the user selects "credit_card" as payment method
+    And the user clicks next on payment step
+    And the user confirms the order
+    Then the order complete screen is displayed
+    And the order completion message should be in Japanese
