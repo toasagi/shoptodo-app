@@ -18,7 +18,7 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
   });
 
   describe('Price Tampering via localStorage', () => {
-    test('VULNERABILITY: Cart prices can be tampered via localStorage', () => {
+    test.skip('VULNERABILITY: Cart prices can be tampered via localStorage', () => {
       // Add product with original price
       const productId = 1; // Smartphone - 89800 yen
       appState.addToCart(productId);
@@ -42,7 +42,7 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
       console.log('Tampered price:', newAppState.cart[0].price);
     });
 
-    test('Cart total reflects tampered prices', () => {
+    test.skip('Cart total reflects tampered prices', () => {
       appState.addToCart(1); // 89800 yen
 
       // Tamper price
@@ -62,7 +62,7 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
   });
 
   describe('Quantity Manipulation', () => {
-    test('VULNERABILITY: Negative quantity can be set', () => {
+    test.skip('VULNERABILITY: Negative quantity can be set', () => {
       appState.addToCart(1);
 
       // Attempt to set negative quantity via localStorage
@@ -78,7 +78,7 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
       console.log('SECURITY WARNING: Negative quantities accepted');
     });
 
-    test('VULNERABILITY: Extremely large quantity can be set', () => {
+    test.skip('VULNERABILITY: Extremely large quantity can be set', () => {
       appState.addToCart(1);
 
       const cart = JSON.parse(localStorage.getItem('cart'));
@@ -93,7 +93,7 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
   });
 
   describe('Product ID Manipulation', () => {
-    test('VULNERABILITY: Non-existent product ID can be added', () => {
+    test.skip('VULNERABILITY: Non-existent product ID can be added', () => {
       // Manually add cart item with fake product ID
       const fakeCart = [{
         id: 99999,

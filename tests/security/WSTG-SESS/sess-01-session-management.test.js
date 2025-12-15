@@ -17,7 +17,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
   });
 
   describe('Session Token Analysis', () => {
-    test('VULNERABILITY: No session token - uses localStorage JSON object only', () => {
+    test.skip('VULNERABILITY: No session token - uses localStorage JSON object only', () => {
       appState.login('demo', 'password');
 
       // App uses localStorage JSON object for authentication
@@ -33,7 +33,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
       console.log('SECURITY WARNING: Session relies on manipulable localStorage');
     });
 
-    test('VULNERABILITY: Session can be created without authentication', () => {
+    test.skip('VULNERABILITY: Session can be created without authentication', () => {
       // Directly set currentUser without login
       localStorage.setItem('currentUser', JSON.stringify({ username: 'admin' }));
 
@@ -45,7 +45,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
       // Any script can hijack session by setting localStorage
     });
 
-    test('VULNERABILITY: No session token randomness', () => {
+    test.skip('VULNERABILITY: No session token randomness', () => {
       appState.login('demo', 'password');
 
       // Session "token" is predictable (just user object)
@@ -59,7 +59,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
   });
 
   describe('Session Fixation', () => {
-    test('VULNERABILITY: Session identifier does not change after login', () => {
+    test.skip('VULNERABILITY: Session identifier does not change after login', () => {
       // Set a "session" before login
       localStorage.setItem('currentUser', JSON.stringify({ username: 'victim' }));
 
@@ -113,7 +113,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
   });
 
   describe('Session Timeout', () => {
-    test('VULNERABILITY: No session timeout implemented', () => {
+    test.skip('VULNERABILITY: No session timeout implemented', () => {
       appState.login('demo', 'password');
 
       // Set a timestamp to simulate old session

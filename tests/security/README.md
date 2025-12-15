@@ -111,10 +111,29 @@ npm run test:security:config     # 設定 (Medium)
 
 テストは以下のパターンで分類されています:
 
-- `VULNERABILITY:` - 確認された脆弱性
+- `VULNERABILITY:` - 確認された脆弱性（`test.skip` でスキップ）
+- `FIXED:` - 修正済みの脆弱性（テストがパスする）
 - `GOOD:` - 適切に実装されている機能
 - `PARTIAL:` - 一部対策済みだが改善の余地あり
 - `Document:` - 文書化目的（推奨事項）
+
+### test.skip について
+
+未修正の既知の脆弱性を文書化するテストは `test.skip()` を使用してスキップされています。
+これにより:
+
+1. **テスト結果が誤解を招かない**: 脆弱性が存在するにもかかわらずテストがパスすることを防ぎます
+2. **可視性の確保**: スキップされたテストは出力に表示され、未対応の脆弱性を認識できます
+3. **修正後の再有効化**: 脆弱性を修正したら、`test.skip` を `test` に戻すことで検証できます
+
+```bash
+# テスト実行時の出力例
+PASS  tests/security/WSTG-BUSL/busl-01-cart-manipulation.test.js
+  WSTG-BUSL-01: Cart Manipulation Testing
+    Price Tampering via localStorage
+      ○ skipped VULNERABILITY: Cart prices can be tampered via localStorage
+      ○ skipped Cart total reflects tampered prices
+```
 
 ## 参考資料
 
