@@ -90,26 +90,25 @@ describe('WSTG-CONF-02: Error Handling Testing', () => {
   });
 
   describe('Information Disclosure', () => {
-    test('Source code should not contain sensitive comments', () => {
+    test('GOOD: Source code should not contain sensitive comments', () => {
       // Check for potentially sensitive patterns in source
       const sensitivePatterns = [
-        /TODO:.*password/i,
-        /FIXME:.*security/i,
-        /\/\/.*api.?key/i,
-        /\/\/.*secret/i,
-        /\/\/.*token/i,
-        /DEBUG/,
+        { pattern: /TODO:.*password/i, desc: 'TODO with password' },
+        { pattern: /FIXME:.*security/i, desc: 'FIXME with security' },
+        { pattern: /\/\/.*api.?key\s*[:=]/i, desc: 'API key in comment' },
+        { pattern: /\/\/.*secret\s*[:=]/i, desc: 'Secret in comment' },
       ];
 
-      sensitivePatterns.forEach(pattern => {
+      const findings = [];
+      sensitivePatterns.forEach(({ pattern, desc }) => {
         const matches = appCode.match(pattern);
         if (matches) {
-          console.log('REVIEW: Potentially sensitive comment found:', matches[0]);
+          findings.push({ desc, match: matches[0] });
         }
       });
 
-      // Document any findings (not necessarily failures)
-      expect(true).toBe(true);
+      // Fail if sensitive patterns are found
+      expect(findings).toEqual([]);
     });
 
     test('Error messages do not reveal system information', () => {

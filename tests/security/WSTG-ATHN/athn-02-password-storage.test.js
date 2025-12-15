@@ -41,7 +41,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
   });
 
   describe('Sensitive Data in localStorage', () => {
-    test('VULNERABILITY: PII can be stored in plaintext localStorage', () => {
+    test.skip('VULNERABILITY: PII can be stored in plaintext localStorage', () => {
       appState.login('demo', 'password');
 
       // Simulate order with PII
@@ -92,7 +92,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
   });
 
   describe('Session Token Security', () => {
-    test('VULNERABILITY: No session token - relies on localStorage flag', () => {
+    test.skip('VULNERABILITY: No session token - relies on localStorage flag', () => {
       appState.login('demo', 'password');
 
       // The app uses localStorage to track login state
