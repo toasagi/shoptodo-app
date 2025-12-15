@@ -63,10 +63,11 @@ npm run test:security:config     # 設定 (Medium)
 
 ### Critical (即座に対応が必要)
 
-#### V1: Stored XSS via innerHTML
+#### ~~V1: Stored XSS via innerHTML~~ ✅ FIXED
 - **場所**: `app.js` (複数箇所)
 - **影響**: Todo、カート、注文履歴での任意のJavaScript実行
-- **対策**: `textContent` または適切なサニタイズ処理を使用
+- **対策**: ✅ `escapeHTML()` 関数を実装し、全ユーザー入力をエスケープ
+- **修正日**: Issue #33
 
 ### High (早急な対応が必要)
 
