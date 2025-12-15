@@ -8,7 +8,7 @@
 
 const { sanitizationTestPayloads, xssPayloads } = require('../utils/xss-payloads');
 const { mockDialogs, hasScriptExecutionRisk } = require('../utils/security-test-helpers');
-const { AppState } = require('../../../app.js');
+const { AppState, escapeHTML } = require('../../../app.js');
 
 describe('WSTG-INPV-01: Stored XSS Testing', () => {
   let appState;
@@ -137,5 +137,84 @@ describe('WSTG-INPV-01: Stored XSS Testing', () => {
 
       expect(vulnerableLocations.length).toBeGreaterThan(0);
     });
+  });
+
+  describe('XSS Mitigation - escapeHTML Function', () => {
+    test('FIXED: escapeHTML properly escapes script tags', () => {
+      const payload = '<script>alert(1)</script>';
+      const escaped = escapeHTML(payload);
+
+      expect(escaped).toBe('&lt;script&gt;alert(1)&lt;/script&gt;');
+      expect(escaped).not.toContain('<script>');
+    });
+
+    test('FIXED: escapeHTML properly escapes img onerror', () => {
+      const payload = '<img src=x onerror="alert(1)">';
+      const escaped = escapeHTML(payload);
+
+      expect(escaped).toBe('&lt;img src=x onerror=&quot;alert(1)&quot;&gt;');
+      expect(escaped).not.toContain('<img');
+    });
+
+    test('FIXED: escapeHTML properly escapes svg onload', () => {
+      const payload = '<svg onload="alert(1)">';
+      const escaped = escapeHTML(payload);
+
+      expect(escaped).toBe('&lt;svg onload=&quot;alert(1)&quot;&gt;');
+      expect(escaped).not.toContain('<svg');
+    });
+
+    test('FIXED: escapeHTML handles all special characters', () => {
+      const payload = '"><script>alert(1)</script><"';
+      const escaped = escapeHTML(payload);
+
+      expect(escaped).toBe('&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;&quot;');
+      expect(escaped).not.toContain('<');
+      expect(escaped).not.toContain('>');
+    });
+
+    test('FIXED: escapeHTML handles single quotes', () => {
+      const payload = "'-alert(1)-'";
+      const escaped = escapeHTML(payload);
+
+      expect(escaped).toBe('&#039;-alert(1)-&#039;');
+      expect(escaped).not.toContain("'");
+    });
+
+    test('FIXED: escapeHTML handles null and undefined', () => {
+      expect(escapeHTML(null)).toBe('');
+      expect(escapeHTML(undefined)).toBe('');
+    });
+
+    test('FIXED: escapeHTML preserves normal text', () => {
+      const normalText = 'Buy milk and eggs';
+      const escaped = escapeHTML(normalText);
+
+      expect(escaped).toBe(normalText);
+    });
+
+    test('FIXED: escapeHTML handles Japanese text', () => {
+      const japaneseText = '牛乳と卵を買う';
+      const escaped = escapeHTML(japaneseText);
+
+      expect(escaped).toBe(japaneseText);
+    });
+
+    test.each(sanitizationTestPayloads)(
+      'FIXED: escapeHTML neutralizes XSS payload: %s',
+      (payload) => {
+        const escaped = escapeHTML(payload);
+
+        // Escaped output should not contain raw < or > characters
+        expect(escaped).not.toMatch(/<[^&]/);
+
+        // Verify rendering is safe
+        const testDiv = document.createElement('div');
+        testDiv.innerHTML = escaped;
+
+        // The escaped content should not execute scripts
+        expect(hasScriptExecutionRisk(testDiv)).toBe(false);
+      }
+    );
   });
 });
