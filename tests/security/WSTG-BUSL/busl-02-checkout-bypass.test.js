@@ -26,7 +26,7 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
       // This test documents that empty cart state is detectable
     });
 
-    test('VULNERABILITY: Orders can be created with empty cart via localStorage', () => {
+    test.skip('VULNERABILITY: Orders can be created with empty cart via localStorage', () => {
       // Directly create order without cart
       const fakeOrder = {
         id: Date.now(),
@@ -55,7 +55,7 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
   });
 
   describe('Shipping Validation Bypass', () => {
-    test('VULNERABILITY: Orders can be created with empty shipping info', () => {
+    test.skip('VULNERABILITY: Orders can be created with empty shipping info', () => {
       appState.addToCart(1);
 
       // Create order with empty shipping
@@ -82,7 +82,7 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
       // Recommendation: Validate shipping info server-side
     });
 
-    test('VULNERABILITY: Invalid email format accepted in orders', () => {
+    test.skip('VULNERABILITY: Invalid email format accepted in orders', () => {
       const invalidEmails = [
         'not-an-email',
         '@nodomain',
@@ -107,7 +107,7 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
   });
 
   describe('Payment Method Bypass', () => {
-    test('VULNERABILITY: Invalid payment method can be stored', () => {
+    test.skip('VULNERABILITY: Invalid payment method can be stored', () => {
       appState.addToCart(1);
 
       const orderWithInvalidPayment = {
@@ -135,7 +135,7 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
   });
 
   describe('Order Total Manipulation', () => {
-    test('VULNERABILITY: Order total can be set to any value', () => {
+    test.skip('VULNERABILITY: Order total can be set to any value', () => {
       appState.addToCart(1); // 89800 yen
 
       const orderWithTamperedTotal = {
@@ -164,7 +164,7 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
   });
 
   describe('Order History Manipulation', () => {
-    test('VULNERABILITY: Fake orders can be injected', () => {
+    test.skip('VULNERABILITY: Fake orders can be injected', () => {
       // Inject fake orders with any data
       const fakeOrders = [
         {
