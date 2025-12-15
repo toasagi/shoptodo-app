@@ -6,8 +6,11 @@
  * OWASP Reference: https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side_Testing/01-Testing_for_DOM-based_Cross_Site_Scripting
  */
 
+const fs = require('fs');
+const path = require('path');
 const { xssPayloads } = require('../utils/xss-payloads');
 const { containsXSSElements, hasScriptExecutionRisk } = require('../utils/security-test-helpers');
+const appCode = fs.readFileSync(path.join(__dirname, '../../../app.js'), 'utf8');
 
 describe('WSTG-INPV-02: DOM-based XSS Testing', () => {
   beforeEach(() => {
@@ -76,20 +79,21 @@ describe('WSTG-INPV-02: DOM-based XSS Testing', () => {
   });
 
   describe('document.write Sink Analysis', () => {
-    test('document.write is not used in application', () => {
+    test('GOOD: document.write is not used in application', () => {
       // Verify document.write is not present in the codebase
       // document.write is a dangerous sink for DOM XSS
-      // The application does not appear to use it (good practice)
-      expect(true).toBe(true);
+      const hasDocumentWrite = /document\.write\s*\(/.test(appCode);
+      expect(hasDocumentWrite).toBe(false);
     });
   });
 
   describe('eval Sink Analysis', () => {
-    test('eval should not be used with user input', () => {
+    test('GOOD: eval is not used in application', () => {
       // eval() is extremely dangerous with user input
       // Verify application doesn't use eval with dynamic content
-      // Note: Tests use eval to load app code, but app itself should not
-      expect(true).toBe(true);
+      // Note: Exclude comments and strings from the search
+      const hasEval = /[^a-zA-Z]eval\s*\(/.test(appCode);
+      expect(hasEval).toBe(false);
     });
   });
 
