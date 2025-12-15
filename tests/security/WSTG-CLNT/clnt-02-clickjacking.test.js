@@ -33,7 +33,7 @@ describe('WSTG-CLNT-02: Clickjacking Testing', () => {
   });
 
   describe('Frame Protection Headers', () => {
-    test('VULNERABILITY: index.html does not set X-Frame-Options', () => {
+    test('FIXED: index.html has clickjacking protection', () => {
       // Read index.html to check for frame busting
       const indexPath = path.join(__dirname, '../../../index.html');
       const indexHtml = fs.readFileSync(indexPath, 'utf8');
@@ -46,12 +46,31 @@ describe('WSTG-CLNT-02: Clickjacking Testing', () => {
                               indexHtml.includes('self !== top') ||
                               indexHtml.includes('window.top');
 
-      // Document that protection is missing
-      expect(hasFrameAncestors).toBe(false);
-      expect(hasFrameBusting).toBe(false);
+      // Verify that protection is in place
+      expect(hasFrameAncestors).toBe(true);
+      expect(hasFrameBusting).toBe(true);
 
-      console.log('SECURITY WARNING: No clickjacking protection detected');
-      console.log('Recommendation: Add X-Frame-Options header or CSP frame-ancestors');
+      console.log('SECURITY: Clickjacking protection detected');
+      console.log('- CSP frame-ancestors: ' + hasFrameAncestors);
+      console.log('- JavaScript frame-busting: ' + hasFrameBusting);
+    });
+
+    test('FIXED: user-profile.html has clickjacking protection', () => {
+      // Read user-profile.html to check for frame busting
+      const profilePath = path.join(__dirname, '../../../user-profile.html');
+      const profileHtml = fs.readFileSync(profilePath, 'utf8');
+
+      // Check for meta tag frame protection (CSP frame-ancestors)
+      const hasFrameAncestors = profileHtml.includes('frame-ancestors');
+
+      // Check for JavaScript frame busting code
+      const hasFrameBusting = profileHtml.includes('top.location') ||
+                              profileHtml.includes('self !== top') ||
+                              profileHtml.includes('window.top');
+
+      // Verify that protection is in place
+      expect(hasFrameAncestors).toBe(true);
+      expect(hasFrameBusting).toBe(true);
     });
   });
 

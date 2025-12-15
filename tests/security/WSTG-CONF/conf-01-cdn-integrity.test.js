@@ -72,27 +72,27 @@ describe('WSTG-CONF-01: CDN Integrity Testing', () => {
   });
 
   describe('Font Awesome CDN', () => {
-    test('Document Font Awesome SRI status', () => {
+    test('FIXED: Font Awesome has SRI attributes', () => {
       const hasFontAwesome = indexHtml.includes('font-awesome') ||
                              indexHtml.includes('fontawesome');
 
-      if (!hasFontAwesome) {
-        console.log('Font Awesome not detected');
-        return;
-      }
+      expect(hasFontAwesome).toBe(true);
 
       const fontAwesomeRegex = /<link[^>]+href=["']([^"']*font-?awesome[^"']*)["'][^>]*>/gi;
       const matches = [...indexHtml.matchAll(fontAwesomeRegex)];
 
+      expect(matches.length).toBeGreaterThan(0);
+
       matches.forEach(match => {
         const hasIntegrity = match[0].includes('integrity=');
-        if (!hasIntegrity) {
-          console.log('SECURITY WARNING: Font Awesome resource lacks SRI:', match[1]);
-        }
-      });
+        const hasCrossorigin = match[0].includes('crossorigin=');
 
-      // Document: Font Awesome resources should have SRI for security
-      expect(matches.length).toBeGreaterThanOrEqual(0);
+        // Verify SRI is now in place
+        expect(hasIntegrity).toBe(true);
+        expect(hasCrossorigin).toBe(true);
+
+        console.log('SECURITY: Font Awesome has SRI:', match[1]);
+      });
     });
   });
 
