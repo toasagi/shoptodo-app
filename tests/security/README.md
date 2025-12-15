@@ -94,15 +94,18 @@ npm run test:security:config     # 設定 (Medium)
 
 ### Medium (計画的な対応)
 
-#### V6: SRI未設定
-- **場所**: `index.html` CDNリソース
+#### ~~V6: SRI未設定~~ ✅ FIXED
+- **場所**: `index.html`, `user-profile.html` CDNリソース
 - **影響**: CDN侵害時のリスク
-- **対策**: Subresource Integrity (SRI) 属性の追加
+- **対策**: ✅ Font Awesome に `integrity` と `crossorigin` 属性を追加
+- **修正日**: Issue #35
+- **注意**: Google Fonts は動的生成のためSRI非対応
 
-#### V7: クリックジャッキング保護なし
+#### ~~V7: クリックジャッキング保護なし~~ ✅ FIXED
 - **場所**: アプリケーション全体
 - **影響**: UI リドレス攻撃のリスク
-- **対策**: X-Frame-Options または CSP frame-ancestors の設定
+- **対策**: ✅ CSP `frame-ancestors 'self'` メタタグ + JavaScript frame-busting
+- **修正日**: Issue #35
 
 ## テスト結果の解釈
 
