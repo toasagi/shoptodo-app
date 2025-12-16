@@ -1302,6 +1302,16 @@ class UIManager {
 
         const messageDiv = document.createElement('div');
         messageDiv.className = `message message-${type}`;
+
+        // アクセシビリティ: aria-live リージョン (WCAG 4.1.3)
+        if (type === 'error') {
+            messageDiv.setAttribute('role', 'alert');
+            messageDiv.setAttribute('aria-live', 'assertive');
+        } else {
+            messageDiv.setAttribute('role', 'status');
+            messageDiv.setAttribute('aria-live', 'polite');
+        }
+
         messageDiv.style.cssText = `
             position: fixed;
             top: 20px;
