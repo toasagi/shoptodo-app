@@ -227,7 +227,8 @@ describe('UIManager', () => {
           cssText: ''
         },
         textContent: '',
-        remove: jest.fn()
+        remove: jest.fn(),
+        setAttribute: jest.fn()
       };
 
       document.createElement = jest.fn(() => mockMessageDiv);
@@ -241,6 +242,8 @@ describe('UIManager', () => {
       expect(document.createElement).toHaveBeenCalledWith('div');
       expect(mockMessageDiv.className).toBe('message message-success');
       expect(mockMessageDiv.textContent).toBe('Test message');
+      expect(mockMessageDiv.setAttribute).toHaveBeenCalledWith('role', 'status');
+      expect(mockMessageDiv.setAttribute).toHaveBeenCalledWith('aria-live', 'polite');
       expect(document.body.appendChild).toHaveBeenCalledWith(mockMessageDiv);
     });
 
@@ -254,7 +257,8 @@ describe('UIManager', () => {
         className: '',
         style: { cssText: '' },
         textContent: '',
-        remove: jest.fn()
+        remove: jest.fn(),
+        setAttribute: jest.fn()
       }));
       document.body.appendChild = jest.fn();
 
