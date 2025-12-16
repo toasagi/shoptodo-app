@@ -15,6 +15,7 @@
     "test:e2e:regression": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@regression' --format allure-cucumberjs/reporter --format-options '{\"resultsDir\":\"./allure-results\"}'",
     "test:e2e:parallel": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --parallel 2 --format allure-cucumberjs/reporter --format-options '{\"resultsDir\":\"./allure-results\"}'",
     "test:e2e:report": "echo 'Test report generation - implement if needed'",
+    "test:a11y": "cucumber-js --require-module ts-node/register --require 'step-definitions/**/*.ts' --require 'support/**/*.ts' --tags '@a11y' --format allure-cucumberjs/reporter --format-options '{\"resultsDir\":\"./allure-results\"}'",
     "install:browsers": "npx playwright install"
   },
   "keywords": [
@@ -27,6 +28,7 @@
   "author": "Claude Code",
   "license": "MIT",
   "devDependencies": {
+    "@axe-core/playwright": "^4.8.0",
     "@cucumber/cucumber": "^10.0.1",
     "@playwright/test": "^1.40.0",
     "@types/node": "^20.8.0",
