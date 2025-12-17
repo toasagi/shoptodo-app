@@ -84,6 +84,9 @@ const i18n = {
         purchase_history: '購入履歴',
         no_profile: 'プロファイル情報がありません',
         profile_saved: 'プロファイルを保存しました',
+        // Recommended & Category Tabs
+        recommended_products: 'おすすめ商品',
+        all_products: 'すべての商品',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -227,6 +230,9 @@ const i18n = {
         purchase_history: 'Purchase History',
         no_profile: 'No profile information',
         profile_saved: 'Profile saved',
+        // Recommended & Category Tabs
+        recommended_products: 'Recommended',
+        all_products: 'All Products',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -348,6 +354,7 @@ class AppState {
         this.orders = [];
         this.filteredProducts = [];
         this.currentLanguage = 'ja';
+        this.currentCategory = ''; // カテゴリタブの状態（空=すべて）
 
         this.initializeData();
         this.loadFromStorage();
@@ -612,6 +619,27 @@ class AppState {
 
         this.filteredProducts = filtered;
     }
+
+    // 各カテゴリから1商品ずつ選択しておすすめ商品を取得
+    getRecommendedProducts() {
+        const categories = ['electronics', 'clothing', 'books', 'home'];
+        const recommended = [];
+
+        categories.forEach(category => {
+            const productsInCategory = this.products.filter(p => p.category === category);
+            if (productsInCategory.length > 0) {
+                // 各カテゴリから最初の商品を選択
+                recommended.push(productsInCategory[0]);
+            }
+        });
+
+        return recommended;
+    }
+
+    // 現在のカテゴリを設定
+    setCategory(category) {
+        this.currentCategory = category;
+    }
 }
 
 // UI管理クラス
@@ -757,12 +785,15 @@ class UIManager {
             this.updateProductFilters();
         });
 
-        document.getElementById('category-filter').addEventListener('change', () => {
+        document.getElementById('sort-select').addEventListener('change', () => {
             this.updateProductFilters();
         });
 
-        document.getElementById('sort-select').addEventListener('change', () => {
-            this.updateProductFilters();
+        // カテゴリタブ
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                this.switchCategory(tab.dataset.category);
+            });
         });
 
         // チェックアウト
@@ -797,6 +828,7 @@ class UIManager {
     updateUI() {
         this.updateLanguageUI();
         this.updateAuthUI();
+        this.renderRecommendedProducts();
         this.renderProducts();
         this.renderCart();
         this.renderTodos();
@@ -894,11 +926,26 @@ class UIManager {
 
     updateProductFilters() {
         const searchTerm = document.getElementById('search-input').value;
-        const category = document.getElementById('category-filter').value;
+        const category = this.appState.currentCategory;
         const sortBy = document.getElementById('sort-select').value;
 
         this.appState.filterProducts(searchTerm, category, sortBy);
         this.renderProducts();
+    }
+
+    switchCategory(category) {
+        // カテゴリ状態を更新
+        this.appState.setCategory(category);
+
+        // タブのアクティブ状態を更新
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            const isActive = tab.dataset.category === category;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        // 商品一覧を更新
+        this.updateProductFilters();
     }
 
     renderProducts() {
@@ -931,6 +978,46 @@ class UIManager {
                         ${!this.appState.currentUser ? `disabled title="${escapeHTML(loginRequiredTitle)}"` : ''}>
                     <i class="fas fa-shopping-cart"></i> ${this.t('add_to_cart')}
                 </button>
+            `;
+            grid.appendChild(productCard);
+        });
+    }
+
+    renderRecommendedProducts() {
+        const grid = document.getElementById('recommended-grid');
+        if (!grid) return;
+
+        grid.innerHTML = '';
+        const recommendedProducts = this.appState.getRecommendedProducts();
+
+        recommendedProducts.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.className = 'recommended-card';
+
+            const productName = this.getProductName(product.name);
+            const categoryName = this.getCategoryName(product.category);
+            const loginRequiredTitle = this.t('login_required');
+
+            // カテゴリー別アイコン
+            const categoryIcons = {
+                electronics: '<i class="fas fa-mobile-alt"></i>',
+                clothing: '<i class="fas fa-tshirt"></i>',
+                books: '<i class="fas fa-book"></i>',
+                home: '<i class="fas fa-home"></i>'
+            };
+            const categoryIcon = categoryIcons[product.category] || '<i class="fas fa-tag"></i>';
+
+            productCard.innerHTML = `
+                <img src="${product.image}" alt="${escapeHTML(productName)}" class="recommended-image" loading="lazy">
+                <div class="recommended-content">
+                    <div class="recommended-name">${escapeHTML(productName)}</div>
+                    <div class="recommended-price">¥${product.price.toLocaleString()}</div>
+                    <div class="recommended-category">${categoryIcon} ${escapeHTML(categoryName)}</div>
+                    <button class="btn btn-primary" onclick="ui.addToCart(${product.id})"
+                            ${!this.appState.currentUser ? `disabled title="${escapeHTML(loginRequiredTitle)}"` : ''}>
+                        <i class="fas fa-shopping-cart"></i> ${this.t('add_to_cart')}
+                    </button>
+                </div>
             `;
             grid.appendChild(productCard);
         });
