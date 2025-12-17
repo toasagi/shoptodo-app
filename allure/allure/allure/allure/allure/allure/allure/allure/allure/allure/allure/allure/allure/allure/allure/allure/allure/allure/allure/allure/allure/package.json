@@ -7,6 +7,13 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:security": "jest tests/security --verbose",
+    "test:security:critical": "jest tests/security/WSTG-INPV --verbose",
+    "test:security:auth": "jest tests/security/WSTG-ATHN --verbose",
+    "test:security:business": "jest tests/security/WSTG-BUSL --verbose",
+    "test:security:client": "jest tests/security/WSTG-CLNT --verbose",
+    "test:security:session": "jest tests/security/WSTG-SESS --verbose",
+    "test:security:config": "jest tests/security/WSTG-CONF --verbose",
     "serve": "python3 -m http.server 8000"
   },
   "keywords": [

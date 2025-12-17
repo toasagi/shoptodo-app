@@ -217,6 +217,9 @@
     </style>
 </head>
 <body>
+    <!-- アクセシビリティ: スキップナビゲーション (WCAG 2.4.1) -->
+    <a href="#main-content" class="skip-link" data-i18n="skip_to_content">メインコンテンツへスキップ</a>
+
     <!-- Security: Frame-busting script for clickjacking protection (legacy browsers) -->
     <script>
         if (window.top !== window.self) {
@@ -239,7 +242,7 @@
         </div>
     </header>
 
-    <main class="main">
+    <main id="main-content" class="main">
         <div class="container">
             <div class="profile-container">
                 <a href="index.html" class="back-link">
