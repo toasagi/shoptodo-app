@@ -619,9 +619,101 @@ class UIManager {
         this.currentCheckoutStep = 1;
         this.shippingFormData = {};
         this.paymentMethodData = null;
+        this.previousActiveElement = null;
+        this.currentModal = null;
+        this.boundHandleModalKeydown = this.handleModalKeydown.bind(this);
         this.initializeEventListeners();
         this.initializeCheckoutModal();
         this.updateUI();
+    }
+
+    // アクセシビリティ: モーダルのフォーカストラップ (WCAG 2.4.3)
+    getFocusableElements(modal) {
+        const focusableSelectors = [
+            'button:not([disabled])',
+            'input:not([disabled])',
+            'select:not([disabled])',
+            'textarea:not([disabled])',
+            'a[href]',
+            '[tabindex]:not([tabindex="-1"])'
+        ].join(', ');
+        return modal.querySelectorAll(focusableSelectors);
+    }
+
+    handleModalKeydown(e) {
+        if (!this.currentModal) return;
+
+        // Escapeキーでモーダルを閉じる
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            this.closeCurrentModal();
+            return;
+        }
+
+        // Tabキーのトラップ
+        if (e.key === 'Tab') {
+            const focusableElements = this.getFocusableElements(this.currentModal);
+            if (focusableElements.length === 0) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            if (e.shiftKey) {
+                // Shift+Tab: 最初の要素から最後の要素へ
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                // Tab: 最後の要素から最初の要素へ
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        }
+    }
+
+    openModal(modal) {
+        this.previousActiveElement = document.activeElement;
+        this.currentModal = modal;
+        modal.style.display = 'block';
+
+        // フォーカスを最初のフォーカス可能要素に移動
+        const focusableElements = this.getFocusableElements(modal);
+        if (focusableElements.length > 0) {
+            setTimeout(() => focusableElements[0].focus(), 50);
+        }
+
+        // キーボードイベントリスナーを追加
+        document.addEventListener('keydown', this.boundHandleModalKeydown);
+    }
+
+    closeModal(modal) {
+        modal.style.display = 'none';
+        this.currentModal = null;
+
+        // キーボードイベントリスナーを削除
+        document.removeEventListener('keydown', this.boundHandleModalKeydown);
+
+        // フォーカスを元の要素に戻す
+        if (this.previousActiveElement) {
+            this.previousActiveElement.focus();
+            this.previousActiveElement = null;
+        }
+    }
+
+    closeCurrentModal() {
+        if (this.currentModal) {
+            const modalId = this.currentModal.id;
+            if (modalId === 'login-modal') {
+                this.hideLoginModal();
+            } else if (modalId === 'checkout-modal') {
+                this.hideCheckoutModal();
+            } else if (modalId === 'order-history-modal') {
+                this.hideOrderHistoryModal();
+            }
+        }
     }
 
     initializeEventListeners() {
@@ -768,11 +860,13 @@ class UIManager {
     }
 
     showLoginModal() {
-        document.getElementById('login-modal').style.display = 'block';
+        const modal = document.getElementById('login-modal');
+        this.openModal(modal);
     }
 
     hideLoginModal() {
-        document.getElementById('login-modal').style.display = 'none';
+        const modal = document.getElementById('login-modal');
+        this.closeModal(modal);
         document.getElementById('login-form').reset();
     }
 
@@ -959,11 +1053,13 @@ class UIManager {
         document.getElementById('payment-form').reset();
 
         this.goToCheckoutStep(1);
-        document.getElementById('checkout-modal').style.display = 'block';
+        const modal = document.getElementById('checkout-modal');
+        this.openModal(modal);
     }
 
     hideCheckoutModal() {
-        document.getElementById('checkout-modal').style.display = 'none';
+        const modal = document.getElementById('checkout-modal');
+        this.closeModal(modal);
         this.goToCheckoutStep(1);
     }
 
@@ -1077,11 +1173,12 @@ class UIManager {
         }
 
         this.renderOrderHistory();
-        modal.style.display = 'block';
+        this.openModal(modal);
     }
 
     hideOrderHistoryModal() {
-        document.getElementById('order-history-modal').style.display = 'none';
+        const modal = document.getElementById('order-history-modal');
+        this.closeModal(modal);
     }
 
     renderOrderHistory() {
