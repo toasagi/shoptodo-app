@@ -28,15 +28,8 @@ Then('there should be at least {int} orders in history', async function(this: Cu
 
 // Then Steps - Order Summary
 Then('the order summary should show {int} items', async function(this: CustomWorld, count: number) {
-  const orderItems = await this.page.locator('#order-items-list .order-item-line').count();
+  const orderItems = await this.page.locator('#order-items-list .order-item').count();
   expect(orderItems, `Order summary should show ${count} items`).toBe(count);
 });
 
-// Helper step for filling valid shipping info (used by multiple scenarios)
-When('the user fills in valid shipping information', async function(this: CustomWorld) {
-  await this.page.fill('#shipping-name', 'Test User');
-  await this.page.fill('#shipping-email', 'test@example.com');
-  await this.page.fill('#shipping-phone', '090-1234-5678');
-  await this.page.fill('#shipping-postal', '100-0001');
-  await this.page.fill('#shipping-address', 'Tokyo, Test Address 1-1');
-});
+// Note: "the user fills in valid shipping information" step is defined in checkout.steps.ts

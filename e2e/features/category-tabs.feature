@@ -58,8 +58,8 @@ Feature: Category Tab Navigation
   @category-tabs @search
   Scenario: Search works within selected category
     Given the user has clicked the "Electronics" category tab
-    When the user searches for "スマート"
-    Then only products matching "スマート" in "electronics" category should be displayed
+    When the user searches for "Smart"
+    Then only products matching "Smart" in "electronics" category should be displayed
 
   @category-tabs @sort
   Scenario: Sort works within selected category
@@ -85,7 +85,8 @@ Feature: Category Tab Navigation
 
   @i18n @category-tabs @language-switch
   Scenario: Category tabs update after language switch
-    Given the "Electronics" tab should be active
+    When the user clicks the "Electronics" category tab
+    Then the "Electronics" tab should be active
     When the user switches language to Japanese
     Then the "電子機器" tab should be active
     And only products in "electronics" category should be displayed

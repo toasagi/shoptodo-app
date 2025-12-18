@@ -12,6 +12,9 @@ Feature: Product Browsing and Purchase Workflow
 
   @smoke @workflow @e2e
   Scenario: Complete purchase workflow from login to order history
+    # Set language to English for UI
+    Given the language is set to English
+
     # Step 1: Login
     When the user clicks the login button to open modal
     And the user enters username "demo"

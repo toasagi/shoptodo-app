@@ -29,8 +29,7 @@ Feature: Recommended Products Display
 
   @recommended @cart @negative
   Scenario: Cannot add recommended product to cart when not logged in
-    When the user tries to add a recommended product to cart
-    Then an error message should be displayed
+    Then the recommended add to cart buttons should be disabled
     And the cart should remain empty
 
   # ============================================

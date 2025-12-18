@@ -62,6 +62,16 @@ When('the user tries to add a recommended product to cart', async function(this:
   await this.page.waitForTimeout(500);
 });
 
+Then('the recommended add to cart buttons should be disabled', async function(this: CustomWorld) {
+  const buttons = await this.page.locator('.recommended-card button.btn-primary').all();
+  expect(buttons.length, 'Should have recommended product buttons').toBeGreaterThan(0);
+
+  for (const button of buttons) {
+    const isDisabled = await button.isDisabled();
+    expect(isDisabled, 'Recommended add to cart button should be disabled when not logged in').toBe(true);
+  }
+});
+
 // Then Steps - Messages
 Then('a success message should be displayed', async function(this: CustomWorld) {
   const message = this.page.locator('.message-success');

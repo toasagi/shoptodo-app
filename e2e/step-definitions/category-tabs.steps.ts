@@ -49,6 +49,9 @@ Then('only products matching {string} in {string} category should be displayed',
   searchTerm: string,
   category: string
 ) {
+  // Wait for search filtering to complete
+  await this.page.waitForTimeout(1000);
+
   const products = await this.page.locator('.product-card:visible').all();
 
   // Category name mapping
@@ -59,6 +62,17 @@ Then('only products matching {string} in {string} category should be displayed',
     'home': ['home', 'ホーム'],
   };
   const validCategoryNames = categoryMap[category.toLowerCase()] || [category];
+
+  // Collect all product info for debugging
+  const productInfos: string[] = [];
+  for (const product of products) {
+    const name = await product.locator('.product-name').textContent();
+    const cat = await product.locator('.product-category').textContent();
+    productInfos.push(`${name} (${cat})`);
+  }
+
+  // Verify we have at least one matching product
+  expect(products.length, `Should have products matching "${searchTerm}" in ${category}. Found: ${productInfos.join(', ')}`).toBeGreaterThan(0);
 
   for (const product of products) {
     // Check category
@@ -72,7 +86,7 @@ Then('only products matching {string} in {string} category should be displayed',
     const productName = await product.locator('.product-name').textContent();
     expect(
       productName?.includes(searchTerm),
-      `Product name "${productName}" should contain "${searchTerm}"`
+      `Product name "${productName}" should contain "${searchTerm}". Visible products: ${productInfos.join(', ')}`
     ).toBe(true);
   }
 });
@@ -90,15 +104,4 @@ Then('the cart should contain {int} items', async function(this: CustomWorld, co
   expect(cartItems, `Cart should contain ${count} items`).toBe(count);
 });
 
-// Then Steps - Japanese UI
-Then('the product names should be displayed in Japanese', async function(this: CustomWorld) {
-  const products = await this.page.locator('.product-card:visible .product-name').all();
-
-  // Check at least the first few products
-  const checkCount = Math.min(products.length, 3);
-  for (let i = 0; i < checkCount; i++) {
-    const name = await products[i].textContent();
-    const hasJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(name || '');
-    expect(hasJapanese, `Product name "${name}" should contain Japanese characters`).toBe(true);
-  }
-});
+// Note: "the product names should be displayed in Japanese" step is defined in language.steps.ts
