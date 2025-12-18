@@ -192,18 +192,30 @@
                 </div>
             </div>
 
-            <!-- 商品検索・フィルタ -->
-            <section class="search-section">
+            <!-- おすすめ商品 -->
+            <section class="recommended-section">
+                <h2 data-i18n="recommended_products">おすすめ商品</h2>
+                <div id="recommended-grid" class="recommended-grid">
+                    <!-- おすすめ商品が動的に表示される -->
+                </div>
+            </section>
+
+            <!-- 商品カタログ -->
+            <section class="catalog-section">
                 <h2 data-i18n="product_catalog">商品カタログ</h2>
+
+                <!-- カテゴリタブ -->
+                <nav class="category-tabs" role="tablist" aria-label="商品カテゴリ">
+                    <button class="category-tab active" data-category="" role="tab" aria-selected="true" data-i18n="all_products">すべて</button>
+                    <button class="category-tab" data-category="electronics" role="tab" aria-selected="false" data-i18n="electronics">電子機器</button>
+                    <button class="category-tab" data-category="clothing" role="tab" aria-selected="false" data-i18n="clothing">衣類</button>
+                    <button class="category-tab" data-category="books" role="tab" aria-selected="false" data-i18n="books">書籍</button>
+                    <button class="category-tab" data-category="home" role="tab" aria-selected="false" data-i18n="home">ホーム</button>
+                </nav>
+
+                <!-- 検索・ソート -->
                 <div class="search-controls">
                     <input type="text" id="search-input" placeholder="商品を検索..." class="search-input" data-i18n-placeholder="search_placeholder">
-                    <select id="category-filter" class="filter-select" aria-label="カテゴリフィルター">
-                        <option value="" data-i18n="all_categories">すべてのカテゴリ</option>
-                        <option value="electronics" data-i18n="electronics">電子機器</option>
-                        <option value="clothing" data-i18n="clothing">衣類</option>
-                        <option value="books" data-i18n="books">書籍</option>
-                        <option value="home" data-i18n="home">ホーム</option>
-                    </select>
                     <select id="sort-select" class="filter-select" aria-label="並び替え">
                         <option value="name" data-i18n="sort_name">名前順</option>
                         <option value="price-low" data-i18n="sort_price_low">価格（安い順）</option>

@@ -4,7 +4,8 @@ import { CustomWorld } from '../support/world';
 
 // Given Steps
 Given('the application is available', async function(this: CustomWorld) {
-  // This step will be verified when we navigate to the app
+  // Navigate to the app and wait for it to load
+  await this.navigateToApp();
 });
 
 Given('the user is on the login page', async function(this: CustomWorld) {

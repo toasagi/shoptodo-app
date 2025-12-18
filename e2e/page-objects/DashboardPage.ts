@@ -402,7 +402,14 @@ export class DashboardPage {
 
   async applyFilter(filterType: string, filterValue: string): Promise<void> {
     if (filterType === 'category') {
-      await this.page.locator(`#category-filter, select[name="category"]`).selectOption(filterValue);
+      // Use category tabs instead of dropdown
+      const categoryTab = this.page.locator(`.category-tab[data-category="${filterValue}"]`);
+      if (await categoryTab.isVisible()) {
+        await categoryTab.click();
+      } else {
+        // Fallback to old dropdown if tabs not found
+        await this.page.locator(`#category-filter, select[name="category"]`).selectOption(filterValue);
+      }
     }
     await this.page.waitForTimeout(500);
   }

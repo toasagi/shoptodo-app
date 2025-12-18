@@ -16,6 +16,7 @@ describe('UIManager', () => {
 
     // Mock DOM methods
     uiManager.renderProducts = jest.fn();
+    uiManager.renderRecommendedProducts = jest.fn();
     uiManager.renderCart = jest.fn();
     uiManager.renderTodos = jest.fn();
     uiManager.updateAuthUI = jest.fn();
@@ -277,6 +278,7 @@ describe('UIManager', () => {
 
       expect(updateLanguageUISpy).toHaveBeenCalled();
       expect(updateAuthUISpy).toHaveBeenCalled();
+      expect(uiManager.renderRecommendedProducts).toHaveBeenCalled();
       expect(uiManager.renderProducts).toHaveBeenCalled();
       expect(uiManager.renderCart).toHaveBeenCalled();
       expect(uiManager.renderTodos).toHaveBeenCalled();
