@@ -32,10 +32,7 @@ When('the user opens the login modal', async function(this: CustomWorld) {
   await this.page.waitForTimeout(500);
 });
 
-When('the user views the product catalog', async function(this: CustomWorld) {
-  // Products should be visible on the main page
-  await this.page.waitForSelector('.products-grid');
-});
+// Note: "the user views the product catalog" step is defined in language.steps.ts
 
 When('the user opens the checkout modal', async function(this: CustomWorld) {
   await this.page.locator('#checkout-btn').click();
