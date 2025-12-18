@@ -17,36 +17,52 @@ class UserProfileManager {
 
     initializeEventListeners() {
         // Language switcher
-        document.getElementById('lang-en').addEventListener('click', () => {
-            this.switchLanguage('en');
-        });
-
-        document.getElementById('lang-ja').addEventListener('click', () => {
-            this.switchLanguage('ja');
-        });
+        const langEn = document.getElementById('lang-en');
+        const langJa = document.getElementById('lang-ja');
+        if (langEn) {
+            langEn.addEventListener('click', () => {
+                this.switchLanguage('en');
+            });
+        }
+        if (langJa) {
+            langJa.addEventListener('click', () => {
+                this.switchLanguage('ja');
+            });
+        }
 
         // Logout
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            this.appState.logout();
-            window.location.href = 'index.html';
-        });
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                this.appState.logout();
+                window.location.href = 'index.html';
+            });
+        }
 
         // Profile form
-        document.getElementById('profile-form').addEventListener('submit', (e) => {
-            this.handleProfileSubmit(e);
-        });
+        const profileForm = document.getElementById('profile-form');
+        if (profileForm) {
+            profileForm.addEventListener('submit', (e) => {
+                this.handleProfileSubmit(e);
+            });
+        }
 
         // Todo
-        document.getElementById('add-todo-btn').addEventListener('click', () => {
-            this.addTodo();
-        });
-
-        document.getElementById('todo-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
+        const addTodoBtn = document.getElementById('add-todo-btn');
+        const todoInput = document.getElementById('todo-input');
+        if (addTodoBtn) {
+            addTodoBtn.addEventListener('click', () => {
                 this.addTodo();
-            }
-        });
+            });
+        }
+        if (todoInput) {
+            todoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.addTodo();
+                }
+            });
+        }
     }
 
     updateUI() {
