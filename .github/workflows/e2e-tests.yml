@@ -111,11 +111,11 @@ jobs:
       run: |
         npm run serve &
         sleep 5
-        curl -f http://localhost:8000 || (echo "Application failed to start" && exit 1)
+        curl -f http://localhost:8001 || (echo "Application failed to start" && exit 1)
 
     - name: Wait for application to be ready
       run: |
-        timeout 30 bash -c 'until curl -f http://localhost:8000; do sleep 1; done'
+        timeout 30 bash -c 'until curl -f http://localhost:8001; do sleep 1; done'
 
     - name: Run E2E tests
       id: e2e_tests
@@ -139,7 +139,7 @@ jobs:
       env:
         BROWSER: ${{ matrix.browser }}
         HEADLESS: 'true'
-        APP_URL: 'http://localhost:8000'
+        APP_URL: 'http://localhost:8001'
         CI: 'true'
         ALLURE_RESULTS_DIR: './allure-results'
 
@@ -212,7 +212,7 @@ jobs:
       run: |
         npm run serve &
         sleep 5
-        curl -f http://localhost:8000 || (echo "Application failed to start" && exit 1)
+        curl -f http://localhost:8001 || (echo "Application failed to start" && exit 1)
 
     - name: Run parallel E2E tests
       run: |
@@ -220,7 +220,7 @@ jobs:
         npm run test
       env:
         HEADLESS: 'true'
-        APP_URL: 'http://localhost:8000'
+        APP_URL: 'http://localhost:8001'
         CI: 'true'
 
     - name: Upload parallel test results
