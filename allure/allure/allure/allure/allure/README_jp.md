@@ -286,25 +286,45 @@ tests/
 
 ## E2E自動化テスト
 
-このプロジェクトには、Cucumber BDD + Playwrightを使用したログイン機能のE2E自動化テストが含まれています。
+このプロジェクトには、Cucumber BDD + Playwrightを使用した包括的なE2E自動化テストが含まれています。
 
 ### E2Eテストの構成
 
 ```
 e2e/
-├── features/                    # Gherkinフィーチャーファイル
-│   ├── login.feature           # ログインテストシナリオ
-│   └── simple.feature          # 基本接続テスト
+├── features/                    # Gherkinフィーチャーファイル（11ファイル、74シナリオ）
+│   ├── login.feature           # 認証機能（8シナリオ）
+│   ├── checkout.feature        # チェックアウト（13シナリオ）
+│   ├── cart.feature            # ショッピングカート（6シナリオ）
+│   ├── search.feature          # 商品検索（8シナリオ）
+│   ├── category-tabs.feature   # カテゴリナビゲーション（11シナリオ）
+│   ├── language.feature        # 言語切り替え（7シナリオ）
+│   ├── recommended.feature     # おすすめ商品（6シナリオ）
+│   ├── product-workflow.feature # E2Eワークフロー（6シナリオ）
+│   ├── accessibility.feature   # アクセシビリティ（5シナリオ）
+│   ├── todo.feature            # Todo/メモ機能（3シナリオ）
+│   └── simple.feature          # 基本接続テスト（1シナリオ）
+├── step-definitions/           # Cucumberステップ定義（11ファイル）
+│   ├── login.steps.ts
+│   ├── checkout.steps.ts
+│   ├── cart.steps.ts
+│   ├── search.steps.ts
+│   ├── category-tabs.steps.ts
+│   ├── language.steps.ts
+│   ├── recommended.steps.ts
+│   ├── product-workflow.steps.ts
+│   ├── accessibility.steps.ts
+│   ├── todo.steps.ts
+│   └── simple.steps.ts
 ├── page-objects/               # Page Object Model
 │   ├── LoginPage.ts           # ログインページメソッド
-│   └── DashboardPage.ts       # ダッシュボードページメソッド
-├── step-definitions/          # Cucumberステップ定義
-│   ├── login.steps.ts         # ログインステップ定義
-│   └── simple.steps.ts        # シンプルテストステップ
+│   ├── DashboardPage.ts       # ダッシュボード/商品ページメソッド
+│   └── CheckoutPage.ts        # チェックアウト/注文履歴メソッド
 ├── support/                   # テスト支援
 │   ├── world.ts              # テスト実行環境
 │   └── hooks.ts              # Before/Afterフック
 ├── screenshots/              # テスト失敗時のスクリーンショット（gitignored）
+├── allure-results/           # Allureレポートデータ（gitignored）
 ├── reports/                  # テストレポート
 ├── package.json             # 依存関係とスクリプト
 ├── cucumber.config.js       # Cucumber設定
@@ -362,12 +382,18 @@ HEADLESS=false npm test
 
 ### E2Eテストの特徴
 
-#### 現在のテストカバレッジ
-- **ログイン機能**: 完全なログインフローのテスト
-  - 有効な資格情報でのログイン成功
-  - 無効な資格情報でのログイン失敗
-  - 空フィールドバリデーション
-  - ログアウト機能
+#### 現在のテストカバレッジ（74シナリオ）
+- **認証機能** (login.feature): ログイン/ログアウト、バリデーション、エラー処理
+- **チェックアウト** (checkout.feature): マルチステップウィザード、支払い方法、注文完了
+- **ショッピングカート** (cart.feature): 商品追加/削除、数量変更、合計計算
+- **商品検索** (search.feature): 検索、カテゴリフィルタ、ソート機能
+- **カテゴリナビゲーション** (category-tabs.feature): タブフィルタ、カテゴリ切り替え
+- **言語切り替え** (language.feature): 日本語/英語UI、i18n永続化
+- **おすすめ商品** (recommended.feature): 商品レコメンド、カートへ追加
+- **商品ワークフロー** (product-workflow.feature): 購入フロー全体のE2Eテスト
+- **アクセシビリティ** (accessibility.feature): WCAG準拠、ARIA属性、スキップリンク
+- **Todo/メモ** (todo.feature): メモの追加、切り替え、削除
+- **注文履歴**: 注文表示、永続化、空状態の処理
 - **基本接続**: アプリケーション可用性の確認
 
 #### 使用技術

@@ -286,6 +286,17 @@ const i18n = {
     }
 };
 
+// XSS対策: HTMLエスケープ関数
+function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 // SVGプレースホルダー画像生成関数（個別商品対応）
 function generateProductImage(emoji, primaryColor, secondaryColor) {
     // グラデーション背景を持つSVG画像を生成
@@ -816,12 +827,12 @@ class UIManager {
             const categoryIcon = categoryIcons[product.category] || '<i class="fas fa-tag"></i>';
 
             productCard.innerHTML = `
-                <img src="${product.image}" alt="${productName}" class="product-image" loading="lazy">
-                <div class="product-name">${productName}</div>
+                <img src="${product.image}" alt="${escapeHTML(productName)}" class="product-image" loading="lazy">
+                <div class="product-name">${escapeHTML(productName)}</div>
                 <div class="product-price">¥${product.price.toLocaleString()}</div>
-                <div class="product-category">${categoryIcon} ${categoryName}</div>
+                <div class="product-category">${categoryIcon} ${escapeHTML(categoryName)}</div>
                 <button class="btn btn-primary" onclick="ui.addToCart(${product.id})"
-                        ${!this.appState.currentUser ? `disabled title="${loginRequiredTitle}"` : ''}>
+                        ${!this.appState.currentUser ? `disabled title="${escapeHTML(loginRequiredTitle)}"` : ''}>
                     <i class="fas fa-shopping-cart"></i> ${this.t('add_to_cart')}
                 </button>
             `;
@@ -869,7 +880,7 @@ class UIManager {
                 const itemName = this.getProductName(item.name);
                 cartItem.innerHTML = `
                     <div class="cart-item-info">
-                        <div class="cart-item-name">${itemName}</div>
+                        <div class="cart-item-name">${escapeHTML(itemName)}</div>
                         <div class="cart-item-price">¥${item.price.toLocaleString()} × ${item.quantity}</div>
                     </div>
                     <div class="cart-item-controls">
@@ -1014,7 +1025,7 @@ class UIManager {
             itemDiv.className = 'order-item';
             const itemName = this.getProductName(item.name);
             itemDiv.innerHTML = `
-                <span>${itemName} × ${item.quantity}</span>
+                <span>${escapeHTML(itemName)} × ${item.quantity}</span>
                 <span>¥${(item.price * item.quantity).toLocaleString()}</span>
             `;
             itemsList.appendChild(itemDiv);
@@ -1025,11 +1036,11 @@ class UIManager {
 
         const shippingInfo = document.getElementById('order-shipping-info');
         shippingInfo.innerHTML = `
-            <p><strong>${this.t('full_name')}:</strong> ${this.shippingFormData.name}</p>
-            <p><strong>${this.t('email')}:</strong> ${this.shippingFormData.email}</p>
-            <p><strong>${this.t('phone')}:</strong> ${this.shippingFormData.phone}</p>
-            <p><strong>${this.t('postal_code')}:</strong> ${this.shippingFormData.postalCode}</p>
-            <p><strong>${this.t('address')}:</strong> ${this.shippingFormData.address}</p>
+            <p><strong>${this.t('full_name')}:</strong> ${escapeHTML(this.shippingFormData.name)}</p>
+            <p><strong>${this.t('email')}:</strong> ${escapeHTML(this.shippingFormData.email)}</p>
+            <p><strong>${this.t('phone')}:</strong> ${escapeHTML(this.shippingFormData.phone)}</p>
+            <p><strong>${this.t('postal_code')}:</strong> ${escapeHTML(this.shippingFormData.postalCode)}</p>
+            <p><strong>${this.t('address')}:</strong> ${escapeHTML(this.shippingFormData.address)}</p>
         `;
 
         const paymentInfo = document.getElementById('order-payment-info');
@@ -1097,7 +1108,7 @@ class UIManager {
                 const itemName = this.getProductName(item.name);
                 itemsHTML += `
                     <div class="order-item-line">
-                        <span>${itemName} × ${item.quantity}</span>
+                        <span>${escapeHTML(itemName)} × ${item.quantity}</span>
                         <span>¥${(item.price * item.quantity).toLocaleString()}</span>
                     </div>
                 `;
@@ -1116,8 +1127,8 @@ class UIManager {
                     <span>¥${order.total.toLocaleString()}</span>
                 </div>
                 <div class="order-shipping-summary">
-                    <div><strong>${this.t('shipping_to')}:</strong> ${order.shippingInfo.name}</div>
-                    <div>${order.shippingInfo.address}</div>
+                    <div><strong>${this.t('shipping_to')}:</strong> ${escapeHTML(order.shippingInfo.name)}</div>
+                    <div>${escapeHTML(order.shippingInfo.address)}</div>
                     <div><strong>${this.t('payment')}:</strong> ${this.t(order.paymentMethod)}</div>
                 </div>
             `;
@@ -1160,7 +1171,7 @@ class UIManager {
             todoItem.className = 'todo-item';
             const toggleTitle = todo.completed ? this.t('incomplete') : this.t('complete');
             todoItem.innerHTML = `
-                <span class="todo-text ${todo.completed ? 'completed' : ''}">${todo.text}</span>
+                <span class="todo-text ${todo.completed ? 'completed' : ''}">${escapeHTML(todo.text)}</span>
                 <div class="todo-controls">
                     <button class="todo-btn" onclick="ui.toggleTodo(${todo.id})" title="${toggleTitle}">
                         ${todo.completed ? '↩️' : '✅'}
@@ -1225,7 +1236,8 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         i18n,
         AppState,
-        UIManager
+        UIManager,
+        escapeHTML
     };
 } else {
     // Browser environment
