@@ -379,8 +379,8 @@ body {
 }
 
 .category-tab.active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
+    background: var(--color-primary-dark); /* WCAG AA対応: #007a8c は白文字と4.6:1以上のコントラスト */
+    border-color: var(--color-primary-dark);
     color: white;
 }
 
