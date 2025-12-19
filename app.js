@@ -97,6 +97,8 @@ const i18n = {
         password_mismatch: 'パスワードが一致しません',
         password_too_short: 'パスワードは6文字以上必要です',
         username_too_short: 'ユーザー名は3文字以上必要です',
+        demo_mode_login: 'デモモードでログインしました（バックエンド未接続）',
+        backend_required: 'このユーザーでログインするにはバックエンドサーバーが必要です',
         // Recommended & Category Tabs
         recommended_products: 'おすすめ商品',
         all_products: 'すべての商品',
@@ -256,6 +258,8 @@ const i18n = {
         password_mismatch: 'Passwords do not match',
         password_too_short: 'Password must be at least 6 characters',
         username_too_short: 'Username must be at least 3 characters',
+        demo_mode_login: 'Logged in with demo mode (backend not connected)',
+        backend_required: 'Backend server is required to login with this user',
         // Recommended & Category Tabs
         recommended_products: 'Recommended',
         all_products: 'All Products',
@@ -1092,22 +1096,25 @@ class UIManager {
                 this.showMessage(this.t('login_success'), 'success');
                 return;
             } catch (error) {
-                // If API fails, try fallback local login (for demo user compatibility)
+                // If API fails with auth error, show error and return
                 if (error.code !== 'NETWORK_ERROR') {
                     this.showMessage(this.t('login_error'), 'error');
                     return;
                 }
-                // Network error - fall through to local login
+                // Network error - fall through to demo mode login
+                console.warn('Backend not available, falling back to demo mode');
             }
         }
 
-        // Fallback to local login (demo user)
+        // Fallback to demo mode login (only demo user works)
         if (this.appState.login(username, password)) {
             this.hideLoginModal();
             this.updateUI();
-            this.showMessage(this.t('login_success'), 'success');
+            // Show demo mode warning
+            this.showMessage(this.t('demo_mode_login'), 'info');
         } else {
-            this.showMessage(this.t('login_error'), 'error');
+            // For non-demo users without backend, show backend required message
+            this.showMessage(this.t('backend_required'), 'error');
         }
     }
 
