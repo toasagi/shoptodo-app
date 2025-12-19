@@ -344,22 +344,39 @@ This project includes comprehensive E2E automation testing using Cucumber BDD + 
 
 ```
 e2e/
-├── features/                    # Gherkin feature files
-│   ├── login.feature           # Login test scenarios
-│   ├── checkout.feature        # Checkout process scenarios
-│   └── simple.feature          # Basic connection test
+├── features/                    # Gherkin feature files (11 files, 74 scenarios)
+│   ├── login.feature           # Authentication (8 scenarios)
+│   ├── checkout.feature        # Checkout process (13 scenarios)
+│   ├── cart.feature            # Shopping cart (6 scenarios)
+│   ├── search.feature          # Product search (8 scenarios)
+│   ├── category-tabs.feature   # Category navigation (11 scenarios)
+│   ├── language.feature        # i18n switching (7 scenarios)
+│   ├── recommended.feature     # Recommended products (6 scenarios)
+│   ├── product-workflow.feature # E2E workflows (6 scenarios)
+│   ├── accessibility.feature   # WCAG compliance (5 scenarios)
+│   ├── todo.feature            # Todo/memo (3 scenarios)
+│   └── simple.feature          # Basic connection (1 scenario)
+├── step-definitions/           # Cucumber step definitions (11 files)
+│   ├── login.steps.ts
+│   ├── checkout.steps.ts
+│   ├── cart.steps.ts
+│   ├── search.steps.ts
+│   ├── category-tabs.steps.ts
+│   ├── language.steps.ts
+│   ├── recommended.steps.ts
+│   ├── product-workflow.steps.ts
+│   ├── accessibility.steps.ts
+│   ├── todo.steps.ts
+│   └── simple.steps.ts
 ├── page-objects/               # Page Object Model
 │   ├── LoginPage.ts           # Login page methods
-│   ├── DashboardPage.ts       # Dashboard page methods
+│   ├── DashboardPage.ts       # Dashboard/product page methods
 │   └── CheckoutPage.ts        # Checkout and order history methods
-├── step-definitions/          # Cucumber step definitions
-│   ├── login.steps.ts         # Login step definitions
-│   ├── checkout.steps.ts      # Checkout step definitions
-│   └── simple.steps.ts        # Simple test steps
 ├── support/                   # Test support
 │   ├── world.ts              # Test execution environment
 │   └── hooks.ts              # Before/After hooks
 ├── screenshots/              # Test failure screenshots (gitignored)
+├── allure-results/           # Allure report data (gitignored)
 ├── reports/                  # Test reports
 ├── package.json             # Dependencies and scripts
 ├── cucumber.config.js       # Cucumber configuration
@@ -417,21 +434,18 @@ HEADLESS=false npm test
 
 ### E2E Test Features
 
-#### Current Test Coverage
-- **Login Functionality**: Complete login flow testing
-  - Successful login with valid credentials
-  - Login failure with invalid credentials
-  - Empty field validation
-  - Logout functionality
-- **Checkout Process**: Full checkout flow testing
-  - Multi-step form completion
-  - Payment method selection
-  - Order confirmation and completion
-  - Form validation testing
-- **Order History**: Order management testing
-  - Order history display
-  - Order persistence
-  - Empty state handling
+#### Current Test Coverage (74 scenarios)
+- **Authentication** (login.feature): Login/logout, validation, error handling
+- **Checkout Process** (checkout.feature): Multi-step wizard, payment methods, order completion
+- **Shopping Cart** (cart.feature): Add/remove items, quantity updates, total calculation
+- **Product Search** (search.feature): Search, filter by category, sort functionality
+- **Category Navigation** (category-tabs.feature): Tab filtering, category switching
+- **Language Switching** (language.feature): Japanese/English UI, i18n persistence
+- **Recommended Products** (recommended.feature): Product recommendations, add to cart
+- **Product Workflows** (product-workflow.feature): End-to-end purchase flows
+- **Accessibility** (accessibility.feature): WCAG compliance, ARIA attributes, skip links
+- **Todo/Memo** (todo.feature): Add, toggle, delete memos
+- **Order History**: Order display, persistence, empty state handling
 - **Basic Connection**: Application availability verification
 
 #### Technologies Used

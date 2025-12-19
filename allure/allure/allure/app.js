@@ -84,6 +84,21 @@ const i18n = {
         purchase_history: '購入履歴',
         no_profile: 'プロファイル情報がありません',
         profile_saved: 'プロファイルを保存しました',
+        // Registration
+        register: '新規登録',
+        confirm_password: 'パスワード確認:',
+        no_account: 'アカウントをお持ちでないですか？',
+        register_link: '新規登録',
+        have_account: 'アカウントをお持ちですか？',
+        login_link: 'ログイン',
+        registration_success: '登録が完了しました',
+        username_taken: 'このユーザー名は既に使用されています',
+        email_taken: 'このメールアドレスは既に登録されています',
+        password_mismatch: 'パスワードが一致しません',
+        password_too_short: 'パスワードは6文字以上必要です',
+        username_too_short: 'ユーザー名は3文字以上必要です',
+        demo_mode_login: 'デモモードでログインしました（バックエンド未接続）',
+        backend_required: 'このユーザーでログインするにはバックエンドサーバーが必要です',
         // Recommended & Category Tabs
         recommended_products: 'おすすめ商品',
         all_products: 'すべての商品',
@@ -230,6 +245,21 @@ const i18n = {
         purchase_history: 'Purchase History',
         no_profile: 'No profile information',
         profile_saved: 'Profile saved',
+        // Registration
+        register: 'Register',
+        confirm_password: 'Confirm Password:',
+        no_account: "Don't have an account?",
+        register_link: 'Register',
+        have_account: 'Already have an account?',
+        login_link: 'Login',
+        registration_success: 'Registration successful',
+        username_taken: 'Username is already taken',
+        email_taken: 'Email is already registered',
+        password_mismatch: 'Passwords do not match',
+        password_too_short: 'Password must be at least 6 characters',
+        username_too_short: 'Username must be at least 3 characters',
+        demo_mode_login: 'Logged in with demo mode (backend not connected)',
+        backend_required: 'Backend server is required to login with this user',
         // Recommended & Category Tabs
         recommended_products: 'Recommended',
         all_products: 'All Products',
@@ -738,6 +768,8 @@ class UIManager {
             const modalId = this.currentModal.id;
             if (modalId === 'login-modal') {
                 this.hideLoginModal();
+            } else if (modalId === 'register-modal') {
+                this.hideRegisterModal();
             } else if (modalId === 'checkout-modal') {
                 this.hideCheckoutModal();
             } else if (modalId === 'order-history-modal') {
@@ -779,6 +811,48 @@ class UIManager {
                 this.hideLoginModal();
             }
         });
+
+        // 登録関連
+        const showRegisterLink = document.getElementById('show-register');
+        if (showRegisterLink) {
+            showRegisterLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.hideLoginModal();
+                this.showRegisterModal();
+            });
+        }
+
+        const showLoginLink = document.getElementById('show-login');
+        if (showLoginLink) {
+            showLoginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.hideRegisterModal();
+                this.showLoginModal();
+            });
+        }
+
+        const registerCloseBtn = document.getElementById('register-close');
+        if (registerCloseBtn) {
+            registerCloseBtn.addEventListener('click', () => {
+                this.hideRegisterModal();
+            });
+        }
+
+        const registerModal = document.getElementById('register-modal');
+        if (registerModal) {
+            registerModal.addEventListener('click', (e) => {
+                if (e.target.id === 'register-modal') {
+                    this.hideRegisterModal();
+                }
+            });
+        }
+
+        const registerForm = document.getElementById('register-form');
+        if (registerForm) {
+            registerForm.addEventListener('submit', (e) => {
+                this.handleRegister(e);
+            });
+        }
 
         // 検索・フィルタ関連
         document.getElementById('search-input').addEventListener('input', () => {
@@ -904,17 +978,143 @@ class UIManager {
         document.getElementById('login-form').reset();
     }
 
-    handleLogin(e) {
+    showRegisterModal() {
+        const modal = document.getElementById('register-modal');
+        if (modal) {
+            const errorDiv = document.getElementById('register-error');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+                errorDiv.textContent = '';
+            }
+            this.openModal(modal);
+        }
+    }
+
+    hideRegisterModal() {
+        const modal = document.getElementById('register-modal');
+        if (modal) {
+            this.closeModal(modal);
+            document.getElementById('register-form').reset();
+            const errorDiv = document.getElementById('register-error');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+            }
+        }
+    }
+
+    async handleRegister(e) {
+        e.preventDefault();
+        const username = document.getElementById('register-username').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirmPassword = document.getElementById('register-confirm-password').value;
+        const errorDiv = document.getElementById('register-error');
+
+        // Clear previous errors
+        if (errorDiv) {
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+        }
+
+        // Validate
+        if (username.length < 3) {
+            this.showRegisterError(this.t('username_too_short'));
+            return;
+        }
+
+        if (password.length < 6) {
+            this.showRegisterError(this.t('password_too_short'));
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            this.showRegisterError(this.t('password_mismatch'));
+            return;
+        }
+
+        // Try API registration if available
+        if (typeof apiClient !== 'undefined') {
+            try {
+                const result = await apiClient.register(username, email, password);
+                // Auto-login after registration
+                const loginResult = await apiClient.login(username, password);
+                this.appState.currentUser = {
+                    username: loginResult.user.username,
+                    profile: loginResult.user.profile || {
+                        displayName: '',
+                        phone: '',
+                        paymentMethod: ''
+                    }
+                };
+                this.appState.saveToStorage();
+                this.hideRegisterModal();
+                this.updateUI();
+                this.showMessage(this.t('registration_success'), 'success');
+            } catch (error) {
+                if (error.code === 'USERNAME_EXISTS') {
+                    this.showRegisterError(this.t('username_taken'));
+                } else if (error.code === 'EMAIL_EXISTS') {
+                    this.showRegisterError(this.t('email_taken'));
+                } else {
+                    this.showRegisterError(error.message);
+                }
+            }
+        } else {
+            // Fallback: show message that server is required
+            this.showRegisterError('Server connection required for registration');
+        }
+    }
+
+    showRegisterError(message) {
+        const errorDiv = document.getElementById('register-error');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    }
+
+    async handleLogin(e) {
         e.preventDefault();
         const username = document.getElementById('username-input').value;
         const password = document.getElementById('password-input').value;
 
+        // Try API login first if available
+        if (typeof apiClient !== 'undefined') {
+            try {
+                const result = await apiClient.login(username, password);
+                this.appState.currentUser = {
+                    username: result.user.username,
+                    profile: result.user.profile || {
+                        displayName: '',
+                        phone: '',
+                        paymentMethod: ''
+                    }
+                };
+                this.appState.saveToStorage();
+                this.hideLoginModal();
+                this.updateUI();
+                this.showMessage(this.t('login_success'), 'success');
+                return;
+            } catch (error) {
+                // If API fails with auth error, show error and return
+                if (error.code !== 'NETWORK_ERROR') {
+                    this.showMessage(this.t('login_error'), 'error');
+                    return;
+                }
+                // Network error - fall through to demo mode login
+                console.warn('Backend not available, falling back to demo mode');
+            }
+        }
+
+        // Fallback to demo mode login (only demo user works)
         if (this.appState.login(username, password)) {
             this.hideLoginModal();
             this.updateUI();
-            this.showMessage(this.t('login_success'), 'success');
+            // Show demo mode warning
+            this.showMessage(this.t('demo_mode_login'), 'info');
         } else {
-            this.showMessage(this.t('login_error'), 'error');
+            // For non-demo users without backend, show backend required message
+            this.showMessage(this.t('backend_required'), 'error');
         }
     }
 

@@ -36,11 +36,13 @@ app.use('/api/todos', todoRoutes);
 // Error handling middleware
 app.use(errorHandler);
 
-// Start server
-const PORT = config.server.port;
-app.listen(PORT, () => {
-  console.log(`ShopTodo server running on port ${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/api/health`);
-});
+// Start server only if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = config.server.port;
+  app.listen(PORT, () => {
+    console.log(`ShopTodo server running on port ${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/api/health`);
+  });
+}
 
 module.exports = app;
