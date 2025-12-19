@@ -60,6 +60,36 @@
                         <button type="submit" class="btn btn-primary" data-i18n="login">ログイン</button>
                     </form>
                     <p class="demo-info" data-i18n="demo_info">デモ用: ユーザー名「demo」、パスワード「password」でログインできます</p>
+                    <p class="register-link"><span data-i18n="no_account">アカウントをお持ちでないですか？</span> <a href="#" id="show-register" data-i18n="register_link">新規登録</a></p>
+                </div>
+            </div>
+
+            <!-- 新規登録モーダル -->
+            <div id="register-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
+                <div class="modal-content">
+                    <button class="close" id="register-close" aria-label="閉じる">&times;</button>
+                    <h2 id="register-modal-title" data-i18n="register">新規登録</h2>
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="register-username" data-i18n="username">ユーザー名:</label>
+                            <input type="text" id="register-username" name="username" required minlength="3">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email" data-i18n="email">メールアドレス:</label>
+                            <input type="email" id="register-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password" data-i18n="password">パスワード:</label>
+                            <input type="password" id="register-password" name="password" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm-password" data-i18n="confirm_password">パスワード確認:</label>
+                            <input type="password" id="register-confirm-password" name="confirm-password" required minlength="6">
+                        </div>
+                        <div id="register-error" class="error-message" style="display: none;"></div>
+                        <button type="submit" class="btn btn-primary" data-i18n="register">新規登録</button>
+                    </form>
+                    <p class="login-link"><span data-i18n="have_account">アカウントをお持ちですか？</span> <a href="#" id="show-login" data-i18n="login_link">ログイン</a></p>
                 </div>
             </div>
 
@@ -258,6 +288,7 @@
         </div>
     </footer>
 
+    <script src="api-client.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
