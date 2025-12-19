@@ -15,8 +15,10 @@ The application is automatically deployed to GitHub Pages and available for anyo
 ## Features Overview
 
 ### 1. User Authentication
-- **Login**: Demo user login functionality
-- **Logout**: Session management
+- **Login**: User login with JWT authentication
+- **Registration**: New user registration with email verification
+- **Logout**: Session management with token invalidation
+- **Multi-user Support**: Isolated data per user (cart, orders, todos)
 - **Demo Credentials**:
   - Username: `demo`
   - Password: `password`
@@ -66,11 +68,40 @@ shoptodo-app/
 ├── index.html                    # Main HTML (App structure)
 ├── styles.css                    # Stylesheet (Responsive design)
 ├── app.js                        # JavaScript (All functionality)
+├── api-client.js                 # API client for backend communication
 ├── README.md                     # This file (English)
 ├── README_jp.md                  # Japanese documentation
 ├── package.json                  # Dependencies and scripts
 ├── package-lock.json             # Locked dependency versions
 └── .gitignore                    # Git ignore configuration
+```
+
+### Backend Server
+```
+server/
+├── index.js                      # Express server entry point
+├── package.json                  # Server dependencies
+├── config/
+│   └── config.js                 # Server configuration
+├── routes/
+│   ├── auth.js                   # Authentication routes (login, register)
+│   ├── users.js                  # User profile routes
+│   ├── cart.js                   # Shopping cart routes
+│   ├── orders.js                 # Order management routes
+│   └── todos.js                  # Todo/memo routes
+├── middleware/
+│   ├── auth.js                   # JWT authentication middleware
+│   └── errorHandler.js           # Error handling middleware
+├── services/
+│   ├── authService.js            # Authentication logic
+│   └── dataService.js            # Data persistence layer
+├── scripts/
+│   └── seed.js                   # Database seeding script
+└── data/
+    ├── users.json                # User data storage
+    ├── carts.json                # Cart data per user
+    ├── orders.json               # Orders per user
+    └── todos.json                # Todos per user
 ```
 
 ### Test Infrastructure
@@ -125,14 +156,32 @@ shoptodo-app/
 
 ### 1. Starting the Application
 
-We recommend running with a local server:
+#### Option A: Full Stack (Recommended for multi-user features)
+
+Start both the frontend and backend servers:
+
+```bash
+# Terminal 1: Start backend server
+cd server
+npm install
+node scripts/seed.js  # Initialize demo user (first time only)
+npm start
+
+# Terminal 2: Start frontend server
+npm run serve
+# Or using Python:
+python3 -m http.server 8001
+```
+
+Access `http://localhost:8001` in your browser. The backend runs on port 3001.
+
+#### Option B: Frontend Only (Demo mode)
+
+For basic testing without backend (limited to demo user):
 
 ```bash
 # Python 3
 python3 -m http.server 8000
-
-# Python 2
-python -m SimpleHTTPServer 8000
 
 # Node.js http-server
 npx http-server
@@ -142,10 +191,11 @@ Access `http://localhost:8000` in your browser.
 
 ### 2. Basic Operation Flow
 
-1. **Login**
+1. **Login or Register**
    - Click the "Login" button
-   - Enter username: `demo`, password: `password`
-   - Click "Login" to authenticate
+   - **Existing Users**: Enter username and password, click "Login"
+   - **New Users**: Click "Register" link, fill in username, email, and password
+   - **Demo Credentials**: Username `demo`, Password `password`
 
 2. **Browse & Search Products**
    - Browse products from the product list
@@ -224,17 +274,70 @@ This application is suitable for the following test scenarios:
 
 ## Data Management
 
+### With Backend Server (Full Stack Mode)
+- **Server-side Storage**: JSON files with user isolation
+- User data stored in `server/data/` directory
+- Each user has separate cart, orders, and todos
+- JWT tokens for session management
+
+### Without Backend (Demo Mode)
 - **localStorage** for data persistence
 - Stores session information, cart contents, todo lists, and language settings
 - Data is retained after page reload
+- Limited to demo user only
 
 ## Technical Specifications
 
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Data Storage**: localStorage
+- **Backend**: Node.js, Express.js
+- **Authentication**: JWT (JSON Web Tokens), bcrypt for password hashing
+- **Data Storage**: JSON files (local), localStorage (fallback)
+- **API Communication**: RESTful API with fetch
 - **Responsive**: CSS Grid, Flexbox
 - **Multi-language**: Translation management with i18n objects
 - **Modern Browser Support**: ES6+
+
+## API Endpoints
+
+The backend server provides the following RESTful API endpoints:
+
+### Authentication
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/auth/register` | Register new user | No |
+| POST | `/api/auth/login` | Login and get JWT token | No |
+
+### User Profile
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/users/me` | Get current user profile | Yes |
+| PUT | `/api/users/me` | Update user profile | Yes |
+| POST | `/api/users/migrate` | Migrate localStorage data | Yes |
+
+### Shopping Cart
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/cart` | Get user's cart | Yes |
+| POST | `/api/cart` | Add item to cart | Yes |
+| PUT | `/api/cart/:productId` | Update item quantity | Yes |
+| DELETE | `/api/cart/:productId` | Remove item from cart | Yes |
+| DELETE | `/api/cart` | Clear entire cart | Yes |
+
+### Orders
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/orders` | Get all user's orders | Yes |
+| GET | `/api/orders/:orderId` | Get order by ID | Yes |
+| POST | `/api/orders` | Create order from cart | Yes |
+
+### Todos
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| GET | `/api/todos` | Get all user's todos | Yes |
+| POST | `/api/todos` | Create new todo | Yes |
+| PUT | `/api/todos/:todoId` | Update todo | Yes |
+| DELETE | `/api/todos/:todoId` | Delete todo | Yes |
+| POST | `/api/todos/bulk` | Sync all todos | Yes |
 
 ## Browser Support
 

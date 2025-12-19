@@ -1,0 +1,163 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","9","should not add non-existent product","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
+"","10","should increase quantity when adding existing product","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
+"","7","should save order to localStorage","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","order management","",""
+"","7","should not add empty todo","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","todo management","",""
+"","4","should have translation for product: プログラミング入門書","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","4","should have translation for product: 掃除機","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","4","should set language and save to storage","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","language management","",""
+"","8","should add product to cart","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
+"","4","should have translation for product: JavaScript完全ガイド","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","11","should reject login with incorrect username","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","authentication","",""
+"","8","should update placeholder attributes","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","language switching","",""
+"","13","should return translation for Japanese","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","translation helper","",""
+"As a logged-in user
+  I want to complete the checkout process
+  So that I can place an order and view my order history","7379","Successful checkout with valid information","","Sun Dec 14 17:38:50 UTC 2025","passed","Sun Dec 14 17:38:58 UTC 2025","","","",""
+"","3","should have translation for product: Tシャツ","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","4","should have add_to_cart key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","4","should have checkout_success key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"As a user browsing the product catalog
+  I want to search, filter, and sort products
+  So that I can find items quickly and efficiently","3072","Search for a product by English name","","Sun Dec 14 17:39:23 UTC 2025","passed","Sun Dec 14 17:39:26 UTC 2025","","","",""
+"","7","should have title key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","5","should have translation for product: スニーカー","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","product names translation","",""
+"","3","should have memo_empty key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","7","should return translation for current language","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","translation helper","",""
+"","16","should reject login with incorrect password","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","authentication","",""
+"","2","should have incomplete key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","5","should trim todo text","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","todo management","",""
+"","5","should preserve existing orders when creating new order","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","order management","",""
+"","8","should return key if translation not found","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","translation helper","",""
+"As a user browsing the product catalog
+  I want to search, filter, and sort products
+  So that I can find items quickly and efficiently","2614","Filter products by category","","Sun Dec 14 17:39:26 UTC 2025","passed","Sun Dec 14 17:39:29 UTC 2025","","","",""
+"","5","should add order to orders array","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","order management","",""
+"","2","should have translation for product: ノートパソコン","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","4","should toggle todo completion","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","todo management","",""
+"","8","should have sort_name key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","10","should update document language attribute","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","language switching","",""
+"","9","should update cart quantity","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
+"","3","should have consistent message types","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","message consistency","",""
+"","5","should have electronics key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","8","should return original name when language is Japanese","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product name translation","",""
+"","3","should have consistent formatting","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","translation quality","",""
+"","3","should return 0 for empty cart total","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
+"","12","should have product_catalog key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","7","should sort products by price (low to high)","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product filtering","",""
+"","4","should calculate cart total correctly","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
+"","6","should have checkout key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","2","should have memo_added key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","7","should translate category names","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","category name translation","",""
+"","6","should have same product names in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","key consistency","",""
+"As a logged-in user
+  I want to manage my todo items
+  So that I can keep track of my shopping tasks and notes","3998","Delete a todo item","","Sun Dec 14 17:39:39 UTC 2025","passed","Sun Dec 14 17:39:43 UTC 2025","","","",""
+"","3","should have translation for product: キッチン用品セット","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","product names translation","",""
+"","3","should have footer_text key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","4","should have sort_price_low key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should clear cart after creating order","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","order management","",""
+"As a user browsing the product catalog
+  I want to search, filter, and sort products
+  So that I can find items quickly and efficiently","3102","Search for a product by Japanese name","","Sun Dec 14 17:39:20 UTC 2025","passed","Sun Dec 14 17:39:23 UTC 2025","","","",""
+"","44","should have both ja and en languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","structure validation","",""
+"","6","should have cart_empty key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"As a user
+  I want to log into the ShopTodo application
+  So that I can access the dashboard and manage my shopping and todos","4045","Successful login with valid credentials","","Sun Dec 14 17:39:11 UTC 2025","passed","Sun Dec 14 17:39:15 UTC 2025","","","",""
+"As a logged-in user
+  I want to manage my todo items
+  So that I can keep track of my shopping tasks and notes","3999","Mark todo as complete","","Sun Dec 14 17:39:35 UTC 2025","passed","Sun Dec 14 17:39:39 UTC 2025","","","",""
+"","5","should have product_removed key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should save all data to storage","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","language management","",""
+"","5","should have login_error key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should display success message","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","message display","",""
+"","10","should sort products by price (high to low)","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product filtering","",""
+"As a logged-in user
+  I want to manage my todo items
+  So that I can keep track of my shopping tasks and notes","3459","Add a new todo item","","Sun Dec 14 17:39:31 UTC 2025","passed","Sun Dec 14 17:39:35 UTC 2025","","","",""
+"","4","should have delete key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should translate category names in Japanese","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","category name translation","",""
+"","7","should delete todo item","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","todo management","",""
+"","6","should have search_placeholder key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","4","should have translation for product: ジーンズ","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","10","should remove existing message before showing new one","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","message display","",""
+"","2","should have appropriate Japanese translations","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","translation quality","",""
+"As a logged-in user
+  I want to manage items in my shopping cart
+  So that I can prepare for checkout","3451","Remove item from cart","","Sun Dec 14 17:38:43 UTC 2025","passed","Sun Dec 14 17:38:47 UTC 2025","","","",""
+"","5","should have home key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","13","should translate elements with data-i18n attribute","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","language switching","",""
+"","3","should have login_success key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","8","should have English translations for all Japanese product names","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","product names translation","",""
+"","17","should have username key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","5","should have translation for product: Web開発の教科書","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","product names translation","",""
+"","51","should not have empty translation values","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","key consistency","",""
+"As a multilingual user
+  I want to switch between English and Japanese
+  So that I can use the application in my preferred language","2634","Switch language to Japanese","","Sun Dec 14 17:39:06 UTC 2025","passed","Sun Dec 14 17:39:08 UTC 2025","","","",""
+"","4","should have sort_price_high key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","16","should have password key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","11","should have product_names object in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","structure validation","",""
+"As a user
+  I want to log into the ShopTodo application
+  So that I can access the dashboard and manage my shopping and todos","4895","Successful logout","","Sun Dec 14 17:39:15 UTC 2025","passed","Sun Dec 14 17:39:20 UTC 2025","","","",""
+"","3","should have add key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","4","should have checkout_confirm key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"As a logged-in user
+  I want to complete the checkout process
+  So that I can place an order and view my order history","8026","View order history after placing order","","Sun Dec 14 17:38:58 UTC 2025","passed","Sun Dec 14 17:39:06 UTC 2025","","","",""
+"","7","should have translation for product: ワイヤレスイヤホン","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","product names translation","",""
+"","4","should have complete key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","15","should switch language and update UI","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","language switching","",""
+"","17","should login with correct credentials","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","authentication","",""
+"","3","should have favorite_memo key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","3","should have memo_placeholder key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","10","should have product_added key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","18","should load data from localStorage","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","constructor and initialization","",""
+"","15","should remove product from cart","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
+"","14","should update active language button","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","language switching","",""
+"","5","should have clothing key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","3","should have all required sorting options","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","category and sorting options","",""
+"","6","should combine search and category filters","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product filtering","",""
+"","6","should add todo item","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","todo management","",""
+"","8","should return English name when language is English","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product name translation","",""
+"","3","should have translation for product: コーヒーメーカー","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","10","should return original name when translation not found","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product name translation","",""
+"","13","should have logout key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should sort products by name","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product filtering","",""
+"As a logged-in user
+  I want to manage items in my shopping cart
+  So that I can prepare for checkout","3354","Add a product to the cart","","Sun Dec 14 17:38:40 UTC 2025","passed","Sun Dec 14 17:38:43 UTC 2025","","","",""
+"As a user browsing the product catalog
+  I want to search, filter, and sort products
+  So that I can find items quickly and efficiently","2691","Sort products by price ascending","","Sun Dec 14 17:39:29 UTC 2025","passed","Sun Dec 14 17:39:31 UTC 2025","","","",""
+"","4","should have login_required key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"As a logged-in user
+  I want to manage items in my shopping cart
+  So that I can prepare for checkout","3652","Update item quantity in cart","","Sun Dec 14 17:38:47 UTC 2025","passed","Sun Dec 14 17:38:50 UTC 2025","","","",""
+"","7","should call all update methods","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","UI update methods","",""
+"","4","should have memo_deleted key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","67","should initialize with default values","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","constructor and initialization","",""
+"","60","should initialize with AppState","UIManager","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","constructor","",""
+"","4","should have total key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","3","should have product_image key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"As a multilingual user
+  I want to switch between English and Japanese
+  So that I can use the application in my preferred language","2604","Switch language to English","","Sun Dec 14 17:39:08 UTC 2025","passed","Sun Dec 14 17:39:11 UTC 2025","","","",""
+"","12","should have same keys in both languages (excluding product_names)","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","key consistency","",""
+"","3","should have all required category options","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","category and sorting options","",""
+"","7","should create order with cart items","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","order management","",""
+"","4","should have translation for product: スマートフォン","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product names translation","",""
+"","18","should logout and clear data","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","authentication","",""
+"","13","should filter products by search term","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product filtering","",""
+"","5","should have books key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should filter products by category","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","product filtering","",""
+"","3","should have appropriate English translations","i18n translation data","Sun Dec 14 17:37:43 UTC 2025","passed","Sun Dec 14 17:37:43 UTC 2025","","translation quality","",""
+"","7","should load orders from localStorage","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","order management","",""
+"","6","should have login key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","3","should have logout_success key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","5","should have all_categories key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should have demo_info key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","3","should have shopping_cart key in both languages","i18n translation data","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","required keys existence","",""
+"","6","should remove item when quantity becomes 0","AppState","Sun Dec 14 17:37:42 UTC 2025","passed","Sun Dec 14 17:37:42 UTC 2025","","cart management","",""
