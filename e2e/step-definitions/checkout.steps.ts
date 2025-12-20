@@ -143,7 +143,7 @@ When('the user logs in again as {string}', async function(this: CustomWorld, use
     if (isLoginBtnVisible) {
       await loginBtn.click();
       await this.page.waitForTimeout(500);
-      await this.loginPage.login(username, 'password');
+      await this.loginPage.login(username, 'Demo@2025!');
     }
   }
 

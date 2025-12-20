@@ -18,7 +18,7 @@ Feature: Product Browsing and Purchase Workflow
     # Step 1: Login
     When the user clicks the login button to open modal
     And the user enters username "demo"
-    And the user enters password "password"
+    And the user enters password "Demo@2025!"
     And the user submits the login form
     Then the user should be logged in successfully
 
@@ -125,7 +125,7 @@ Feature: Product Browsing and Purchase Workflow
     # Login in Japanese
     When the user clicks the login button to open modal
     And the user enters username "demo"
-    And the user enters password "password"
+    And the user enters password "Demo@2025!"
     And the user submits the login form
     Then the user should be logged in successfully
 
