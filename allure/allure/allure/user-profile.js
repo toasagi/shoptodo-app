@@ -65,10 +65,10 @@ class UserProfileManager {
         }
     }
 
-    updateUI() {
+    async updateUI() {
         this.updateLanguageUI();
         this.updateAuthUI();
-        this.loadProfileData();
+        await this.loadProfileData();
         this.renderTodos();
         this.renderOrderHistory();
     }
@@ -140,7 +140,28 @@ class UserProfileManager {
         }
     }
 
-    loadProfileData() {
+    async loadProfileData() {
+        // Try to load from API first if available
+        if (typeof apiClient !== 'undefined' && apiClient.token) {
+            try {
+                const user = await apiClient.getProfile();
+                if (user && user.profile) {
+                    // Update local state
+                    this.appState.currentUser.profile = user.profile;
+                    this.appState.saveToStorage();
+                    // Update form
+                    document.getElementById('display-name').value = user.profile.displayName || '';
+                    document.getElementById('phone').value = user.profile.phone || '';
+                    document.getElementById('payment-method').value = user.profile.paymentMethod || '';
+                    return;
+                }
+            } catch (error) {
+                console.error('Failed to load profile from API:', error);
+                // Fall through to local data
+            }
+        }
+
+        // Fallback to local data (demo mode)
         const profile = this.appState.getProfile();
         if (profile) {
             document.getElementById('display-name').value = profile.displayName || '';
@@ -149,7 +170,7 @@ class UserProfileManager {
         }
     }
 
-    handleProfileSubmit(e) {
+    async handleProfileSubmit(e) {
         e.preventDefault();
 
         const profileData = {
@@ -158,6 +179,22 @@ class UserProfileManager {
             paymentMethod: document.getElementById('payment-method').value
         };
 
+        // Try to save to API first if available
+        if (typeof apiClient !== 'undefined' && apiClient.token) {
+            try {
+                const updatedUser = await apiClient.updateProfile(profileData);
+                // Update local state with server response
+                this.appState.currentUser.profile = updatedUser.profile;
+                this.appState.saveToStorage();
+                this.showMessage(this.t('profile_saved'), 'success');
+                return;
+            } catch (error) {
+                console.error('Failed to save profile to API:', error);
+                // Fall through to local save
+            }
+        }
+
+        // Fallback to local save (demo mode)
         if (this.appState.saveProfile(profileData)) {
             this.showMessage(this.t('profile_saved'), 'success');
         }
