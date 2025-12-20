@@ -35,7 +35,7 @@ Given('the user is logged in as {string}', async function(this: CustomWorld, use
   await this.page.locator('#login-btn').click();
   await this.page.waitForTimeout(500);
 
-  await this.loginPage.login(username, 'password');
+  await this.loginPage.login(username, 'Demo@2025!');
   await this.dashboardPage.waitForPageLoad();
 
   // Verify login success
