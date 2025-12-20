@@ -195,7 +195,7 @@ Access `http://localhost:8000` in your browser.
    - Click the "Login" button
    - **Existing Users**: Enter username and password, click "Login"
    - **New Users**: Click "Register" link, fill in username, email, and password
-   - **Demo Credentials**: Username `demo`, Password `password`
+   - **Demo Credentials**: Username `demo`, Password `Demo@2025!`
 
 2. **Browse & Search Products**
    - Browse products from the product list
