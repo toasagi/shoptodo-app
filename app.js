@@ -6,7 +6,7 @@ const i18n = {
         logout: 'ログアウト',
         username: 'ユーザー名:',
         password: 'パスワード:',
-        demo_info: 'デモ用: ユーザー名「demo」、パスワード「password」でログインできます',
+        demo_info: 'デモ用: ユーザー名「demo」、パスワード「Demo@2025!」でログインできます',
         product_catalog: '商品カタログ',
         search_placeholder: '商品を検索...',
         all_categories: 'すべてのカテゴリ',
@@ -95,7 +95,8 @@ const i18n = {
         username_taken: 'このユーザー名は既に使用されています',
         email_taken: 'このメールアドレスは既に登録されています',
         password_mismatch: 'パスワードが一致しません',
-        password_too_short: 'パスワードは6文字以上必要です',
+        password_too_short: 'パスワードは10文字以上必要です',
+        password_complexity: 'パスワードには英字、数字、記号を含める必要があります',
         username_too_short: 'ユーザー名は3文字以上必要です',
         demo_mode_login: 'デモモードでログインしました（バックエンド未接続）',
         backend_required: 'このユーザーでログインするにはバックエンドサーバーが必要です',
@@ -167,7 +168,7 @@ const i18n = {
         logout: 'Logout',
         username: 'Username:',
         password: 'Password:',
-        demo_info: 'Demo: Use username "demo" and password "password" to login',
+        demo_info: 'Demo: Use username "demo" and password "Demo@2025!" to login',
         product_catalog: 'Product Catalog',
         search_placeholder: 'Search products...',
         all_categories: 'All Categories',
@@ -256,7 +257,8 @@ const i18n = {
         username_taken: 'Username is already taken',
         email_taken: 'Email is already registered',
         password_mismatch: 'Passwords do not match',
-        password_too_short: 'Password must be at least 6 characters',
+        password_too_short: 'Password must be at least 10 characters',
+        password_complexity: 'Password must contain letters, numbers, and symbols',
         username_too_short: 'Username must be at least 3 characters',
         demo_mode_login: 'Logged in with demo mode (backend not connected)',
         backend_required: 'Backend server is required to login with this user',
@@ -1022,8 +1024,17 @@ class UIManager {
             return;
         }
 
-        if (password.length < 6) {
+        if (password.length < 10) {
             this.showRegisterError(this.t('password_too_short'));
+            return;
+        }
+
+        // Check password complexity (letters, numbers, symbols)
+        const hasLetter = /[a-zA-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+        if (!hasLetter || !hasNumber || !hasSymbol) {
+            this.showRegisterError(this.t('password_complexity'));
             return;
         }
 
@@ -1601,7 +1612,7 @@ class UIManager {
 
         messageDiv.style.cssText = `
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             right: 20px;
             background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
             color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
