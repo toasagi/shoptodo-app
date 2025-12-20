@@ -73,7 +73,7 @@ npm run test:security:config     # 設定 (Medium)
 
 #### V2: ハードコード認証情報
 - **場所**: `app.js:448`
-- **認証情報**: `demo` / `password`
+- **認証情報**: `demo` / `Demo@2025!`
 - **影響**: 誰でもログイン可能
 - **対策**: サーバーサイド認証の実装
 
