@@ -15,7 +15,7 @@ async function seed() {
   console.log('Seeding database...');
 
   // Create demo user with hashed password
-  const demoPassword = 'password';
+  const demoPassword = 'Demo@2025!';
   const passwordHash = await bcrypt.hash(demoPassword, config.bcrypt.saltRounds);
 
   const demoUser = {
@@ -61,7 +61,7 @@ async function seed() {
   await fs.writeFile(usersFile, JSON.stringify(users, null, 2), 'utf8');
   console.log('Demo user created/updated successfully!');
   console.log('  Username: demo');
-  console.log('  Password: password');
+  console.log('  Password: Demo@2025!');
 
   // Ensure other data files exist
   const dataFiles = ['carts.json', 'orders.json', 'todos.json'];

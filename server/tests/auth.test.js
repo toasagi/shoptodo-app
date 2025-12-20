@@ -38,11 +38,23 @@ describe('Authentication API', () => {
       expect(res.body.error.code).toBe('VALIDATION_ERROR');
     });
 
-    it('should reject registration with short password (< 6 chars)', async () => {
+    it('should reject registration with short password (< 10 chars)', async () => {
       const res = await registerUser({
         username: 'testuser',
         email: 'test@example.com',
-        password: '12345'
+        password: 'Short@1'
+      });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.error.code).toBe('VALIDATION_ERROR');
+    });
+
+    it('should reject registration with password lacking complexity', async () => {
+      const res = await registerUser({
+        username: 'testuser',
+        email: 'test@example.com',
+        password: 'simplepassword'
       });
 
       expect(res.status).toBe(400);
