@@ -254,7 +254,7 @@ body {
     top: 0.5rem;
     font-size: 2rem;
     cursor: pointer;
-    color: #aaa;
+    color: #767676; /* WCAG AA対応: 白背景上で4.5:1以上 */
     background: none;
     border: none;
     padding: 0;
@@ -262,7 +262,7 @@ body {
 }
 
 .close:hover {
-    color: #000;
+    color: var(--color-text);
 }
 
 /* フォーム */
@@ -290,7 +290,7 @@ body {
     background-color: #e9ecef;
     border-radius: 4px;
     font-size: 0.8rem;
-    color: #666;
+    color: #545457; /* WCAG AA対応: #e9ecef背景上で4.5:1以上 */
 }
 
 .register-link,
@@ -298,12 +298,12 @@ body {
     margin-top: 1rem;
     text-align: center;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--color-text-secondary); /* WCAG AA対応 */
 }
 
 .register-link a,
 .login-link a {
-    color: var(--color-primary);
+    color: var(--color-primary-text); /* WCAG AA対応 */
     text-decoration: none;
     font-weight: 600;
 }
