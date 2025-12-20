@@ -325,7 +325,7 @@ class UserProfileManager {
 
         messageDiv.style.cssText = `
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             right: 20px;
             background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
             color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
