@@ -21,8 +21,11 @@ class AuthService {
     if (!email || !this.isValidEmail(email)) {
       throw new AppError('VALIDATION_ERROR', 'Invalid email format');
     }
-    if (!password || password.length < 6) {
-      throw new AppError('VALIDATION_ERROR', 'Password must be at least 6 characters');
+    if (!password || password.length < 10) {
+      throw new AppError('VALIDATION_ERROR', 'Password must be at least 10 characters');
+    }
+    if (!this.isValidPassword(password)) {
+      throw new AppError('VALIDATION_ERROR', 'Password must contain letters, numbers, and symbols');
     }
 
     // Check if username exists
@@ -104,6 +107,18 @@ class AuthService {
   isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  /**
+   * Validate password complexity
+   * @param {string} password - Password to validate
+   * @returns {boolean} True if valid (contains letters, numbers, and symbols)
+   */
+  isValidPassword(password) {
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+    return hasLetter && hasNumber && hasSymbol;
   }
 
   /**

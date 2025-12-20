@@ -1,17 +1,17 @@
 const request = require('supertest');
 const app = require('../index');
 
-// Test user credentials
+// Test user credentials (must meet password requirements: 10+ chars, letters, numbers, symbols)
 const testUser = {
   username: 'testuser',
   email: 'test@example.com',
-  password: 'testpass123'
+  password: 'Test@pass123'
 };
 
 const testUser2 = {
   username: 'testuser2',
   email: 'test2@example.com',
-  password: 'testpass456'
+  password: 'Test@pass456'
 };
 
 // Register a test user and return the response
