@@ -195,7 +195,7 @@ npx playwright install
 
 ### 7.1 テストデータ戦略
 - **マスターデータ**: 固定12商品データ
-- **ユーザーデータ**: デモユーザー（demo/password）
+- **ユーザーデータ**: デモユーザー（demo/Demo@2025!）
 - **動的データ**: テスト実行時生成（カート、Todo）
 
 ### 7.2 商品マスターデータ
@@ -216,7 +216,7 @@ npx playwright install
 | 12 | キッチン用品セット | Kitchen Set | 9,800 | home |
 
 ### 7.3 認証データ
-- **有効ユーザー**: username="demo", password="password"
+- **有効ユーザー**: username="demo", password="Demo@2025!"
 - **無効パターン**: 空文字、null、間違った認証情報
 
 ---

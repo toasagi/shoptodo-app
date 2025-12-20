@@ -564,7 +564,7 @@ Scenario: 新規ユーザーの完全ショッピングフロー
   Then 全てのUI要素が英語で表示される
 
   # ログイン
-  When ユーザー名 "demo"、パスワード "password" でログインする
+  When ユーザー名 "demo"、パスワード "Demo@2025!" でログインする
   Then ダッシュボードページに遷移する
 
   # 商品検索・フィルタ
@@ -671,7 +671,7 @@ Scenario: 複数操作でのデータ整合性確認
 ```json
 {
   "users": [
-    {"username": "demo", "password": "password", "role": "user"},
+    {"username": "demo", "password": "Demo@2025!", "role": "user"},
     {"username": "invalid", "password": "wrong", "role": "invalid"}
   ]
 }
