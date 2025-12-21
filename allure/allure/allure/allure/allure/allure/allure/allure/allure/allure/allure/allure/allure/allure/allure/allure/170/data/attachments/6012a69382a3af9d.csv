@@ -1,7 +1,0 @@
-field,present
-orderNumber,true
-orderDate,true
-items,true
-total,true
-shipping,true
-payment,false
