@@ -158,10 +158,12 @@ npm test -- --tags "not @slow"
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `APP_URL` | `http://localhost:8000` | Application URL |
+| `APP_URL` | `http://localhost:8000` | Application URL (CI/CD uses port 8001) |
 | `BROWSER` | `chromium` | Browser (chromium/firefox/webkit) |
 | `HEADLESS` | `true` | Run in headless mode |
 | `TIMEOUT` | `30000` | Page timeout in milliseconds |
+
+> **Note**: The project's `npm run serve` script uses port 8001, and CI/CD workflows also use port 8001. When running locally with `npm run serve`, use `APP_URL=http://localhost:8001`.
 
 ### Example Usage
 

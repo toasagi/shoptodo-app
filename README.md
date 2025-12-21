@@ -21,7 +21,7 @@ The application is automatically deployed to GitHub Pages and available for anyo
 - **Multi-user Support**: Isolated data per user (cart, orders, todos)
 - **Demo Credentials**:
   - Username: `demo`
-  - Password: `password`
+  - Password: `Demo@2025!`
 
 ### 2. Product Catalog
 - **Product Display**: 12 sample products
