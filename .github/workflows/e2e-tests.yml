@@ -97,6 +97,12 @@ jobs:
         cd e2e
         npm ci
 
+    - name: Install server dependencies
+      run: npm run server:install
+
+    - name: Seed demo user
+      run: npm run server:seed
+
     - name: Install Playwright browsers
       run: |
         cd e2e
@@ -109,13 +115,15 @@ jobs:
 
     - name: Start application server
       run: |
-        npm run serve &
+        npm start &
         sleep 5
-        curl -f http://localhost:8001 || (echo "Application failed to start" && exit 1)
+        # Check both static server and API server
+        curl -f http://localhost:8001 || (echo "Static server failed to start" && exit 1)
+        curl -f http://localhost:3001/api/health || (echo "API server failed to start" && exit 1)
 
     - name: Wait for application to be ready
       run: |
-        timeout 30 bash -c 'until curl -f http://localhost:8001; do sleep 1; done'
+        timeout 30 bash -c 'until curl -f http://localhost:8001 && curl -f http://localhost:3001/api/health; do sleep 1; done'
 
     - name: Run E2E tests
       id: e2e_tests
@@ -198,6 +206,12 @@ jobs:
         cd e2e
         npm ci
 
+    - name: Install server dependencies
+      run: npm run server:install
+
+    - name: Seed demo user
+      run: npm run server:seed
+
     - name: Install Playwright browsers
       run: |
         cd e2e
@@ -210,9 +224,10 @@ jobs:
 
     - name: Start application server
       run: |
-        npm run serve &
+        npm start &
         sleep 5
-        curl -f http://localhost:8001 || (echo "Application failed to start" && exit 1)
+        curl -f http://localhost:8001 || (echo "Static server failed to start" && exit 1)
+        curl -f http://localhost:3001/api/health || (echo "API server failed to start" && exit 1)
 
     - name: Run parallel E2E tests
       run: |
