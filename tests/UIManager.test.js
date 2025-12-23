@@ -278,7 +278,6 @@ describe('UIManager', () => {
 
       expect(updateLanguageUISpy).toHaveBeenCalled();
       expect(updateAuthUISpy).toHaveBeenCalled();
-      expect(uiManager.renderRecommendedProducts).toHaveBeenCalled();
       expect(uiManager.renderProducts).toHaveBeenCalled();
       expect(uiManager.renderCart).toHaveBeenCalled();
       expect(uiManager.renderTodos).toHaveBeenCalled();

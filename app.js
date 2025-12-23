@@ -103,6 +103,13 @@ const i18n = {
         // Recommended & Category Tabs
         recommended_products: 'おすすめ商品',
         all_products: 'すべての商品',
+        // Navigation
+        nav_home: 'ホーム',
+        nav_products: '商品一覧',
+        nav_cart: 'カート',
+        nav_order_history: '注文履歴',
+        nav_todo: 'Todo',
+        nav_profile: 'プロフィール',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -265,6 +272,13 @@ const i18n = {
         // Recommended & Category Tabs
         recommended_products: 'Recommended',
         all_products: 'All Products',
+        // Navigation
+        nav_home: 'Home',
+        nav_products: 'Products',
+        nav_cart: 'Cart',
+        nav_order_history: 'Orders',
+        nav_todo: 'Todo',
+        nav_profile: 'Profile',
         product_names: {
             'スマートフォン': 'Smartphone',
             'ノートパソコン': 'Laptop',
@@ -876,6 +890,15 @@ class UIManager {
             this.showOrderHistoryModal();
         });
 
+        // ナビゲーション - 注文履歴
+        const navOrderHistory = document.getElementById('nav-order-history');
+        if (navOrderHistory) {
+            navOrderHistory.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.showOrderHistoryModal();
+            });
+        }
+
         // Todo関連 (only on pages with todo section)
         const addTodoBtn = document.getElementById('add-todo-btn');
         const todoInput = document.getElementById('todo-input');
@@ -898,7 +921,6 @@ class UIManager {
     updateUI() {
         this.updateLanguageUI();
         this.updateAuthUI();
-        this.renderRecommendedProducts();
         this.renderProducts();
         this.renderCart();
         this.renderTodos();
@@ -957,9 +979,11 @@ class UIManager {
             loginBtn.style.display = 'none';
             userInfo.style.display = 'flex';
             username.textContent = this.appState.currentUser.username;
+            document.body.classList.add('logged-in');
         } else {
             loginBtn.style.display = 'block';
             userInfo.style.display = 'none';
+            document.body.classList.remove('logged-in');
         }
     }
 
