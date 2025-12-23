@@ -19,7 +19,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
 
   describe('Password in localStorage', () => {
     test('GOOD: Password is NOT stored in localStorage after login', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       const stored = dumpLocalStorage();
 
@@ -31,7 +31,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
     });
 
     test('currentUser storage does not contain password', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       const currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
@@ -42,7 +42,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
 
   describe('Sensitive Data in localStorage', () => {
     test.skip('VULNERABILITY: PII can be stored in plaintext localStorage', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // Simulate order with PII
       appState.addToCart(1);
@@ -74,7 +74,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
     });
 
     test('localStorage is accessible via JavaScript', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       appState.addTodo('Secret note');
 
       // Any JavaScript can read localStorage
@@ -93,7 +93,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
 
   describe('Session Token Security', () => {
     test.skip('VULNERABILITY: No session token - relies on localStorage flag', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // The app uses localStorage to track login state
       // There's no secure session token
@@ -121,7 +121,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
 
   describe('Logout Security', () => {
     test('GOOD: Logout clears currentUser', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       expect(appState.currentUser.username).toBe('demo');
 
       appState.logout();
@@ -131,7 +131,7 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
     });
 
     test('Data may persist after logout (by design)', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       appState.addTodo('Test todo');
 
       // Verify todo was added

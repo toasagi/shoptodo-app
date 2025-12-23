@@ -14,7 +14,7 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
   beforeEach(() => {
     localStorage.clear();
     appState = new AppState();
-    appState.login('demo', 'password');
+    appState.login('demo', 'Demo@2025!');
   });
 
   describe('Price Tampering via localStorage', () => {

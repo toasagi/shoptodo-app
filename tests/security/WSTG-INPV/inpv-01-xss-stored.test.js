@@ -20,7 +20,7 @@ describe('WSTG-INPV-01: Stored XSS Testing', () => {
 
     localStorage.clear();
     appState = new AppState();
-    appState.login('demo', 'password');
+    appState.login('demo', 'Demo@2025!');
   });
 
   afterEach(() => {

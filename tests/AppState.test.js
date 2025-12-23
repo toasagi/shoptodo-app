@@ -41,7 +41,7 @@ describe('AppState', () => {
 
   describe('authentication', () => {
     test('should login with correct credentials', () => {
-      const result = appState.login('demo', 'password');
+      const result = appState.login('demo', 'Demo@2025!');
 
       expect(result).toBe(true);
       expect(appState.currentUser).toEqual({

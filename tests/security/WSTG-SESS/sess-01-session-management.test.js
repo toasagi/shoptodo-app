@@ -18,7 +18,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
 
   describe('Session Token Analysis', () => {
     test.skip('VULNERABILITY: No session token - uses localStorage JSON object only', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // App uses localStorage JSON object for authentication
       const currentUser = localStorage.getItem('currentUser');
@@ -46,7 +46,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
     });
 
     test.skip('VULNERABILITY: No session token randomness', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // Session "token" is predictable (just user object)
       const session = localStorage.getItem('currentUser');
@@ -64,7 +64,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
       localStorage.setItem('currentUser', JSON.stringify({ username: 'victim' }));
 
       // After login, session should be regenerated
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // Session is just overwritten with new user
       const parsed = JSON.parse(localStorage.getItem('currentUser'));
@@ -76,7 +76,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
 
   describe('Logout Functionality', () => {
     test('GOOD: Logout clears currentUser', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       expect(appState.currentUser.username).toBe('demo');
 
       appState.logout();
@@ -86,7 +86,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
     });
 
     test('PARTIAL: User data may persist after logout', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       appState.addTodo('Private task');
       appState.addToCart(1);
 
@@ -114,7 +114,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
 
   describe('Session Timeout', () => {
     test.skip('VULNERABILITY: No session timeout implemented', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // Set a timestamp to simulate old session
       const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
@@ -133,7 +133,7 @@ describe('WSTG-SESS-01: Session Management Testing', () => {
 
   describe('Concurrent Sessions', () => {
     test('Multiple "sessions" share same localStorage', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // Another "session" (tab/window)
       const anotherSession = new AppState();

@@ -19,7 +19,7 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
 
   describe('Data Persistence Risks', () => {
     test.skip('VULNERABILITY: All data stored in localStorage persists indefinitely', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       appState.addTodo('Sensitive task');
       appState.addToCart(1);
 
@@ -32,7 +32,7 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
     });
 
     test('Data persists across browser sessions', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       appState.addTodo('Remember this');
 
       // Simulate new session by creating new AppState
@@ -48,7 +48,7 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
 
   describe('Data Tampering Risks', () => {
     test.skip('VULNERABILITY: Any JavaScript can modify localStorage', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // Simulate malicious script modifying data
       localStorage.setItem('currentUser', JSON.stringify({ username: 'admin' }));
@@ -61,7 +61,7 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
     });
 
     test.skip('VULNERABILITY: localStorage data is not encrypted', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       appState.addTodo('Secret information');
 
       // Verify data is stored in plaintext
@@ -97,7 +97,7 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
 
   describe('Cross-Tab Communication Risks', () => {
     test('localStorage changes affect all tabs', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
 
       // Changes in one "tab" (instance) affect others
       // because they share localStorage
@@ -112,7 +112,7 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
 
   describe('Sensitive Data Exposure', () => {
     test.skip('VULNERABILITY: User preferences stored without protection', () => {
-      appState.login('demo', 'password');
+      appState.login('demo', 'Demo@2025!');
       localStorage.setItem('language', 'ja');
 
       // Verify data is stored and accessible

@@ -14,7 +14,7 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
   beforeEach(() => {
     localStorage.clear();
     appState = new AppState();
-    appState.login('demo', 'password');
+    appState.login('demo', 'Demo@2025!');
   });
 
   describe('Empty Cart Checkout', () => {

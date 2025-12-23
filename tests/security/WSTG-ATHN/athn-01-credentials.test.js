@@ -104,7 +104,7 @@ describe('WSTG-ATHN-01: Authentication Credentials Testing', () => {
 
       // But the account is not locked - this is a vulnerability
       // After 100 failed attempts, should still be able to login
-      const finalAttempt = appState.login('demo', 'password');
+      const finalAttempt = appState.login('demo', 'Demo@2025!');
       expect(finalAttempt).toBe(true);
 
       // Security Recommendation: Implement rate limiting or account lockout
