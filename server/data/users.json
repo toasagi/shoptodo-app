@@ -3,13 +3,26 @@
     "id": "d2b871e5-95c0-4c07-bfc9-1acff9bbe43f",
     "username": "demo",
     "email": "demo@example.com",
-    "passwordHash": "$2b$10$B5Ujg55xKD91ICA.An1AquW.15TiAzV1hIkYwuGuzNtWjnXZfcl3G",
+    "passwordHash": "$2b$10$MVY5YnAquX.X8IgF7ytoQOx88Vak2Ccm7y0tekgyswasC3jx5UMmK",
     "profile": {
       "displayName": "Demo User",
       "phone": "",
       "paymentMethod": ""
     },
     "createdAt": "2025-12-19T15:47:06.922Z",
-    "updatedAt": "2025-12-19T15:47:06.922Z"
+    "updatedAt": "2025-12-23T14:02:07.284Z"
+  },
+  "59f0f7ba-9f31-45e3-bb63-5e5e980ec2cf": {
+    "id": "59f0f7ba-9f31-45e3-bb63-5e5e980ec2cf",
+    "username": "demo1",
+    "email": "asagi.tomotaka@gmail.com",
+    "passwordHash": "$2b$10$t8mwuc/LLn4vua3BGHcw6OvUnh0/TYGe1k73nPj1qnpe3flywB75C",
+    "profile": {
+      "displayName": "テストユーザー",
+      "phone": "+60102992706",
+      "paymentMethod": "bank_transfer"
+    },
+    "createdAt": "2025-12-23T14:12:26.309Z",
+    "updatedAt": "2025-12-23T14:12:42.376Z"
   }
 }

@@ -111,6 +111,53 @@ body {
     background-clip: text;
 }
 
+/* メインナビゲーション */
+.main-nav {
+    flex: 1;
+    margin: 0 2rem;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+.nav-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--radius-button);
+    transition: background 0.2s, color 0.2s;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.nav-menu a:hover {
+    background: var(--color-background);
+    color: var(--color-primary);
+}
+
+.nav-menu a i {
+    font-size: 1rem;
+}
+
+.nav-auth-only {
+    display: none;
+}
+
+body.logged-in .nav-auth-only {
+    display: block;
+}
+
 .nav {
     display: flex;
     align-items: center;
