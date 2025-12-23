@@ -840,14 +840,8 @@ class UIManager {
             });
         }
 
-        const registerModal = document.getElementById('register-modal');
-        if (registerModal) {
-            registerModal.addEventListener('click', (e) => {
-                if (e.target.id === 'register-modal') {
-                    this.hideRegisterModal();
-                }
-            });
-        }
+        // Register modal: disabled backdrop click-to-close for better UX during form entry
+        // Users can still close via X button or "Login" link
 
         const registerForm = document.getElementById('register-form');
         if (registerForm) {
