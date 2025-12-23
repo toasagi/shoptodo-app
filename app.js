@@ -398,6 +398,7 @@ class AppState {
         this.cart = [];
         this.todos = [];
         this.orders = [];
+        this.isBackendAuthenticated = false; // バックエンドAPI認証フラグ
         this.filteredProducts = [];
         this.currentLanguage = 'ja';
         this.currentCategory = ''; // カテゴリタブの状態（空=すべて）
@@ -1102,6 +1103,46 @@ class UIManager {
         }
     }
 
+    // バックエンド注文データ → フロントエンド形式に変換
+    normalizeOrdersFromBackend(orders) {
+        return orders.map(order => ({
+            id: order.id,
+            date: order.createdAt || order.date,
+            items: order.items.map(item => ({
+                id: item.productId || item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                image: item.image
+            })),
+            total: order.total,
+            shippingInfo: order.shippingAddress || order.shippingInfo || {},
+            paymentMethod: order.paymentMethod,
+            status: order.status
+        }));
+    }
+
+    // フロントエンド注文データ → バックエンド形式に変換
+    normalizeOrderForBackend(shippingInfo, paymentMethod) {
+        return {
+            items: this.appState.cart.map(item => ({
+                productId: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                image: item.image
+            })),
+            shippingAddress: {
+                name: shippingInfo.name,
+                email: shippingInfo.email,
+                phone: shippingInfo.phone,
+                postalCode: shippingInfo.postalCode,
+                address: shippingInfo.address
+            },
+            paymentMethod: paymentMethod
+        };
+    }
+
     async handleLogin(e) {
         e.preventDefault();
         const username = document.getElementById('username-input').value;
@@ -1119,6 +1160,17 @@ class UIManager {
                         paymentMethod: ''
                     }
                 };
+                this.appState.isBackendAuthenticated = true;
+
+                // バックエンドから注文履歴を取得
+                try {
+                    const orders = await apiClient.getOrders();
+                    this.appState.orders = this.normalizeOrdersFromBackend(orders);
+                } catch (orderError) {
+                    console.warn('Failed to fetch orders from backend:', orderError);
+                    // 注文履歴の取得に失敗してもログインは成功とする
+                }
+
                 this.appState.saveToStorage();
                 this.hideLoginModal();
                 this.updateUI();
@@ -1148,6 +1200,12 @@ class UIManager {
     }
 
     logout() {
+        // APIクライアントのトークンをクリア
+        if (typeof apiClient !== 'undefined') {
+            apiClient.clearAuth();
+        }
+        this.appState.isBackendAuthenticated = false;
+        this.appState.orders = []; // ユーザー固有の注文履歴をクリア
         this.appState.logout();
         this.updateUI();
         this.showMessage(this.t('logout_success'), 'success');
@@ -1463,7 +1521,34 @@ class UIManager {
         `;
     }
 
-    handleConfirmOrder() {
+    async handleConfirmOrder() {
+        // バックエンド認証済みの場合はAPIで注文作成
+        if (this.appState.isBackendAuthenticated && typeof apiClient !== 'undefined') {
+            try {
+                const orderData = this.normalizeOrderForBackend(
+                    this.shippingFormData,
+                    this.paymentMethodData
+                );
+                const backendOrder = await apiClient.createOrder(orderData);
+
+                // バックエンドからの注文をローカルステートに追加
+                const normalizedOrder = this.normalizeOrdersFromBackend([backendOrder])[0];
+                this.appState.orders.push(normalizedOrder);
+                this.appState.cart = []; // カートをクリア（バックエンドでもクリアされる）
+                this.appState.saveToStorage();
+
+                document.getElementById('order-number-display').textContent = backendOrder.id;
+                this.renderCart();
+                this.goToCheckoutStep(4);
+                return;
+            } catch (error) {
+                console.error('Failed to create order via API:', error);
+                // APIエラーの場合はローカルストレージにフォールバック
+                this.showMessage('注文はローカルに保存されました（バックエンド接続不可）', 'warning');
+            }
+        }
+
+        // フォールバック: localStorage保存（デモモード）
         const order = this.appState.createOrder(this.shippingFormData, this.paymentMethodData);
 
         document.getElementById('order-number-display').textContent = order.id;
