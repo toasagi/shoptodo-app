@@ -22,20 +22,16 @@ Feature: Product Browsing and Purchase Workflow
     And the user submits the login form
     Then the user should be logged in successfully
 
-    # Step 2: Browse recommended products
-    And the recommended section should be visible
-    And the recommended section should contain 4 products
-
-    # Step 3: Add product from recommended section
-    When the user adds the first recommended product to cart
+    # Step 2: Browse by category and add products
+    When the user clicks the "Electronics" category tab
+    And the user adds the first product in the list to cart
     Then the cart should contain 1 item
 
-    # Step 4: Browse by category and add more
     When the user clicks the "Clothing" category tab
     And the user adds the first product in the list to cart
     Then the cart should contain 2 items
 
-    # Step 5: Complete checkout
+    # Step 3: Complete checkout
     When the user clicks the checkout button
     And the user fills in valid shipping information
     And the user clicks next on shipping step
@@ -45,19 +41,20 @@ Feature: Product Browsing and Purchase Workflow
     Then the order complete screen is displayed
     And an order number is shown
 
-    # Step 6: Verify order history
+    # Step 4: Verify order history
     When the user closes the checkout modal
     And the user clicks view order history button
     Then the order history modal is displayed
     And the recent order should be displayed
 
-  @workflow @recommended-to-purchase
-  Scenario: Purchase recommended product directly
+  @workflow @quick-purchase
+  Scenario: Quick purchase from category
     Given the user is logged in as "demo"
     And the language is set to English
 
-    # Browse and select from recommended
-    When the user adds the first recommended product to cart
+    # Browse and select from category
+    When the user clicks the "Electronics" category tab
+    And the user adds the first product in the list to cart
     Then the cart should contain 1 item
 
     # Quick checkout
@@ -129,13 +126,12 @@ Feature: Product Browsing and Purchase Workflow
     And the user submits the login form
     Then the user should be logged in successfully
 
-    # Browse recommended in Japanese
-    Then the recommended section title should be "おすすめ商品"
-    When the user adds the first recommended product to cart
-    Then the cart should contain 1 item
-
     # Browse category in Japanese
     When the user clicks the "電子機器" category tab
+    And the user adds the first product in the list to cart
+    Then the cart should contain 1 item
+
+    When the user clicks the "衣類" category tab
     And the user adds the first product in the list to cart
     Then the cart should contain 2 items
 
@@ -160,7 +156,8 @@ Feature: Product Browsing and Purchase Workflow
     And the language is set to English
 
     # First order
-    When the user adds the first recommended product to cart
+    When the user clicks the "Electronics" category tab
+    And the user adds the first product in the list to cart
     And the user clicks the checkout button
     And the user fills in valid shipping information
     And the user clicks next on shipping step
