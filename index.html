@@ -27,6 +27,19 @@
     <header class="header">
         <div class="container">
             <h1 class="logo">ShopTodo</h1>
+
+            <!-- メインナビゲーション -->
+            <nav class="main-nav" role="navigation" aria-label="メインナビゲーション">
+                <ul class="nav-menu">
+                    <li><a href="#" data-i18n="nav_home"><i class="fas fa-home"></i> <span data-i18n="nav_home">ホーム</span></a></li>
+                    <li><a href="#catalog-section" data-i18n="nav_products"><i class="fas fa-shopping-bag"></i> <span data-i18n="nav_products">商品一覧</span></a></li>
+                    <li><a href="#cart-section" data-i18n="nav_cart"><i class="fas fa-shopping-cart"></i> <span data-i18n="nav_cart">カート</span></a></li>
+                    <li><a href="#" id="nav-order-history"><i class="fas fa-history"></i> <span data-i18n="nav_order_history">注文履歴</span></a></li>
+                    <li class="nav-auth-only"><a href="user-profile.html"><i class="fas fa-list-check"></i> <span data-i18n="nav_todo">Todo</span></a></li>
+                    <li class="nav-auth-only"><a href="user-profile.html"><i class="fas fa-user"></i> <span data-i18n="nav_profile">プロフィール</span></a></li>
+                </ul>
+            </nav>
+
             <nav class="nav">
                 <div class="language-switcher">
                     <button id="lang-en" class="lang-btn" data-lang="en">EN</button>
@@ -222,16 +235,8 @@
                 </div>
             </div>
 
-            <!-- おすすめ商品 -->
-            <section class="recommended-section">
-                <h2 data-i18n="recommended_products">おすすめ商品</h2>
-                <div id="recommended-grid" class="recommended-grid">
-                    <!-- おすすめ商品が動的に表示される -->
-                </div>
-            </section>
-
             <!-- 商品カタログ -->
-            <section class="catalog-section">
+            <section id="catalog-section" class="catalog-section">
                 <h2 data-i18n="product_catalog">商品カタログ</h2>
 
                 <!-- カテゴリタブ -->
@@ -265,7 +270,7 @@
                 <!-- サイドバー -->
                 <aside class="sidebar">
                     <!-- ショッピングカート -->
-                    <section class="cart-section">
+                    <section id="cart-section" class="cart-section">
                         <h3 data-i18n="shopping_cart">ショッピングカート</h3>
                         <div id="cart-items" class="cart-items">
                             <p class="empty-cart" data-i18n="cart_empty">カートは空です</p>
