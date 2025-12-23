@@ -497,7 +497,7 @@ class AppState {
     }
 
     login(username, password) {
-        if (username === 'demo' && password === 'password') {
+        if (username === 'demo' && password === 'Demo@2025!') {
             // Load existing profile if available
             const savedProfile = localStorage.getItem('userProfile');
             const profile = savedProfile ? JSON.parse(savedProfile) : {
