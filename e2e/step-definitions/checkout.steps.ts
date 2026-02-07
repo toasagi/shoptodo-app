@@ -2,6 +2,13 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { CustomWorld } from '../support/world';
 
+const DEMO_CREDENTIALS: Record<string, string> = {
+  'demo': 'Demo@2025!',
+  'user1': 'User1@2025!',
+  'user2': 'User2@2025!',
+  'admin': 'Admin@2025!'
+};
+
 // Given Steps
 Given('the user has products in the cart', async function(this: CustomWorld) {
   await this.checkoutPage.addProductsToCart();
@@ -48,9 +55,11 @@ Given('the user has completed an order', async function(this: CustomWorld) {
 });
 
 Given('the user has no previous orders', async function(this: CustomWorld) {
-  // Clear localStorage to ensure no orders exist
+  // Clear localStorage to ensure no orders exist (namespaced + legacy keys)
   await this.page.evaluate(() => {
     localStorage.removeItem('orders');
+    const users = ['demo', 'user1', 'user2', 'admin'];
+    users.forEach(user => localStorage.removeItem(`orders_${user}`));
   });
 
   // Clear auth tokens to prevent backend from fetching orders
@@ -154,7 +163,7 @@ When('the user logs in again as {string}', async function(this: CustomWorld, use
     if (isLoginBtnVisible) {
       await loginBtn.click();
       await this.page.waitForTimeout(500);
-      await this.loginPage.login(username, 'Demo@2025!');
+      await this.loginPage.login(username, DEMO_CREDENTIALS[username] || 'Demo@2025!');
     }
   }
 

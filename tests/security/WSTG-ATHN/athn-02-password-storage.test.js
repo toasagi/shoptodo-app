@@ -62,10 +62,10 @@ describe('WSTG-ATHN-02: Password Storage Testing', () => {
       };
 
       // Store order (simulating app behavior)
-      localStorage.setItem('orders', JSON.stringify([orderWithPII]));
+      localStorage.setItem('orders_demo', JSON.stringify([orderWithPII]));
 
       // Verify PII is stored in plaintext
-      const ordersStr = localStorage.getItem('orders');
+      const ordersStr = localStorage.getItem('orders_demo');
       expect(ordersStr).toContain('john@example.com');
       expect(ordersStr).toContain('090-1234-5678');
       expect(ordersStr).toContain('100-0001');

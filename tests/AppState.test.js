@@ -37,19 +37,39 @@ describe('AppState', () => {
       expect(newAppState.todos).toEqual(testData.todos);
       expect(newAppState.currentLanguage).toBe('en');
     });
+
+    test('should load data from namespaced localStorage keys', () => {
+      const cart = createSampleCartItems();
+      const todos = createSampleTodos();
+
+      localStorage.setItem('currentUser', JSON.stringify({ username: 'demo' }));
+      localStorage.setItem('cart_demo', JSON.stringify(cart));
+      localStorage.setItem('todos_demo', JSON.stringify(todos));
+      localStorage.setItem('language', 'ja');
+
+      const newAppState = new AppState();
+      expect(newAppState.currentUser).toEqual({ username: 'demo' });
+      expect(newAppState.cart).toEqual(cart);
+      expect(newAppState.todos).toEqual(todos);
+    });
   });
 
   describe('authentication', () => {
-    test('should login with correct credentials', () => {
-      const result = appState.login('demo', 'Demo@2025!');
+    test.each([
+      ['demo', 'Demo@2025!'],
+      ['user1', 'User1@2025!'],
+      ['user2', 'User2@2025!'],
+      ['admin', 'Admin@2025!']
+    ])('should login with correct credentials (%s)', (username, password) => {
+      const result = appState.login(username, password);
 
       expect(result).toBe(true);
       expect(appState.currentUser).toEqual({
-        username: 'demo',
+        username,
         profile: { displayName: '', phone: '', paymentMethod: '' }
       });
       expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify({
-        username: 'demo',
+        username,
         profile: { displayName: '', phone: '', paymentMethod: '' }
       }));
     });
@@ -68,7 +88,14 @@ describe('AppState', () => {
       expect(appState.currentUser).toBeNull();
     });
 
-    test('should logout and clear data', () => {
+    test('should reject login with cross-user password', () => {
+      expect(appState.login('demo', 'User1@2025!')).toBe(false);
+      expect(appState.login('user1', 'Demo@2025!')).toBe(false);
+      expect(appState.login('admin', 'User2@2025!')).toBe(false);
+      expect(appState.currentUser).toBeNull();
+    });
+
+    test('should logout and clear in-memory data only', () => {
       appState.currentUser = { username: 'demo' };
       appState.cart = createSampleCartItems();
       appState.todos = createSampleTodos();
@@ -79,8 +106,9 @@ describe('AppState', () => {
       expect(appState.cart).toEqual([]);
       expect(appState.todos).toEqual([]);
       expect(localStorage.removeItem).toHaveBeenCalledWith('currentUser');
-      expect(localStorage.removeItem).toHaveBeenCalledWith('cart');
-      expect(localStorage.removeItem).toHaveBeenCalledWith('todos');
+      // ユーザー固有データは削除しない（次回ログイン時に復元するため）
+      expect(localStorage.removeItem).not.toHaveBeenCalledWith('cart_demo');
+      expect(localStorage.removeItem).not.toHaveBeenCalledWith('todos_demo');
     });
   });
 
@@ -292,7 +320,7 @@ describe('AppState', () => {
       expect(localStorage.setItem).toHaveBeenCalledWith('language', 'en');
     });
 
-    test('should save all data to storage', () => {
+    test('should save all data to storage with namespaced keys', () => {
       appState.currentUser = { username: 'test' };
       appState.cart = createSampleCartItems();
       appState.todos = createSampleTodos();
@@ -301,9 +329,9 @@ describe('AppState', () => {
       appState.saveToStorage();
 
       expect(localStorage.setItem).toHaveBeenCalledWith('currentUser', JSON.stringify(appState.currentUser));
-      expect(localStorage.setItem).toHaveBeenCalledWith('cart', JSON.stringify(appState.cart));
-      expect(localStorage.setItem).toHaveBeenCalledWith('todos', JSON.stringify(appState.todos));
-      expect(localStorage.setItem).toHaveBeenCalledWith('orders', JSON.stringify(appState.orders));
+      expect(localStorage.setItem).toHaveBeenCalledWith('cart_test', JSON.stringify(appState.cart));
+      expect(localStorage.setItem).toHaveBeenCalledWith('todos_test', JSON.stringify(appState.todos));
+      expect(localStorage.setItem).toHaveBeenCalledWith('orders_test', JSON.stringify(appState.orders));
       expect(localStorage.setItem).toHaveBeenCalledWith('language', 'en');
     });
   });
@@ -394,7 +422,8 @@ describe('AppState', () => {
       expect(appState.orders[0].paymentMethod).toBe('bank_transfer');
     });
 
-    test('should save order to localStorage', () => {
+    test('should save order to localStorage with namespaced key', () => {
+      appState.login('demo', 'Demo@2025!');
       appState.cart = createSampleCartItems();
       const shippingInfo = {
         name: 'Test User',
@@ -406,10 +435,10 @@ describe('AppState', () => {
 
       appState.createOrder(shippingInfo, 'cash_on_delivery');
 
-      expect(localStorage.setItem).toHaveBeenCalledWith('orders', expect.any(String));
+      expect(localStorage.setItem).toHaveBeenCalledWith('orders_demo', expect.any(String));
     });
 
-    test('should load orders from localStorage', () => {
+    test('should load orders from localStorage with namespaced key', () => {
       const testOrders = [
         {
           id: 1640995200000,
@@ -428,7 +457,8 @@ describe('AppState', () => {
         }
       ];
 
-      localStorage.setItem('orders', JSON.stringify(testOrders));
+      localStorage.setItem('currentUser', JSON.stringify({ username: 'demo' }));
+      localStorage.setItem('orders_demo', JSON.stringify(testOrders));
 
       const newAppState = new AppState();
 
@@ -462,6 +492,66 @@ describe('AppState', () => {
       expect(appState.orders).toHaveLength(2);
       expect(appState.orders[0].id).toBe(1640995100000);
       expect(appState.orders[1].id).toBe(1640995200000);
+    });
+  });
+
+  describe('per-user data isolation', () => {
+    test('should isolate cart data between users', () => {
+      // demoユーザーでログインしてカートに追加
+      appState.login('demo', 'Demo@2025!');
+      appState.addToCart(1);
+      expect(appState.cart).toHaveLength(1);
+
+      // ログアウト
+      appState.logout();
+
+      // user1でログイン → カートは空
+      appState.login('user1', 'User1@2025!');
+      expect(appState.cart).toEqual([]);
+
+      // user1でカートに別商品を追加
+      appState.addToCart(2);
+      expect(appState.cart).toHaveLength(1);
+      expect(appState.cart[0].id).toBe(2);
+
+      // ログアウトしてdemoで再ログイン → 元のカートが残っている
+      appState.logout();
+      appState.login('demo', 'Demo@2025!');
+      expect(appState.cart).toHaveLength(1);
+      expect(appState.cart[0].id).toBe(1);
+    });
+
+    test('should isolate todos between users', () => {
+      appState.login('demo', 'Demo@2025!');
+      appState.addTodo('Demo todo');
+      expect(appState.todos).toHaveLength(1);
+
+      appState.logout();
+
+      appState.login('user1', 'User1@2025!');
+      expect(appState.todos).toEqual([]);
+
+      appState.addTodo('User1 todo');
+      expect(appState.todos).toHaveLength(1);
+      expect(appState.todos[0].text).toBe('User1 todo');
+
+      appState.logout();
+      appState.login('demo', 'Demo@2025!');
+      expect(appState.todos).toHaveLength(1);
+      expect(appState.todos[0].text).toBe('Demo todo');
+    });
+
+    test('should use namespaced localStorage keys per user', () => {
+      appState.login('demo', 'Demo@2025!');
+      appState.addToCart(1);
+
+      expect(localStorage.setItem).toHaveBeenCalledWith('cart_demo', expect.any(String));
+
+      appState.logout();
+      appState.login('user1', 'User1@2025!');
+      appState.addToCart(2);
+
+      expect(localStorage.setItem).toHaveBeenCalledWith('cart_user1', expect.any(String));
     });
   });
 });
