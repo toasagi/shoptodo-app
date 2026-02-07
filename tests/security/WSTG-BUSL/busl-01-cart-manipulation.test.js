@@ -27,9 +27,9 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
       expect(originalPrice).toBe(89800);
 
       // Simulate attacker modifying localStorage directly
-      const tamperedCart = JSON.parse(localStorage.getItem('cart'));
+      const tamperedCart = JSON.parse(localStorage.getItem('cart_demo'));
       tamperedCart[0].price = 1; // Set price to 1 yen
-      localStorage.setItem('cart', JSON.stringify(tamperedCart));
+      localStorage.setItem('cart_demo', JSON.stringify(tamperedCart));
 
       // Create new instance to load tampered data
       const newAppState = new AppState();
@@ -46,9 +46,9 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
       appState.addToCart(1); // 89800 yen
 
       // Tamper price
-      const cart = JSON.parse(localStorage.getItem('cart'));
+      const cart = JSON.parse(localStorage.getItem('cart_demo'));
       cart[0].price = 100;
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('cart_demo', JSON.stringify(cart));
 
       // Reload
       const newAppState = new AppState();
@@ -66,9 +66,9 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
       appState.addToCart(1);
 
       // Attempt to set negative quantity via localStorage
-      const cart = JSON.parse(localStorage.getItem('cart'));
+      const cart = JSON.parse(localStorage.getItem('cart_demo'));
       cart[0].quantity = -10;
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('cart_demo', JSON.stringify(cart));
 
       const newAppState = new AppState();
 
@@ -81,9 +81,9 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
     test.skip('VULNERABILITY: Extremely large quantity can be set', () => {
       appState.addToCart(1);
 
-      const cart = JSON.parse(localStorage.getItem('cart'));
+      const cart = JSON.parse(localStorage.getItem('cart_demo'));
       cart[0].quantity = Number.MAX_SAFE_INTEGER;
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('cart_demo', JSON.stringify(cart));
 
       const newAppState = new AppState();
 
@@ -101,7 +101,7 @@ describe('WSTG-BUSL-01: Cart Manipulation Testing', () => {
         price: 0,
         quantity: 1,
       }];
-      localStorage.setItem('cart', JSON.stringify(fakeCart));
+      localStorage.setItem('cart_demo', JSON.stringify(fakeCart));
 
       const newAppState = new AppState();
 

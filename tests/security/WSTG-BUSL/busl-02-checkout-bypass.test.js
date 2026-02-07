@@ -43,12 +43,12 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
         date: new Date().toISOString(),
       };
 
-      const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+      const existingOrders = JSON.parse(localStorage.getItem('orders_demo') || '[]');
       existingOrders.push(fakeOrder);
-      localStorage.setItem('orders', JSON.stringify(existingOrders));
+      localStorage.setItem('orders_demo', JSON.stringify(existingOrders));
 
       // Order is created with 0 value
-      const orders = JSON.parse(localStorage.getItem('orders'));
+      const orders = JSON.parse(localStorage.getItem('orders_demo'));
       expect(orders.length).toBe(1);
       expect(orders[0].total).toBe(0);
     });
@@ -74,9 +74,9 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
         date: new Date().toISOString(),
       };
 
-      localStorage.setItem('orders', JSON.stringify([orderWithEmptyShipping]));
+      localStorage.setItem('orders_demo', JSON.stringify([orderWithEmptyShipping]));
 
-      const orders = JSON.parse(localStorage.getItem('orders'));
+      const orders = JSON.parse(localStorage.getItem('orders_demo'));
       expect(orders[0].shipping.name).toBe('');
 
       // Recommendation: Validate shipping info server-side
@@ -99,8 +99,8 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
         };
 
         // Orders can be created with any email format via localStorage
-        localStorage.setItem('orders', JSON.stringify([order]));
-        const stored = JSON.parse(localStorage.getItem('orders'));
+        localStorage.setItem('orders_demo', JSON.stringify([order]));
+        const stored = JSON.parse(localStorage.getItem('orders_demo'));
         expect(stored[0].shipping.email).toBe(email);
       });
     });
@@ -125,9 +125,9 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
         date: new Date().toISOString(),
       };
 
-      localStorage.setItem('orders', JSON.stringify([orderWithInvalidPayment]));
+      localStorage.setItem('orders_demo', JSON.stringify([orderWithInvalidPayment]));
 
-      const orders = JSON.parse(localStorage.getItem('orders'));
+      const orders = JSON.parse(localStorage.getItem('orders_demo'));
       expect(orders[0].payment).toBe('free_payment');
 
       // Recommendation: Whitelist valid payment methods
@@ -153,9 +153,9 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
         date: new Date().toISOString(),
       };
 
-      localStorage.setItem('orders', JSON.stringify([orderWithTamperedTotal]));
+      localStorage.setItem('orders_demo', JSON.stringify([orderWithTamperedTotal]));
 
-      const orders = JSON.parse(localStorage.getItem('orders'));
+      const orders = JSON.parse(localStorage.getItem('orders_demo'));
       expect(orders[0].total).toBe(1);
 
       // CRITICAL: In a real e-commerce app, this would allow free purchases
@@ -177,9 +177,9 @@ describe('WSTG-BUSL-02: Checkout Bypass Testing', () => {
         },
       ];
 
-      localStorage.setItem('orders', JSON.stringify(fakeOrders));
+      localStorage.setItem('orders_demo', JSON.stringify(fakeOrders));
 
-      const orders = JSON.parse(localStorage.getItem('orders'));
+      const orders = JSON.parse(localStorage.getItem('orders_demo'));
       expect(orders.length).toBe(1);
       expect(orders[0].total).toBe(999999);
     });

@@ -66,17 +66,22 @@ function setupLocalStorageWithData(data = {}) {
     currentUser = null,
     cart = [],
     todos = [],
-    language = 'ja'
+    language = 'ja',
+    username = null
   } = data;
 
   if (currentUser) {
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
   }
+
+  // username指定時は名前空間化キーを使用
+  const suffix = username ? `_${username}` : (currentUser ? `_${currentUser.username}` : '');
+
   if (cart.length > 0) {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem(`cart${suffix}`, JSON.stringify(cart));
   }
   if (todos.length > 0) {
-    localStorage.setItem('todos', JSON.stringify(todos));
+    localStorage.setItem(`todos${suffix}`, JSON.stringify(todos));
   }
   localStorage.setItem('language', language);
 }

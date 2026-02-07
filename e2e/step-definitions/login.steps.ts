@@ -2,6 +2,13 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { CustomWorld } from '../support/world';
 
+const DEMO_CREDENTIALS: Record<string, string> = {
+  'demo': 'Demo@2025!',
+  'user1': 'User1@2025!',
+  'user2': 'User2@2025!',
+  'admin': 'Admin@2025!'
+};
+
 // Given Steps
 Given('the application is available', async function(this: CustomWorld) {
   // Navigate to the app and wait for it to load
@@ -35,7 +42,7 @@ Given('the user is logged in as {string}', async function(this: CustomWorld, use
   await this.page.locator('#login-btn').click();
   await this.page.waitForTimeout(500);
 
-  await this.loginPage.login(username, 'Demo@2025!');
+  await this.loginPage.login(username, DEMO_CREDENTIALS[username] || 'Demo@2025!');
   await this.dashboardPage.waitForPageLoad();
 
   // Verify login success

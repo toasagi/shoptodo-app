@@ -65,7 +65,7 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
       appState.addTodo('Secret information');
 
       // Verify data is stored in plaintext
-      const todosStr = localStorage.getItem('todos');
+      const todosStr = localStorage.getItem('todos_demo');
       const currentUserStr = localStorage.getItem('currentUser');
 
       // All data is readable in plaintext
@@ -136,10 +136,10 @@ describe('WSTG-CLNT-01: localStorage Security Testing', () => {
         date: new Date().toISOString(),
       };
 
-      localStorage.setItem('orders', JSON.stringify([orderWithPII]));
+      localStorage.setItem('orders_demo', JSON.stringify([orderWithPII]));
 
       // Verify PII is stored in plaintext
-      const ordersString = localStorage.getItem('orders');
+      const ordersString = localStorage.getItem('orders_demo');
       expect(ordersString).toContain('taro@example.com');
       expect(ordersString).toContain('090-1234-5678');
 

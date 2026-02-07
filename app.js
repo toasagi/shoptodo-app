@@ -6,7 +6,7 @@ const i18n = {
         logout: 'ログアウト',
         username: 'ユーザー名:',
         password: 'パスワード:',
-        demo_info: 'デモ用: ユーザー名「demo」、パスワード「Demo@2025!」でログインできます',
+        demo_info: 'デモ用: demo/Demo@2025!, user1/User1@2025!, user2/User2@2025!, admin/Admin@2025!',
         product_catalog: '商品カタログ',
         search_placeholder: '商品を検索...',
         all_categories: 'すべてのカテゴリ',
@@ -175,7 +175,7 @@ const i18n = {
         logout: 'Logout',
         username: 'Username:',
         password: 'Password:',
-        demo_info: 'Demo: Use username "demo" and password "Demo@2025!" to login',
+        demo_info: 'Demo users: demo/Demo@2025!, user1/User1@2025!, user2/User2@2025!, admin/Admin@2025!',
         product_catalog: 'Product Catalog',
         search_placeholder: 'Search products...',
         all_categories: 'All Categories',
@@ -390,6 +390,14 @@ function generatePlaceholderImage(category) {
     return generateProductImage(config.emoji, config.primary, config.secondary);
 }
 
+// デモモードで使用可能なユーザー認証情報
+const DEMO_CREDENTIALS = {
+    'demo': 'Demo@2025!',
+    'user1': 'User1@2025!',
+    'user2': 'User2@2025!',
+    'admin': 'Admin@2025!'
+};
+
 // アプリケーションの状態管理
 class AppState {
     constructor() {
@@ -471,38 +479,55 @@ class AppState {
         this.filteredProducts = [...this.products];
     }
 
+    storageKey(key) {
+        if (key === 'language' || key === 'currentUser') return key;
+        if (this.currentUser && this.currentUser.username) {
+            return `${key}_${this.currentUser.username}`;
+        }
+        return key;
+    }
+
     loadFromStorage() {
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) {
             this.currentUser = JSON.parse(savedUser);
         }
 
-        const savedCart = localStorage.getItem('cart');
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage) {
+            this.currentLanguage = savedLanguage;
+        }
+
+        // ユーザー固有データの読み込み（名前空間化キー使用）
+        this.loadUserData();
+    }
+
+    loadUserData() {
+        // 名前空間化キーからデータを読み込み（フォールバック: 旧グローバルキー）
+        const cartKey = this.storageKey('cart');
+        const savedCart = localStorage.getItem(cartKey) || (cartKey !== 'cart' ? localStorage.getItem('cart') : null);
         if (savedCart) {
             this.cart = JSON.parse(savedCart);
         }
 
-        const savedTodos = localStorage.getItem('todos');
+        const todosKey = this.storageKey('todos');
+        const savedTodos = localStorage.getItem(todosKey) || (todosKey !== 'todos' ? localStorage.getItem('todos') : null);
         if (savedTodos) {
             this.todos = JSON.parse(savedTodos);
         }
 
-        const savedOrders = localStorage.getItem('orders');
+        const ordersKey = this.storageKey('orders');
+        const savedOrders = localStorage.getItem(ordersKey) || (ordersKey !== 'orders' ? localStorage.getItem('orders') : null);
         if (savedOrders) {
             this.orders = JSON.parse(savedOrders);
-        }
-
-        const savedLanguage = localStorage.getItem('language');
-        if (savedLanguage) {
-            this.currentLanguage = savedLanguage;
         }
     }
 
     saveToStorage() {
         localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-        localStorage.setItem('cart', JSON.stringify(this.cart));
-        localStorage.setItem('todos', JSON.stringify(this.todos));
-        localStorage.setItem('orders', JSON.stringify(this.orders));
+        localStorage.setItem(this.storageKey('cart'), JSON.stringify(this.cart));
+        localStorage.setItem(this.storageKey('todos'), JSON.stringify(this.todos));
+        localStorage.setItem(this.storageKey('orders'), JSON.stringify(this.orders));
         localStorage.setItem('language', this.currentLanguage);
     }
 
@@ -512,15 +537,18 @@ class AppState {
     }
 
     login(username, password) {
-        if (username === 'demo' && password === 'Demo@2025!') {
-            // Load existing profile if available
-            const savedProfile = localStorage.getItem('userProfile');
+        if (DEMO_CREDENTIALS[username] && DEMO_CREDENTIALS[username] === password) {
+            // Load existing profile if available (namespaced key)
+            const profileKey = `userProfile_${username}`;
+            const savedProfile = localStorage.getItem(profileKey);
             const profile = savedProfile ? JSON.parse(savedProfile) : {
                 displayName: '',
                 phone: '',
                 paymentMethod: ''
             };
             this.currentUser = { username, profile };
+            // ユーザー固有データを読み込み（saveToStorageより先に実行）
+            this.loadUserData();
             this.saveToStorage();
             return true;
         }
@@ -531,16 +559,15 @@ class AppState {
         this.currentUser = null;
         this.cart = [];
         this.todos = [];
+        this.orders = [];
         localStorage.removeItem('currentUser');
-        localStorage.removeItem('cart');
-        localStorage.removeItem('todos');
-        // Keep profile and orders for next login
+        // ユーザー固有データ（cart_demo等）は削除しない（次回ログイン時に復元するため）
     }
 
     saveProfile(profileData) {
         if (!this.currentUser) return false;
         this.currentUser.profile = { ...profileData };
-        localStorage.setItem('userProfile', JSON.stringify(this.currentUser.profile));
+        localStorage.setItem(this.storageKey('userProfile'), JSON.stringify(this.currentUser.profile));
         this.saveToStorage();
         return true;
     }
@@ -1747,7 +1774,8 @@ if (typeof module !== 'undefined' && module.exports) {
         i18n,
         AppState,
         UIManager,
-        escapeHTML
+        escapeHTML,
+        DEMO_CREDENTIALS
     };
 } else {
     // Browser environment
