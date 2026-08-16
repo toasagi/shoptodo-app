@@ -704,4 +704,6 @@ This ensures quality control and automatic deployment only after code review.
 
 ## License
 
-This project is released under the MIT License. Free use for learning and testing purposes is permitted.
+Copyright (c) 2025 Tomotaka Asagi
+
+This project is released under the MIT License. Free use for learning and testing purposes is permitted. See [LICENSE](LICENSE) for the full text.
